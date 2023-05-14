@@ -1,15 +1,19 @@
 "use strict";
 
-var _user = _interopRequireDefault(require("../../models/user"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _user = require("../../models/user");
 async function createUser(parent, {
   input
+}, {
+  session,
+  user
 }) {
-  console.log(input);
+  console.log(user);
   try {
-    const user = await _user.default.create(input);
+    const user = await _user.User.create([input], {
+      session
+    });
     console.log(user);
-    return user;
+    return user[0];
   } catch (error) {
     console.error(error);
     throw new Error('Failed to create user');
@@ -20,7 +24,7 @@ async function updateUser(parent, {
   input
 }) {
   try {
-    const user = await _user.default.findById(id);
+    const user = await _user.User.findById(id);
     if (!user) {
       throw new Error('User not found');
     }
@@ -39,7 +43,7 @@ async function deleteUser(parent, {
   id
 }) {
   try {
-    const user = await _user.default.findById(id);
+    const user = await _user.User.findById(id);
     if (!user) {
       throw new Error('User not found');
     }

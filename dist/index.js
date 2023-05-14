@@ -1,6 +1,7 @@
 "use strict";
 
 var _server = require("@apollo/server");
+var _apolloServerCore = require("apollo-server-core");
 var _resolvers = require("./resolvers");
 var _database = require("./utils/database");
 var _schemas = require("./schemas");
@@ -14,6 +15,7 @@ var _http = _interopRequireDefault(require("http"));
 var _cors = _interopRequireDefault(require("cors"));
 var _bodyParser = require("body-parser");
 var _directives = require("./utils/directives");
+var _mock = require("@graphql-tools/mock");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const {
   authDirectiveTransformer
@@ -60,7 +62,7 @@ const server = new _server.ApolloServer({
     })
   }, (0, _drainHttpServer.ApolloServerPluginDrainHttpServer)({
     httpServer
-  })]
+  }), (0, _apolloServerCore.ApolloServerPluginInlineTrace)()]
 });
 (0, _database.connectDB)().then(async () => {
   console.log('Before start');
@@ -72,7 +74,6 @@ const server = new _server.ApolloServer({
       const session = await _mongoose.default.startSession();
       // console.log(session.transaction.state);
       session.startTransaction();
-      console.log(session.transaction.state);
       return {
         authToken: req.headers.authtoken,
         session

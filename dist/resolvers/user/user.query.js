@@ -4,7 +4,7 @@ var _user = require("../../models/user");
 async function users(source, args, context) {
   // console.log(context);
   try {
-    const users = await _user.User.find();
+    const users = await _user.User.find().session(context.session);
     return users;
   } catch (error) {
     console.error(error);

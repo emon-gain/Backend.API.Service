@@ -1,4 +1,4 @@
 #!/bin/bash
-sudo npm i
-sudo npm i -g pm2
+npm i
+npm i -g pm2
 
