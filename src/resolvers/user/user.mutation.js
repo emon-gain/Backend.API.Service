@@ -1,11 +1,13 @@
-import User from '../../models/user';
+import {User} from '../../models/user';
 
-async function createUser(parent, { input }) {
-  console.log(input);
+async function createUser(parent, { input }, {session, user}) {
+  console.log(user);
   try {
-    const user = await User.create(input);
+    const user = await User.create([input], {
+      session
+    });
     console.log(user);
-    return user;
+    return user[0];
   } catch (error) {
     console.error(error);
     throw new Error('Failed to create user');

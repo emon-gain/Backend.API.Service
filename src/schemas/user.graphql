@@ -19,12 +19,12 @@ input UpdateUserInput {
 }
 
 type Query {
-  users: [User]! @auth(requires: USER)
+  users: [User]!
   user(id: ID!): User!
 }
 
 type Mutation {
-  createUser(input: CreateUserInput!): User!
+  createUser(input: CreateUserInput!): User! @protect(roles: [USER])
   updateUser(input: UpdateUserInput!): User!
   deleteUser(id: ID!): User!
 }

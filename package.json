@@ -20,27 +20,37 @@
   "dependencies": {
     "@apollo/server": "^4.6.0",
     "@babel/register": "^7.21.0",
+    "@babel/runtime": "^7.21.0",
     "@graphql-tools/load-files": "^6.6.1",
     "@graphql-tools/merge": "^8.4.0",
-    "@graphql-tools/schema": "^9.0.17",
     "@graphql-tools/utils": "^9.2.1",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
+    "chai": "^4.3.7",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "graphql": "^16.6.0",
     "graphql-tools": "^8.3.19",
     "http": "^0.0.1-security",
+    "mocha": "^10.2.0",
     "mongoose": "^7.0.3",
     "pg": "^8.10.0",
     "sequelize": "^6.30.0",
     "shelljs": "^0.8.5"
   },
   "devDependencies": {
+    "@apollo/client": "^3.7.13",
     "@babel/cli": "^7.21.0",
     "@babel/core": "^7.21.4",
     "@babel/node": "^7.20.7",
+    "@babel/plugin-transform-runtime": "^7.21.4",
+    "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.21.4",
+    "@babel/register": "^7.14.5",
+    "@graphql-tools/mock": "^8.7.20",
+    "@graphql-tools/schema": "^9.0.19",
+    "apollo-server-core": "^3.12.0",
     "nodemon": "^2.0.22"
   }
 }

@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "apollo4",
+      "script": "npm",
+      "args" : "start"
+    }
+  ]
+}

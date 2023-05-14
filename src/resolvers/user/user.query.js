@@ -3,7 +3,7 @@ import { User } from '../../models/user';
 async function users(source, args, context) {
   // console.log(context);
   try {
-    const users = await User.find();
+    const users = await User.find().session(context.session);
     return users;
   } catch (error) {
     console.error(error);

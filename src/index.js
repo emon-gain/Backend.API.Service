@@ -1,4 +1,5 @@
 import { ApolloServer } from '@apollo/server';
+import { ApolloServerPluginInlineTrace } from "apollo-server-core";
 import { createMergedResolvers } from './resolvers';
 import { connectDB } from './utils/database';
 import { createMergedSchema } from './schemas';
@@ -13,6 +14,7 @@ import http from 'http';
 import cors from 'cors';
 import { json } from 'body-parser';
 import { authDirective, getUser } from './utils/directives';
+import {addMocksToSchema} from "@graphql-tools/mock";
 const { authDirectiveTransformer } = authDirective('auth', getUser);
 
 dotenv.config();
@@ -48,6 +50,7 @@ const server = new ApolloServer({
       }),
     },
     ApolloServerPluginDrainHttpServer({ httpServer }),
+      ApolloServerPluginInlineTrace()
   ],
 });
 
@@ -64,7 +67,6 @@ connectDB()
           const session = await mongoose.startSession();
           // console.log(session.transaction.state);
           session.startTransaction();
-          console.log(session.transaction.state);
           return { authToken: req.headers.authtoken, session };
         },
       })

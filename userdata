@@ -1,0 +1,23 @@
+#!/bin/bash
+
+cd /home/ubuntu
+sudo apt update
+sudo apt install -y ruby-full
+sudo wget https://aws-codedeploy-ap-southeast-1.s3.ap-southeast-1.amazonaws.com/latest/install
+sudo chmod +x ./install
+sudo ./install auto > /tmp/logfile
+sudo service codedeploy-agent stop
+sudo service codedeploy-agent start
+sudo service codedeploy-agent status
+echo "Installing node js"
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+. /.nvm/nvm.sh
+nvm install 18
+echo "Node installed"
+node --version
+npm --version
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+sudo apt-get install unzip
+sudo unzip awscliv2.zip
+sudo ./aws/install
+sudo aws s3 cp /var/log/cloud-init-output.log s3://emon-for-everything/logs/
