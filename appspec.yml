@@ -7,10 +7,6 @@ files:
 file_exists_behavior: OVERWRITE
 
 hooks:
-  ApplicationStop:
-    - location: scripts/stop_server.sh
-      timeout: 300
-      runas: root
 
   AfterInstall:
     - location: scripts/after_install.sh
