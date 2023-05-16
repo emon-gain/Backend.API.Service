@@ -8,7 +8,6 @@ export const authDirective = (directiveName, getUserFn) => {
       mapSchema(schema, {
         [MapperKind.TYPE]: (type) => {
           const authDirective = getDirective(schema, type, directiveName)?.[0];
-
           if (authDirective) {
             typeDirectiveArgumentMaps[type.name] = authDirective;
           }
@@ -19,7 +18,6 @@ export const authDirective = (directiveName, getUserFn) => {
           const authDirective =
             getDirective(schema, fieldConfig, directiveName)?.[0] ??
             typeDirectiveArgumentMaps[typeName];
-
           if (authDirective) {
             const { requires } = authDirective;
 
@@ -28,7 +26,7 @@ export const authDirective = (directiveName, getUserFn) => {
 
               fieldConfig.resolve = function (source, args, context, info) {
                 const user = getUserFn(context.authToken);
-
+                console.log(user.hasRole(requires))
                 if (!user.hasRole(requires)) {
                   throw new Error('not authorized');
                 }
