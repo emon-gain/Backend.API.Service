@@ -1,0 +1,151 @@
+type UserReport {
+  _id: String
+  reporter: String
+  reportedUser: String
+  reportedByAdmin: Boolean
+  createdAt: Date
+}
+
+input UserReportAddType {
+  reportedUserId: String
+}
+
+input UserReportRemoveType {
+  reportedUserId: String
+}
+
+input reportForExcelQueryDataType {
+  queueId: String
+}
+
+type ReportExcelCreatorQuery {
+  name: String
+  payments: Number
+  rent: Number
+  invoiced: Number
+  payouts: Number
+  totalBalance: Number
+}
+
+type QueryReportExcelCreator {
+  data: [ReportExcelCreatorQuery]
+  total: Number
+}
+
+enum DownloadForEnumType {
+  tenant
+  landlord
+}
+
+input BalanceReportQueryDataType {
+  accountId: String
+  agentId: String
+  branchId: String
+  """
+  When we want to download Tenant or Landlord balance report please use downloadReportType = tenant/landlord
+  """
+  downloadReportType: DownloadForEnumType
+  """
+  Period is called lastEnquiryDate like V1 Accounting period
+  """
+  lastEnquiryDate: Date
+  propertyId: String
+  tenantId: String
+  user: Object
+}
+
+type LandlordBalanceReportQuery {
+  accountId: String
+  avatarKey: String
+  createdAt: Date
+  invoiced: Number
+  name: String
+  payouts: Number
+  rent: Number
+  serial: Int
+  totalBalance: Number
+}
+
+
+type TenantBalanceReportQuery {
+  avatarKey: String
+  createdAt: Date
+  invoiced: Number
+  name: String
+  payments: Number
+  serial: Int
+  tenantId: String
+  totalBalance: Number
+}
+
+type summaryDataForReport {
+  finalAccounting: Boolean
+  totalInvoiced: Number
+  totalRent: Number
+  totalPayments: Number
+  totalPayouts: Number
+  totalBalance: Number
+}
+
+
+type QueryTenantBalanceReport {
+  data: [TenantBalanceReportQuery]
+  metaData: MetaDataQuerySchema
+}
+
+type QueryLandlordBalanceReport {
+  data: [LandlordBalanceReportQuery]
+  metaData: MetaDataQuerySchema
+}
+
+type DownloadReport {
+  status: Int
+  message: String
+}
+
+type QueryTenantBalanceReportSummary {
+  totalBalance: Number
+  totalInvoiced: Number
+  totalPayments: Number
+}
+
+type QueryLandlordBalanceReportSummary {
+  totalBalance: Number
+  totalInvoiced: Number
+  totalPayouts: Number
+  totalRent: Number
+}
+
+extend type Query {
+  getReportDataForExcelCreator(
+    queryData: reportForExcelQueryDataType
+    optionData: OptionDataType
+  ): QueryReportExcelCreator @auth(requires: ["lambda_manager"])
+
+  tenantBalanceReport(
+    queryData: BalanceReportQueryDataType
+    optionData: OptionDataType
+  ): QueryTenantBalanceReport @auth(requires: ["app_manager", "partner_accounting", "partner_admin" "partner_agent"])
+
+  tenantBalanceReportSummary(
+    queryData: BalanceReportQueryDataType
+  ): QueryTenantBalanceReportSummary @auth(requires: ["app_manager", "partner_accounting", "partner_admin" "partner_agent"])
+
+  landLordBalanceReport(
+    queryData: BalanceReportQueryDataType
+    optionData: OptionDataType
+  ): QueryLandlordBalanceReport
+    @auth(requires: ["app_manager", "partner_accounting", "partner_admin" "partner_agent"])
+
+  landLordBalanceReportSummary(
+    queryData: BalanceReportQueryDataType
+  ): QueryLandlordBalanceReportSummary @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent"])
+}
+
+extend type Mutation {
+  addUserReport(inputData: UserReportAddType): [UserReport]
+    @auth(requires: ["app_admin"])
+  removeUserReport(inputData: UserReportRemoveType): UserReport
+    @auth(requires: ["app_admin"])
+  downloadTenantOrLandlordBalanceReport(inputData: BalanceReportQueryDataType):DownloadReport @auth(requires: ["app_manager", "partner_admin" "partner_accounting"])
+}

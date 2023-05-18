@@ -1,0 +1,111 @@
+type Branch {
+  _id: String
+  name: String
+  branchSerialId: Number
+  partnerId: String
+  adminId: String
+  agents: [String]
+}
+
+type BranchQuerySchema {
+  _id: String
+  name: String
+  branchSerialId: Number
+  partnerId: String
+  adminId: String
+  agents: [String]
+  adminUser: UserQuerySchema
+  partner: Partner
+  createdAt: Date
+  createdBy: String
+  agentsInfo: [UserQuerySchema]
+}
+
+type QueryBranch {
+  data: [BranchQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input BranchesQueryDataType {
+  _id: String
+  name: String
+  partnerId: String
+  adminId: String
+  branchSerialId: Number
+}
+
+type BranchesDropdownQuerySchema {
+  _id: String
+  name: String
+  agents: [String]
+  agentsInfo: [UserQuerySchema]
+}
+
+input BranchesDropdownQueryDataType {
+  accountId: String
+  agentId: String
+  partnerId: String
+  searchString: String
+}
+
+type QueryBranchesDropdown {
+  data: [BranchesDropdownQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input BranchAddType {
+  name: String
+  branchSerialId: Number
+  adminId: String
+  partnerId: String
+}
+
+input BranchUpdateType {
+  branchId: String
+  name: String
+  branchSerialId: Number
+  adminId: String
+}
+
+type BranchAgentInfo {
+  _id: String
+  email: String
+  avatarKey: String
+  name: String
+}
+
+type BranchRoleQuerySchema {
+  _id: String
+  name: String
+  adminId: String
+  partnerId: String
+  branchSerialId: String
+  agents: [BranchAgentInfo]
+}
+
+type QueryForBranchRole {
+  data: [BranchRoleQuerySchema]
+}
+
+extend type Query {
+  branches(
+    queryData: BranchesQueryDataType
+    optionData: OptionDataType
+  ): QueryBranch @auth(requires: ["no_role"])
+
+  branchAndUserRoles: QueryForBranchRole
+    @auth(requires: ["app_manager", "partner_admin"])
+
+  branchesDropdown(
+    queryData: BranchesDropdownQueryDataType
+    optionData: OptionDataType
+  ): QueryBranchesDropdown
+    @auth(requires: ["app_admin", "app_manager", "partner_accounting", "partner_admin", "partner_agent","partner_janitor"])
+}
+
+extend type Mutation {
+  addBranch(inputData: BranchAddType): [Branch]
+    @auth(requires: ["app_manager", "partner_admin"])
+  updateBranch(inputData: BranchUpdateType): Branch
+    @auth(requires: ["app_manager", "partner_admin"])
+}

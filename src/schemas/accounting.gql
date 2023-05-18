@@ -1,0 +1,61 @@
+type Accounting {
+  _id: String
+  partnerId: String
+  type: String
+  subName: String
+  debitAccountId: String
+  creditAccountId: String
+  createdAt: Date
+  createdBy: String
+}
+
+type AccountingQuerySchema {
+  _id: String
+  partnerId: String
+  partner: Partner
+  type: String
+  subName: String
+  debitAccountId: String
+  debitAccount: LedgerAccountSchemaForAccounting
+  creditAccountId: String
+  creditAccount: LedgerAccountSchemaForAccounting
+  createdAt: Date
+  createdBy: String
+}
+
+type QueryAccounting {
+  data: [AccountingQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input AccountingInputDataForUpdate {
+  name: String
+  value: String
+}
+
+input AccountingUpdateType {
+  _id: String
+  data: AccountingInputDataForUpdate
+}
+
+input AccountingQueryDataType {
+  _id: String
+  type: String
+  subName: String
+  debitAccountId: String
+  creditAccountId: String
+  # For app admin filters only
+  appAdmin: Boolean
+}
+
+extend type Query {
+  accountings(
+    queryData: AccountingQueryDataType
+    optionData: OptionDataType
+  ): QueryAccounting @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+}
+
+extend type Mutation {
+  updateAccounting(inputData: AccountingUpdateType): Accounting
+    @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+}

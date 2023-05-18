@@ -1,0 +1,93 @@
+type LedgerAccount {
+  _id: String
+  name: String
+  partnerId: String
+  accountNumber: Number
+  accountName: String
+  taxCodeId: String
+  enable: Boolean
+  mapAccounts: [Object]
+  createdAt: Date
+  createdBy: String
+}
+
+input LedgerAccountAddType {
+  accountNumber: Number
+  accountName: String
+  taxCodeId: String
+  enable: Boolean
+  mapAccounts: [Object]
+}
+
+input LedgerAccountUpdateDataType {
+  name: String
+  valueBoolean: Boolean
+  valueInt: Int
+  valueString: String
+}
+
+input LedgerAccountUpdateType {
+  _id: String
+  data: LedgerAccountUpdateDataType
+}
+
+input LedgerAccountRemoveType {
+  _id: String
+}
+
+type LedgerAccountSchemaForAccounting {
+  _id: String
+  accountNumber: Number
+  accountName: String
+  taxCodeId: String
+  taxCode: TaxCode
+}
+
+type LedgerAccountQuerySchema {
+  _id: String
+  name: String
+  partnerId: String
+  partner: Partner
+  accountNumber: Number
+  accountName: String
+  hasTransactions: Boolean
+  taxCodeId: String
+  taxCode: TaxCode
+  # For lambda accountingBridge pogo #10175
+  taxCodePogo: Number
+  enable: Boolean
+  mapAccounts: [Object]
+  createdAt: Date
+  createdBy: String
+}
+
+type QueryLedgerAccount {
+  data: [LedgerAccountQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input LedgerAccountQueryType {
+  _id: String
+  partnerId: String
+  # For lambda accountingBridgePogo #10175
+  dataType: String
+  # For Admin ledgerAccounts list and filters
+  appAdmin: Boolean
+}
+
+
+extend type Query {
+  ledgerAccounts(
+    queryData: LedgerAccountQueryType
+    optionData: OptionDataType
+  ): QueryLedgerAccount @auth(requires: ["app_admin", "lambda_manager", "app_manager", "partner_admin"])
+}
+
+extend type Mutation {
+  addLedgerAccount(inputData: LedgerAccountAddType): [LedgerAccount]
+    @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+  updateLedgerAccount(inputData: LedgerAccountUpdateType): LedgerAccount
+    @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+  removeLedgerAccount(inputData: LedgerAccountRemoveType): LedgerAccount
+    @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+}

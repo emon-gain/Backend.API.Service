@@ -1,0 +1,88 @@
+type PayoutProcessSchema {
+  _id: String
+  sentFileName: String
+  sentFileStatus: String
+  processingStartedAt: Date
+  creditTransferInfo: [CreditTransferInfoSchema]
+  feedbackStatusLog: [FeedbackHistorySchemaObject]
+  groupHeaderMsgId: String
+  partnerId: String
+  partnerPayoutId: String
+  partnerSettings: PartnerSetting
+}
+
+type CreditTransferInfoSchema {
+  contractId: String
+  accountId: String
+  payoutId: String
+  paymentInstrId: String
+  paymentEndToEndId: String
+  creditorAccountId: String
+  debtorAccountId: String
+  status: String
+  amount: Number
+  reason: String
+  paymentReferenceId: String
+  bookingDate: Date
+  paymentId: String
+  bankRef: String
+}
+
+input CreditTransferInfoDataType {
+  contractId: String
+  accountId: String
+  payoutId: String
+  paymentInstrId: String
+  paymentEndToEndId: String
+  creditorAccountId: String
+  debtorAccountId: String
+  status: String
+  amount: Number
+  reason: String
+  paymentReferenceId: String
+  bookingDate: Date
+  paymentId: String
+  bankRef: String
+}
+
+input UpdatePayoutProcessDataType {
+  payoutProcessId: String
+  partnerId: String
+  processingStartedAt: Date
+  sentFileName: String
+  sentFileStatus: String
+  feedbackStatusLog: [FeedbackHistoryDataType]
+  creditTransferInfo: [CreditTransferInfoDataType]
+  status: String
+  feedbackCreatedAt: Date
+}
+
+input PayoutProcessesQueryDataType {
+  sentFileStatus: String
+  sentFileName: String
+  processingStartedAt: Date
+  endToEndId: String
+  payoutProcessId: String
+  payoutProcessIds: [String]
+  groupHeaderMsgId: String
+  endToEndIds: [String]
+}
+
+input PayoutProcessUpdateTypeForLambda {
+  updateData: [UpdatePayoutProcessDataType]
+}
+
+extend type Query {
+  payoutProcessesForPaymentLambda(
+    queryData: PayoutProcessesQueryDataType
+  ): [PayoutProcessSchema] @auth(requires: ["lambda_manager"])
+}
+
+extend type Mutation {
+  updatePayoutProcess(
+    inputData: UpdatePayoutProcessDataType
+  ): PayoutProcessSchema @auth(requires: ["lambda_manager"])
+  updatePayoutProcessForPaymentLambda(
+    inputData: PayoutProcessUpdateTypeForLambda
+  ): Boolean @auth(requires: ["lambda_manager"])
+}

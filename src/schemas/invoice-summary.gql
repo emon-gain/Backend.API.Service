@@ -1,0 +1,183 @@
+type InvoiceSummaryQuerySchema {
+  _id: String
+  accountInfo: InvoiceSummaryAccount
+  agentInfo: InvoiceSummaryAgent
+  branchInfo: InvoiceSummaryBranch
+  commissionsAmount: Number
+  commissionsIds: [String]
+  correctionsAmount: Number
+  correctionsIds: [String]
+  createdAt: Date
+  dueDate: Date
+  feesAmount: Number
+  invoiceAmount: Number
+  invoiceInfo: InvoiceSummaryInvoice
+  invoiceSerialId: Int
+  isBranchAdminUser: Boolean
+  isFinalSettlementDone: Boolean
+  isSendInvoice: Boolean
+  propertyInfo: InvoiceSummaryProperty
+  paymentId: String
+  payoutAmount: Number
+  payoutInfo: InvoiceSummaryPayout
+  showRefundOption: Boolean
+  tenantInfo: InvoiceSummaryTenant
+  totalDue: Number
+  totalPaid: Number
+}
+
+type InvoiceSummaryPayout {
+  _id: String
+  status: String
+  paymentStatus: String
+}
+
+type InvoiceSummaryTenant {
+  _id: String
+  name: String
+  avatarKey: String
+  reported: Boolean
+}
+
+type InvoiceSummaryAccount {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type InvoiceSummaryAgent {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type InvoiceSummaryBranch {
+  _id: String
+  name: String
+}
+
+type InvoiceSummaryProperty {
+  _id: String
+  location: ListingLocationObj
+  listingTypeId: String
+  propertyTypeId: String
+  apartmentId: String
+}
+
+type InvoiceSummaryInvoice {
+  _id: String
+  delayDate: Date
+  enabledNotification: Boolean
+  evictionDueReminderSent: Boolean
+  evictionNoticeSent: Boolean
+  firstReminderSentAt: Date
+  invoiceSent: Boolean
+  invoiceType: String
+  isCollectionNoticeSent: Boolean
+  isDefaulted: Boolean
+  isNonRentInvoice: Boolean
+  isOverPaid: Boolean
+  isPartiallyBalanced: Boolean
+  isPartiallyCredited: Boolean
+  isPartiallyPaid: Boolean
+  secondReminderSentAt: Date
+  status: String
+  totalDue: Number
+  totalPaid: Number
+  vippsStatus: String
+  lastPaymentDate: Date
+  compelloStatus: String
+}
+
+type InvoiceSummary {
+  _id: String
+  partnerId: String
+  agentId: String
+  branchId: String
+  accountId: String
+  propertyId: String
+  tenantId: String
+  invoiceId: String
+  payoutId: String
+  correctionsIds: [String]
+  expensesIds: [String]
+  feesIds: [String]
+  commissionsIds: [String]
+  invoiceAmount: Number
+  commissionsAmount: Number
+  feesAmount: Number
+  correctionsAmount: Number
+  expensesAmount: Number
+  payoutAmount: Number
+  dueDate: Date
+  invoiceSerialId: Number
+  isPaid: Boolean
+  payoutBalanced: Boolean
+  tenants: [ObjectTenants]
+  createdAt: Date
+  createdBy: String
+}
+
+type QueryInvoiceSummary {
+  data: [InvoiceSummaryQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type InvoiceSummaryInfo {
+  totalRentCorrectionAmount: Number
+  totalCommissionsAmount: Number
+  totalCorrectionsAmount: Number
+  totalFeesAmount: Number
+  totalInvoiceAmount: Number
+  totalPayoutAmount: Number
+  totalPaidAmount: Number
+  totalDueAmount: Number
+  totalLostAmount: Number
+}
+
+enum landlordOrTenantDashboardEnum {
+  landlordDashboard
+  tenantDashboard
+}
+
+input InvoiceSummaryDataType {
+  _id: String
+  accountId: String
+  agentId: String
+  amount: Number
+  branchId: String
+  compelloStatus: [CompelloStatusEnum]
+  contractId: String
+  context: landlordOrTenantDashboardEnum
+  createdDateRange: CommonStartDateAndEndDateInputDataType
+  evictionNoticeSent: Boolean
+  invoiceSerialId: Int
+  invoiceDueDateRange: CommonStartDateAndEndDateInputDataType
+  invoicePeriod: CommonStartDateAndEndDateInputDataType
+  invoiceStatus: [InvoiceStatusEnum]
+  KidNumber: String
+  leaseSerial: Int
+  payoutStatus: [PayoutStatusEnum]
+  propertyId: String
+  requestFrom: RequestFromEnum
+  searchKeyword: String
+  tenantId: String
+  vippsStatus: [VippsStatusEnum]
+}
+
+enum VippsStatusEnum {
+  approved
+  created
+  failed
+  pending
+  sent
+}
+
+extend type Query {
+  invoiceSummaries(
+    queryData: InvoiceSummaryDataType
+    optionData: OptionDataType
+  ): QueryInvoiceSummary @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent", "partner_janitor"])
+  invoiceSummaryInfo(queryData: InvoiceSummaryDataType): InvoiceSummaryInfo
+    @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent", "partner_janitor"])
+}

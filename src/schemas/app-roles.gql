@@ -1,0 +1,137 @@
+type AppRoles {
+  _id: String
+  name: String
+  users: Array
+  type: String
+  partnerId: String
+  createdAt: Date
+  createdBy: String
+}
+
+input AppRolesUpdateType {
+  _id: String
+  partnerId: String
+  updateType: String
+  data: Object
+}
+
+enum AppRoleTypeEnum {
+  allUsers
+  appAdmin
+  managers
+}
+
+input AppRolesQueryDataType {
+  _id: String
+  name: String
+  type: AppRoleTypeEnum
+  partnerId: String
+  email: String
+  defaultSearchText: String
+}
+
+enum PartnerAppRolesStatusEnum {
+  active
+  inactive
+  invited
+}
+
+input PartnerAppRolesQueryDataType {
+  defaultSearchText: String
+  email: String
+  name: String
+  context: String
+  status: [PartnerAppRolesStatusEnum]
+  type: PartnerAppRoleTypeEnum
+}
+
+input AppManagerRoleUpdateType {
+  userId: String
+}
+
+input AddManagerRolePartnerAppType {
+  userIds: [String]
+  type: PartnerAppRoleTypeEnum
+}
+
+input AppManagerRoleRemoveType {
+  userId: String
+}
+
+input PartnerAppRemoveUserType {
+  type: PartnerAppRoleTypeEnum
+  roleUserId: String
+}
+
+enum PartnerAppRoleTypeEnum {
+  partner_accounting
+  partner_admin
+  partner_agent
+  partner_janitor
+}
+
+input updatePartnerUserEmployeeIdType {
+  partnerUserId: String
+  partnerEmployeeId: Int
+}
+
+type AddedUsersInfo {
+  _id: String
+  avatarKey: String
+  email: String
+  name: String
+}
+
+input AddAgentUserRoleType {
+  branchId: String
+  agentIds: [String]
+}
+
+input RemoveAgentUserRoleType {
+  agentId: String
+  branchId: String
+}
+
+type AppRoleQuerySchema {
+  _id: String
+  type: [String]
+  userId: String
+  users: User
+}
+
+type QueryRole {
+  data: [AppRoleQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+extend type Query {
+  appRoles(
+    queryData: AppRolesQueryDataType
+    optionData: OptionDataType
+  ): QueryRole @auth(requires: ["app_admin"])
+  appRolesForPartnerApp(
+    queryData: PartnerAppRolesQueryDataType
+    optionData: OptionDataType
+  ): QueryRole @auth(requires: ["app_manager", "partner_admin"])
+}
+
+extend type Mutation {
+  updateAppRole(inputData: AppRolesUpdateType): AppRoles
+    @auth(requires: ["no_role"])
+  addManager(inputData: AppManagerRoleUpdateType): AppRoles
+    @auth(requires: ["app_admin"])
+  addAgentUserForPartnerApp(inputData: AddAgentUserRoleType): [AddedUsersInfo]
+    @auth(requires: ["app_manager", "partner_admin"])
+  addRoleToUserForPartnerApp(inputData: AddManagerRolePartnerAppType): AppRoles
+    @auth(requires: ["app_manager", "partner_admin"])
+  removeManager(inputData: AppManagerRoleRemoveType): AppRoles
+    @auth(requires: ["app_admin"])
+  removeUserFromRoleForPartnerApp(
+    inputData: PartnerAppRemoveUserType
+  ): AppRoles @auth(requires: ["app_manager", "partner_admin"])
+  updatePartnerUserEmployeeIdForPartnerApp(
+    inputData: updatePartnerUserEmployeeIdType
+  ): User @auth(requires: ["app_manager", "partner_admin"])
+  removeAgentUserFromBranch(inputData: RemoveAgentUserRoleType): Branch
+    @auth(requires: ["app_manager", "partner_admin"])
+}

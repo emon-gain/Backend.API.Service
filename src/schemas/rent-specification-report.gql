@@ -1,0 +1,280 @@
+type AddonForRentSpecificationReport {
+  addonId: String
+  addonName: String
+  addonTotal: Number
+}
+
+type RentSpecificationReport {
+  _id: String
+  partnerId: String
+  accountId: String
+  agentId: String
+  branchId: String
+  propertyId: String
+  contractId: String
+  tenantId: String
+  contractStartDate: Date
+  contractEndDate: Date
+  accountingPeriod: Date
+  transactionPeriod: Date
+  rent: Number
+  rentWithVat: Number
+  estimatedAddonsMeta: [AddonForRentSpecificationReport]
+  totalEstimatedAddons: Number
+  totalMonthly: Number
+  months: Number
+  days: Number
+  estimatedTotalPeriod: Number
+  totalRent: Number
+  totalRentWithVat: Number
+  actualAddonsMeta: [AddonForRentSpecificationReport]
+  totalActualAddons: Number
+  totalFees: Number
+  totalCorrections: Number
+  actualTotalPeriod: Number
+  hasTransactions: Boolean
+}
+
+type RentSpecificationReportForExcel {
+  _id: String
+  createdAt: Date
+  partnerId: String
+  accountId: String
+  agentId: String
+  branchId: String
+  propertyId: String
+  propertyLocation: String
+  propertyApartmentId: String
+  tenantId: String
+  tenantName: String
+  contractStartDate: Date
+  contractEndDate: Date
+  rent: Number
+  rentWithVat: Number
+  estimatedAddonsMeta: [AddonForRentSpecificationReport]
+  totalEstimatedAddons: Number
+  totalMonthly: Number
+  months: Int
+  days: Int
+  estimatedTotalPeriod: Number
+  totalRent: Number
+  totalRentWithVat: Number
+  actualAddonsMeta: [AddonForRentSpecificationReport]
+  totalActualAddons: Number
+  totalFees: Number
+  totalCorrections: Number
+  actualTotalPeriod: Number
+}
+
+type RentSpecificationReportForExcelQueryType {
+  addons: [String]
+  data: [RentSpecificationReportForExcel]
+  total: Int
+}
+
+type EstimatedAddonsMetaType {
+  addonId: String
+  addonName: String
+  addonTotal: Number
+}
+
+type RentSummaryType {
+  estimatedAddonsMeta: [EstimatedAddonsMetaType]
+  rent: Number
+  rentWithVat: Number
+  totalMonthly: Number
+  estimatedTotalPeriod: Number
+  totalRent: Number
+  totalRentWithVat: Number
+  actualAddonsMeta: Number
+  totalActualAddons: Number
+  totalFees: Number
+  totalCorrections: Number
+  actualTotalPeriod: Number
+}
+
+type RentMetaDataType {
+  addons: [String]
+  filteredDocuments: Int
+  totalDocuments: Int
+}
+
+type RentSpecificationReportQuerySchema {
+  _id: String
+  propertyInfo: RSRPropertyType
+  tenantInfo: CommonNameAvatarKeyType
+  contractStartDate: Date
+  contractEndDate: Date
+  rent: Number
+  rentWithVat: Number
+  months: Int
+  days: Int
+  estimatedTotalPeriod: Number
+  totalMonthly: Number
+  totalRent: Number
+  totalRentWithVat: Number
+  totalFees: Number
+  totalCorrections: Number
+  actualTotalPeriod: Number
+  totalEstimatedAddons: Number
+  actualAddonsMeta: [RSRAddonType]
+  estimatedAddonsMeta: [RSRAddonType]
+  totalActualAddons: Number
+}
+
+type RentSpecificationReportSummarySchema {
+  actualAddonsMeta: [RSRAddonType]
+  actualTotalPeriod: Number
+  estimatedAddonsMeta: [RSRAddonType]
+  estimatedTotalPeriod: Number
+  rent: Number
+  rentWithVat: Number
+  totalActualAddons: Number
+  totalCorrections: Number
+  totalEstimatedAddons: Number
+  totalFees: Number
+  totalMonthly: Number
+  totalRent: Number
+  totalRentWithVat: Number
+}
+
+type RentSummaryMetaDataType {
+  addons: [String]
+}
+
+type QueryRentSpecificationReportSummary {
+  data: RentSpecificationReportSummarySchema
+  metaData: RentSummaryMetaDataType
+}
+
+type RSRAddonType {
+  addonId: String
+  addonName: String
+  addonTotal: Number
+}
+
+type RSRPropertyType {
+  _id: String
+  imageUrl: String
+  location: ListingLocationObj
+  serial: Int
+  propertyTypeId: String
+  listingTypeId: String
+  floor: String
+  apartmentId: String
+  placeId: String
+}
+
+type RentSpecificationReportType {
+  data: [RentSpecificationReportQuerySchema]
+  metaData: RentMetaDataType
+}
+
+input RentSpecificationReportQueryType {
+  accountId: String
+  accountingPeriod: DateRangeType
+  agentId: String
+  branchId: String
+  contractId: String
+  propertyId: String
+  sort: Object
+  tenantId: String
+  transactionPeriod: DateRangeType
+  type: RentSpecificationReportTypeEnum
+}
+
+enum RentSpecificationReportTypeEnum {
+  both
+  budgeting
+  transaction
+}
+
+type ContractDataForRentSpecificationReport {
+  contractId: String
+  contractStartDate: Date
+  contractInvoicedAsOn: Date
+  partnerId: String
+  partnerTimeZone: String
+}
+
+input ContractsQueryDataTypeForRSR {
+  isForReset: Boolean
+  partnerId: String
+}
+
+input RentSpecificationReportForExcelQueryDataType {
+  queueId: String
+}
+
+input RentSpecificationReportAddType {
+  accountingStartDate: Date
+  accountingEndDate: Date
+  contractId: String
+  partnerId: String
+}
+
+type ResetRentSpecificationSchemaType {
+  message: String
+}
+
+extend type Query {
+  getRentSpecificationReport(
+    queryData: RentSpecificationReportQueryType
+    optionData: OptionDataType
+  ): RentSpecificationReportType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+  getRentSpecificationReportsForExcel(
+    queryData: RentSpecificationReportForExcelQueryDataType
+    optionData: OptionDataType
+  ): RentSpecificationReportForExcelQueryType
+    @auth(requires: ["lambda_manager"])
+  getContractDataForRentSpecificationReports(
+    queryData: ContractsQueryDataTypeForRSR
+    optionData: OptionDataType
+  ): [ContractDataForRentSpecificationReport]
+    @auth(requires: ["lambda_manager"])
+  getRentSpecificationReportSummary(
+    queryData: RentSpecificationReportQueryType
+  ): QueryRentSpecificationReportSummary
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+}
+
+extend type Mutation {
+  addRentSpecificationReports(
+    inputData: RentSpecificationReportAddType
+  ): [RentSpecificationReport] @auth(requires: ["lambda_manager"])
+  resetRentSpecificationReports: ResetRentSpecificationSchemaType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+  downloadRentSpecificationReports(
+    inputData: RentSpecificationReportQueryType
+  ): CommonDownloadReturnType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+}

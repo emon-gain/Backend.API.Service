@@ -1,0 +1,932 @@
+input PropertyAddInput {
+  accountId: String
+  agentId: String
+  apartmentId: String
+  bnr: String
+  branchId: String
+  depositAmount: Number
+  floor: String
+  gnr: String
+  groupId: String
+  listingTypeId: String
+  location: ListingLocationInput
+  monthlyRentAmount: Number
+  noOfBedrooms: Int
+  placeSize: Int
+  propertyTypeId: String
+  snr: String
+}
+
+input PropertyUpdateInput {
+  apartmentId: String
+  bnr: String
+  depositAmount: Number
+  floor: String
+  gnr: String
+  groupId: String
+  listingTypeId: String
+  location: ListingLocationInput
+  monthlyRentAmount: Number
+  noOfBedrooms: Int
+  placeSize: Int
+  propertyId: String
+  propertyTypeId: String
+  serial: Int
+  snr: String
+}
+
+enum PropertyStatusEnum {
+  active
+  archived
+  maintenance
+}
+
+enum LeaseESignStatusEnum {
+  leaseSentToTenant
+  leaseSignedByTenant
+  leaseSentToLandlord
+  leaseSignedByLandlord
+}
+
+enum AssignmentESignStatusEnum {
+  assignmentSentToAgent
+  assignmentSignedByAgent
+  assignmentSentToLandlord
+  assignmentSignedByLandlord
+}
+
+enum depositAccountStatusEnum {
+  waitingForCreation
+  sentToBank
+  waitingForPayment
+  paid
+  overPaid
+  partiallyPaid
+  noDeposit
+}
+
+enum RequestFromEnumForB2C  {
+  account
+  property
+  tenant
+  b2c
+}
+
+input PropertyQueryInput {
+  createdAtDateRange: CommonStartDateAndEndDateInputDataType
+  noOfBedrooms: [Number]
+  leaseStartDateRange: CommonStartDateAndEndDateInputDataType
+  leaseEndDateRange: CommonStartDateAndEndDateInputDataType
+  branchId: String
+  agentId: String
+  accountId: String
+  tenantId: String
+  propertyId: String
+  leaseESignStatus: [LeaseESignStatusEnum]
+  assignmentESignStatus: [AssignmentESignStatusEnum]
+
+  #new
+  availabilityDateRange: CommonStartDateAndEndDateInputDataType
+  hasCpiEnabled: YesNoAllEnum
+  depositAmount: CommonMinMaxInputDataType
+  depositAccountStatus: [depositAccountStatusEnum]
+  hasActiveLease: Boolean
+  hasActiveInProgressLease: YesNoAllEnum
+  hasActiveUpcomingLease: YesNoAllEnum
+  hasAssignment: YesNoAllEnum
+  hasInProgressLease: Boolean
+  hasListed: YesNoAllEnum
+  hasProspects: YesNoAllEnum
+  hasTerminatedContract: YesNoAllEnum
+  hasUpcomingLease: Boolean
+  listingTypeIds: [String]
+  placeSize: CommonMinMaxInputDataType
+  propertyStatus: [PropertyStatusEnum]
+  rentAmount: CommonMinMaxInputDataType
+  searchKeyword: String
+  hasIssues: YesNoAllEnum
+  responsibleForFixing: [ResponsibleForFixingEnum]
+  requestFrom: RequestFromEnumForB2C
+  tenantDetailsView: Boolean
+  #  For top bar
+  serial: Int
+  name: String
+  apartmentId: String
+  # For download property
+  sort: Object
+  # For send sms from property
+  sendTo: String
+  protocolType: [ProtocolTypeEnum]
+  hasProtocol: YesNoAllEnum
+  movingInStatus: [MovingInStatusEnum]
+  movingOutStatus: [MovingOutStatusEnum]
+}
+
+enum MovingInStatusEnum {
+  movingInSentToAgent
+  movingInSentToTenant
+  movingInSignedByAgent
+  movingInSignedByTenant
+}
+
+enum MovingOutStatusEnum {
+  movingOutSentToAgent
+  movingOutSentToTenant
+  movingOutSignedByAgent
+  movingOutSignedByTenant
+}
+
+enum ProtocolTypeEnum {
+  movingIn
+  movingOut
+}
+
+enum ResponsibleForFixingEnum {
+  tenant
+  landlord
+}
+
+enum ShareAtFinnTypeEnum {
+  firstAd
+  republish
+  update
+}
+
+enum RemoveFromFinnEnumType {
+  firstAd
+  republish
+  update
+  archive
+}
+
+input PropertyShareAtFinnInput {
+  partnerId: String
+  propertyId: String
+  shareWithWarning: Boolean
+  type: ShareAtFinnTypeEnum
+}
+
+type PropertyShareAtFinnMissingData {
+  type: ShareAtFinnTypeEnum
+  availabilityEndDate: Boolean
+  moreThan50Images: Boolean
+  noOfBedrooms: Boolean
+}
+
+type NewFinObjData {
+  adSendTime: Date
+  adURL: String
+  disableFromFinn: Boolean
+  isArchiving: Boolean
+  isRePublishing: Boolean
+  isShareAtFinn: Boolean
+  finnShareAt: Date
+  finnErrorRequest: String
+  finnArchivedAt: Date
+  messages: ListingFinnMessageObj
+  statisticsURL: String
+}
+
+type PropertyShareAtFinnType {
+  _id: String
+  partnerId: String
+  finn: NewFinObjData
+  missingData: PropertyShareAtFinnMissingData
+}
+
+type PropertyTenantDataType {
+  _id: String
+  avatarKey: String
+  name: String
+}
+
+type PropertyQuerySchema {
+  _id: String
+  accountInfo: CommonNameAvatarKeyType
+  agentInfo: CommonNameAvatarKeyType
+  apartmentId: String
+  availabilityEndDate: Date
+  availabilityStartDate: Date
+  branchInfo: CommonNameType
+  createdAt: Date
+  depositAmount: Number
+  floor: String
+  hasActiveLease: Boolean
+  hasAssignment: Boolean
+  hasInProgressLease: Boolean
+  hasUpcomingLease: Boolean
+  imageUrl: String
+  isSoonEnding: Boolean
+  isTerminated: Boolean
+  listed: Boolean
+  listingTypeId: String
+  location: ListingLocationObj
+  minimumStay: Int
+  monthlyRentAmount: Number
+  noOfAvailableBedrooms: Int
+  noOfBedrooms: Int
+  placeSize: Int
+  propertyStatus: String
+  propertyTypeId: String
+  serial: Int
+  tenantInfo: PropertyTenantDataType
+  tenantStatus: String
+  totalDue: Number
+  totalOverDue: Number
+}
+
+type QueryProperty {
+  data: [PropertyQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type PropertyExcelCreatorQuery {
+  location: String
+  type: String
+  floor: String
+  apartmentId: String
+  tenantId: Int
+  tenant: String
+  id: Int
+  propertyStatus: String
+  listing: String
+  minimumStay: Number
+  placeSize: Number
+  bedrooms: Int
+  monthlyRentAmount: Number
+  depositAmount: Number
+  accountName: String
+  branchName: String
+  agentName: String
+  totalOverDue: Number
+  rentAddons: String
+  isVatEnable: String
+  contractLastCpiDate: Date
+  contractNextCpiDate: Date
+  availabilityStartDate: Date
+  availabilityEndDate: Date
+}
+
+type QueryPropertyExcelCreator {
+  data: [PropertyExcelCreatorQuery]
+  total: Number
+}
+
+input PropertyExcelCreatorQueryDataType {
+  queueId: String
+}
+
+type PropertyLocationType {
+  name: String
+  city: String
+  country: String
+  streetNumber: String
+  postalCode: String
+}
+
+type ContactPersonType {
+  avatarKey: String
+  city: String
+  country: String
+  email: String
+  hometown: String
+  name: String
+  norwegianNationalIdentification: String
+  phoneNumber: String
+  zipCode: String
+}
+
+type PropertyAccountInfoType {
+  _id: String
+  address: String
+  avatarKey: String
+  city: String
+  contactPerson: ContactPersonType
+  country: String
+  invoiceAccountNumber: String
+  name: String
+  type: String
+  zipCode: String
+}
+
+type BranchInfoType {
+  _id: String
+  name: String
+}
+
+type JanitorInfoType {
+  _id: String
+  avatarKey: String
+  name: String
+}
+
+type OwnerInfoType {
+  _id: String
+  avatarKey: String
+  name: String
+}
+
+type SummaryTypeForPropertyDetails {
+  assignmentTotal: Number
+  leaseTotal: Number
+  taskDue: Number
+  totalDue: Number
+}
+
+type PropertyDetailsFinnType {
+  isPublishing: Boolean
+  isRePublishing: Boolean
+  isArchiving: Boolean
+  requestedAt: Date
+  statisticsURL: String
+  finnShareAt: Date
+  finnErrorRequest: String
+  disableFromFinn: Boolean
+  isShareAtFinn: Boolean
+  finnArchivedAt: Date
+}
+
+type PropertyDetailsType {
+  _id: String
+  aboutText: String
+  accountInfo: PropertyAccountInfoType
+  activeLeaseInfo: ActiveLeaseInfo
+  apartmentId: String
+  bnr: String
+  branchInfo: BranchInfoType
+  depositAmount: Number
+  finn: PropertyDetailsFinnType
+  floor: String
+  gnr: String
+  groupId: String
+  hasActiveLease: Boolean
+  hasAssignment: Boolean
+  hasInProgressLease: Boolean
+  hasProspects: Boolean
+  hasUpcomingLease: Boolean
+  imageUrl: String
+  isSoonEnding: Boolean
+  isTerminated: Boolean
+  janitorInfo: JanitorInfoType
+  listed: Boolean
+  listedAt: Date
+  listingTypeId: String
+  location: PropertyLocationType
+  monthlyRentAmount: Number
+  noOfBedrooms: Number
+  ownerInfo: OwnerInfoType
+  placeSize: Number
+  propertyStatus: String
+  propertyTypeId: String
+  serial: Number
+  snr: String
+  summary: SummaryTypeForPropertyDetails
+  upcomingLeaseInfo: UpcomingLeaseInfo
+}
+
+type ActiveLeaseInfo {
+  _id: String
+  leaseSerial: String
+}
+
+type UpcomingLeaseInfo {
+  _id: String
+  contractStartDate: Date
+  depositType: String
+  hasRentalContract: Boolean
+  invoiceAccountNumber: String
+  minimumStay: Int
+  representativeInfo: CommonNameAvatarKeyType
+}
+
+input PropertyRemoveFromFinnInput {
+  propertyId: String
+  type: RemoveFromFinnEnumType
+}
+
+type PropertyRemoveFromFinnType {
+  success: Boolean
+}
+
+input CancelListingFinnInput {
+  propertyId: String
+}
+
+type CancelListingFinnType {
+  success: Boolean
+}
+
+input PropertyDetailsQueryInput {
+  propertyId: String
+}
+
+type MeterReadingType {
+  measureOfMeter: Number
+  numberOfMeter: String
+}
+
+type KeysType {
+  kindOfKey: String
+  numberOfKey: Number
+}
+
+type inventoryType {
+  name: String
+  quantity: Number
+  status: String
+}
+
+type roomUtilityType {
+  _id: String
+  name: String
+  numberOfIssues: Int
+}
+
+type QueryPropertyUtility {
+  meterReadings: [MeterReadingType]
+  keys: [KeysType]
+  inventories: [inventoryType]
+  rooms: [roomUtilityType]
+}
+
+input PropertyUtilityQueryData {
+  propertyId: String
+}
+
+type LocationForIssues {
+  city: String
+  country: String
+  name: String
+  postalCode: String
+  streetNumber: String
+}
+
+type IssueTaskType {
+  _id: String
+  title: String
+}
+
+type ItemsType {
+  description: String
+  id: String
+  responsibleForFixing: String
+  status: String
+  taskInfo: IssueTaskType
+  title: String
+}
+
+type RoomIssueType {
+  _id: String
+  createdAt: Date
+  items: [ItemsType]
+  name: String
+}
+
+type IssuesTaskInfoType {
+  _id: String
+  title: String
+}
+
+type IssuesTaskInfo {
+  _id: String
+  title: String
+}
+
+type IssuesInventoryItemType {
+  id: String
+  description: String
+  name: String
+  quantity: Int
+  status: String
+  taskInfo: [IssuesTaskInfo]
+}
+
+type QueryPropertyIssueType {
+  _id: String
+  apartmentId: String
+  createdAt: Date
+  floor: String
+  hasActiveLease: Boolean
+  hasUpcomingLease: Boolean
+  hasInProgressLease: Boolean
+  imageUrl: String
+  isSoonEnding: Boolean
+  isTerminated: Boolean
+  location: LocationForIssues
+  listed: Boolean
+  listingTypeId: String
+  partnerId: String
+  propertyTypeId: String
+  propertyStatus: String
+  propertyRoomIssues: [RoomIssueType]
+  propertyItemIssues: [IssuesInventoryItemType]
+  serial: Int
+  totalIssues: Int
+}
+
+type QueryPropertyIssues {
+  data: [QueryPropertyIssueType]
+  metaData: MetaDataQuerySchema
+}
+
+type OccupiedPropertyInfoType {
+  havingNewLease: Number
+  totalOccupied: Number
+  withoutNewLease: Number
+}
+
+type VacantPropertyInfoType {
+  alreadyListed: Number
+  totalVacant: Number
+  withoutListing: Number
+}
+
+type QueryPropertyInfoForPartnerDashboard {
+  janitorTotalProperty: Number
+  occupiedProperty: OccupiedPropertyInfoType
+  totalIssues: Number
+  totalMaintenance: Number
+  totalProperty: Number
+  totalPropertyHavingIssue: Number
+  totalRentCoveragePercentage: Number
+  totalUpcoming: Number
+  vacantProperty: VacantPropertyInfoType
+}
+
+enum PropertyIssuesEnum {
+  archived
+  in_progress
+  maintenance
+  occupied
+  up_coming
+  vacant
+}
+
+enum ResponsibleForFixingIssuesEnum {
+  agent
+  landlord
+  noActionRequired
+  tenant
+}
+
+input PropertyIssuesQueryData {
+  accountId: String
+  agentId: String
+  branchId: String
+  createdAt: CommonStartDateAndEndDateInputDataType
+  janitorId: String
+  propertyId: String
+  responsibleFor: [ResponsibleForFixingIssuesEnum]
+  status: [PropertyIssuesEnum]
+  searchKeyword: String
+  tenantId: String
+}
+
+type UpdatePropertyType {
+  _id: String
+  apartmentId: String
+  bnr: String
+  depositAmount: Number
+  floor: String
+  gnr: String
+  groupId: String
+  listingTypeId: String
+  location: ListingLocationObj
+  monthlyRentAmount: Number
+  noOfAvailableBedrooms: Int
+  noOfBedrooms: Int
+  placeSize: Int
+  propertyTypeId: String
+  serial: Int
+  snr: String
+}
+
+input UpdatePropertyStatusInputType {
+  propertyId: String
+  propertyStatus: PropertyStatusEnum
+}
+
+type UpdatePropertyStatusType {
+  _id: String
+  listed: Boolean
+  propertyStatus: String
+}
+
+input UpdatePropertyOwnerInputType {
+  agentId: String
+  alsoUpdateContract: Boolean
+  branchId: String
+  propertyId: String
+}
+
+type UpdatePropertyOwnerType {
+  _id: String
+  agentInfo: CommonNameAvatarKeyType
+  branchInfo: CommonNameType
+}
+
+input UpdatePropertyAboutInputType {
+  aboutText: String
+  propertyId: String
+}
+
+type UpdatePropertyAboutType {
+  _id: String
+  aboutText: String
+}
+
+input JanitorDropdownQueryData {
+  searchString: String
+}
+
+type QueryJanitorDropdown {
+  data: [UsersDropDownSchema]
+  metaData: MetaDataQuerySchema
+}
+
+input UpdatePropertyJanitorInputType {
+  janitorId: String
+  propertyId: String
+}
+
+type PropertyJanitorInfoType {
+  _id: String
+  avatarKey: String
+  name: String
+}
+
+input RentRollReportInputType {
+  accountId: String
+  agentId: String
+  branchId: String
+  createdAtDateRange: CommonStartDateAndEndDateInputDataType
+  groupId: String
+  hasCpiEnabled: YesNoAllEnum
+  leaseEndDateRange: CommonStartDateAndEndDateInputDataType
+  leaseStartDateRange: CommonStartDateAndEndDateInputDataType
+  noOfBedrooms: [Int]
+  partnerId: String
+  placeSize: CommonMinMaxInputDataType
+  rentAmount: CommonMinMaxInputDataType
+  tenantId: String
+  userLanguage: String
+}
+
+input DownloadRentRollReportInputType {
+  accountId: String
+  agentId: String
+  branchId: String
+  createdAtDateRange: CommonStartDateAndEndDateInputDataType
+  groupId: String
+  hasCpiEnabled: YesNoAllEnum
+  leaseEndDateRange: CommonStartDateAndEndDateInputDataType
+  leaseStartDateRange: CommonStartDateAndEndDateInputDataType
+  noOfBedrooms: [Int]
+  partnerId: String
+  placeSize: CommonMinMaxInputDataType
+  rentAmount: CommonMinMaxInputDataType
+  sort: Object
+  tenantId: String
+}
+
+type RentRollCoTenantType {
+  _id: String
+  email: String
+  name: String
+  tlf: String
+}
+
+type RentRollReportForExcelManagerType {
+  _id: String
+  accountName: String
+  addons: String
+  agentName: String
+  apartmentId: String
+  areaGroup: String
+  areaName: String
+  areaType: String
+  branchName: String
+  contractExclusiveArea: Int
+  contractInclusiveArea: Int
+  contractType: String
+  coTenantsInfo: [RentRollCoTenantType]
+  cpiToDate: String
+  depositAmount: Number
+  endDate: String
+  floor: String
+  groupId: String
+  nextCpiDate: String
+  noOfAvailableBedrooms: Int
+  noticePeriod: Int
+  percentOfRegulation: String
+  propertyName: String
+  regulationType: String
+  startDate: String
+  tenantEmail: String
+  tenantName: String
+  tenantTLF: String
+  waultYears: Number
+  yearlyRent: Number
+  yearlyRentPerSqm: Number
+}
+
+type QueryRentRollReportForExcelManager {
+  data: [RentRollReportForExcelManagerType]
+}
+
+input PropertyIssuesQueryType {
+  propertyId: String
+  issues: Boolean
+}
+
+type QueryPropertyIssuesForPartnerPublic {
+  inventory: InventoryItemsType
+  rooms: [RoomItemsType]
+}
+
+input PropertyIssueItemQueryType {
+  propertyId: String
+}
+
+type IssueItemDataType {
+  _id: String
+  description: String
+  dueDate: Date
+  issueType: String
+  itemId: String
+  name: String
+  propertyId: String
+  propertyItemId: String
+  quantity: Int
+  responsibleForFixing: String
+  roomId: String
+  roomItemName: String
+  status: String
+  taskId: String
+  title: String
+  type: String
+}
+
+type QueryPropertyIssueItemsForPartnerPublic {
+  data: [IssueItemDataType]
+}
+
+extend type Query {
+  properties(
+    queryData: PropertyQueryInput
+    """
+    Sort will be using [ location.name, placeSize, createdAt]
+    """
+    optionData: OptionDataType
+  ): QueryProperty
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+        "partner_accounting"
+        "partner_landlord"
+      ]
+    )
+  propertyDetails(queryData: PropertyDetailsQueryInput): PropertyDetailsType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  getPropertyForExcelCreator(
+    queryData: PropertyExcelCreatorQueryDataType
+    optionData: OptionDataType
+  ): QueryPropertyExcelCreator @auth(requires: ["lambda_manager"])
+  getPropertyUtilities(
+    queryData: PropertyUtilityQueryData
+  ): QueryPropertyUtility
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  getPropertyInfoForPartnerAdminDashboard(
+    queryData: PartnerDashboardFilterQueryDataType
+  ): QueryPropertyInfoForPartnerDashboard
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  getPropertyIssues(
+    queryData: PropertyIssuesQueryData
+    optionData: OptionDataType
+  ): QueryPropertyIssues
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  janitorDropdown(
+    queryData: JanitorDropdownQueryData
+    optionData: OptionDataType
+  ): QueryJanitorDropdown
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  getRentRollReportForExcelManager(
+    queryData: RentRollReportInputType
+    optionData: OptionDataType
+  ): QueryRentRollReportForExcelManager @auth(requires: ["lambda_manager"])
+  getAllIssuesForPartnerPublicSite(
+    queryData: PropertyIssuesQueryType
+  ): QueryPropertyIssuesForPartnerPublic
+    @auth(requires: ["app_manager", "partner_landlord", "partner_tenant"])
+  getPropertyIssuesForPartnerPublic(
+    queryData: PropertyIssueItemQueryType
+    optionData: OptionDataType
+  ): QueryPropertyIssueItemsForPartnerPublic
+    @auth(requires: ["partner_landlord", "partner_tenant"])
+}
+
+extend type Mutation {
+  addProperty(inputData: PropertyAddInput): PropertyQuerySchema
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent", "partner_landlord"])
+  updateProperty(inputData: PropertyUpdateInput): UpdatePropertyType
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent", "partner_landlord"])
+  removeFromFinn(
+    inputData: PropertyRemoveFromFinnInput
+  ): PropertyRemoveFromFinnType
+    @auth(
+      requires: ["app_admin", "app_manager", "partner_admin", "partner_agent"]
+    )
+  cancelListingFinn(inputData: CancelListingFinnInput): CancelListingFinnType
+    @auth(
+      requires: ["app_admin", "app_manager", "partner_admin", "partner_agent"]
+    )
+  shareAtFinn(inputData: PropertyShareAtFinnInput): PropertyShareAtFinnType
+    @auth(
+      requires: ["app_admin", "app_manager", "partner_admin", "partner_agent"]
+    )
+  updatePropertyStatus(
+    inputData: UpdatePropertyStatusInputType
+  ): UpdatePropertyStatusType
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent", "partner_landlord"])
+  updatePropertyOwner(
+    inputData: UpdatePropertyOwnerInputType
+  ): UpdatePropertyOwnerType @auth(requires: ["app_manager", "partner_admin"])
+  updatePropertyAbout(
+    inputData: UpdatePropertyAboutInputType
+  ): UpdatePropertyAboutType
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  downloadProperty(inputData: PropertyQueryInput): CommonDownloadReturnType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  updatePropertyJanitor(
+    inputData: UpdatePropertyJanitorInputType
+  ): PropertyJanitorInfoType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  downloadRentRollReport(inputData: DownloadRentRollReportInputType): CommonDownloadReturnType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+}

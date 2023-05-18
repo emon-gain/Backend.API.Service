@@ -16,6 +16,7 @@ var _cors = _interopRequireDefault(require("cors"));
 var _bodyParser = require("body-parser");
 var _directives = require("./utils/directives");
 var _mock = require("@graphql-tools/mock");
+var _fs = _interopRequireDefault(require("fs"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const {
   authDirectiveTransformer
@@ -42,8 +43,11 @@ const server = new _server.ApolloServer({
       }) => {
         // Rollback transaction on errors
         if (errors) {
-          console.log('Error');
+          console.log('Error', errors);
+          // console.log(contextValue.session.transaction.state);
+          console.log('After error happened before abort', contextValue.session.transaction.state);
           await contextValue.session.abortTransaction();
+          console.log('After error happened after abort', contextValue.session.transaction.state);
           await contextValue.session.endSession();
         }
       },
@@ -52,10 +56,12 @@ const server = new _server.ApolloServer({
         request
       }) => {
         // Commit transaction on successful response
-        // console.log();
+        //   await fs.writeFileSync('test.json', JSON.stringify(response.body))
+        console.log(response.body.singleResult.data);
         if (!response.body.singleResult.errors) {
+          console.log('After response happened before commit', contextValue.session.transaction.state);
           await contextValue.session.commitTransaction();
-          // console.log(contextValue.session.transaction.state);
+          console.log('After response happened after commit', contextValue.session.transaction.state);
           await contextValue.session.endSession();
         }
       }
@@ -74,9 +80,14 @@ const server = new _server.ApolloServer({
       const session = await _mongoose.default.startSession();
       // console.log(session.transaction.state);
       session.startTransaction();
+      const user = (0, _directives.getUserFromJWT)(req.headers.authorization);
+      req.session = session;
+      req.user = user;
+      // console.log(req.headers.authorization)
       return {
-        authToken: req.headers.authtoken,
-        session
+        authToken: req.headers.authorization,
+        session,
+        req
       };
     }
   }));

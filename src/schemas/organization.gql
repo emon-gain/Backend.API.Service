@@ -1,0 +1,10 @@
+type Organization {
+  _id: String
+  partnerId: String
+  accountId: String
+  name: String
+  orgId: String
+  image: String
+  createdAt: Date
+  createdBy: String
+}

@@ -1,0 +1,2405 @@
+type contractForInvoiceError {
+  _id: String
+  partnerId: String
+  propertyId: String
+  today: Date
+  endDate: Date
+  daysDiff: Int
+  contractId: String
+  invoiceLen: Int
+  invoiceFrequency: Int
+  months: [String]
+  invoice: [Invoice]
+  partnerSettings: PartnerSetting
+  rentalMeta: CommonContractObject
+}
+
+type Contract {
+  _id: String
+  partnerId: String
+  branchId: String
+  agentId: String
+  accountId: String
+  propertyId: String
+  status: String
+  hasBrokeringContract: Boolean
+  brokeringCommissionType: String
+  brokeringCommissionAmount: Number
+  hasRentalManagementContract: Boolean
+  rentalManagementCommissionType: String
+  rentalManagementCommissionAmount: Number
+  hasRentalContract: Boolean
+  rentalCommission: Number
+  files: [ObjectFiles]
+  dueCommission: ObjectDueCommission
+  brokeringMeta: CommonContractObject
+  rentalManagementMeta: CommonContractObject
+  rentalMeta: CommonContractObject
+  listingInfo: ObjectListingInfo
+  noOfPayoutMonth: Number
+  payoutTo: String
+  addons: [ObjectAddons]
+  assignmentSerial: Number
+  leaseSerial: Number
+  isDefaulted: Boolean
+  cancelledBy: String
+  cancelledAt: Date
+  payoutMonthMeta: [ObjectPayoutMonthMeta]
+  rentalMetaHistory: [CommonContractObject]
+  monthlyPayoutDate: Number
+  internalAssignmentId: String
+  assignmentFrom: Date
+  assignmentTo: Date
+  representativeId: String
+  signDate: Date
+  terminatedByUserId: String
+  enabledEsigning: Boolean
+  assignmentContractPdfGenerated: Boolean
+  leaseContractPdfGenerated: Boolean
+  idfyAssignmentDocId: String
+  idfyLeaseDocId: String
+  invalidTenantsOrBusinessLandlord: [InvalidTenantsOrBusinessLandlord]
+  landlordAssignmentSigningStatus: ObjectLandlordAssignmentSigningStatus
+  agentAssignmentSigningStatus: ObjetAgentAssignmentSigningStatus
+  assignmentSigningMeta: ObjectLeaseSigningMeta
+  draftAssignmentDoc: Boolean
+  draftLeaseDoc: Boolean
+  holdPayout: Boolean
+  finalSettlementStatus: String
+  assignmentSignatureMechanism: String
+  isEsignReminderSentToLandlordForAssint: Boolean
+  statementMeta: [ObjectStatementMeta]
+  templateId: String
+  isFinalSettlementDone: Boolean
+  hasAssignmentSignerXmlFileInS3: Boolean
+  assignmentSignerXmlFileInS3At: Date
+  hasAssignmentPadesFile: Boolean
+  assignmentPadesFileCreatedAt: Date
+  idfyErrorsForAssingment: [Object]
+  isSendAssignmentPdf: Boolean
+  assignmentPdfGenerated: Boolean
+  evictionCases: [ObjectEvictionCases]
+  history: [ObjectHistory]
+  createdAt: Date
+  createdBy: String
+}
+
+extend type Contract {
+  partner: Partner
+  partnerSettings: PartnerSetting
+  File: File
+  userLang: String
+  cpiDataSet: Object
+  msg: String
+}
+
+type ContractQuerySchema {
+  _id: String
+  partnerId: String
+  partner: Partner
+  branchId: String
+  branch: Branch
+  agentId: String
+  agent: User
+  accountId: String
+  account: Account
+  propertyId: String
+  property: Listing
+  status: String
+  hasBrokeringContract: Boolean
+  brokeringCommissionType: String
+  brokeringCommissionAmount: Number
+  hasRentalManagementContract: Boolean
+  rentalManagementCommissionType: String
+  rentalManagementCommissionAmount: Number
+  hasRentalContract: Boolean
+  rentalCommission: Number
+  files: [ObjectFiles]
+  dueCommission: ObjectDueCommission
+  brokeringMeta: CommonContractObject
+  rentalManagementMeta: CommonContractObject
+  tenant: Tenant
+  rentalMeta: CommonContractObject
+  listingInfo: ObjectListingInfo
+  noOfPayoutMonth: Number
+  payoutTo: String
+  addons: [ObjectAddons]
+  assignmentSerial: Number
+  leaseSerial: Number
+  isDefaulted: Boolean
+  cancelledBy: String
+  cancelledAt: Date
+  payoutMonthMeta: [ObjectPayoutMonthMeta]
+  rentalMetaHistory: [CommonContractObject]
+  monthlyPayoutDate: Number
+  internalAssignmentId: String
+  assignmentFrom: Date
+  assignmentTo: Date
+  representativeId: String
+  signDate: Date
+  terminatedByUserId: String
+  enabledEsigning: Boolean
+  assignmentContractPdfGenerated: Boolean
+  leaseContractPdfGenerated: Boolean
+  idfyAssignmentDocId: String
+  idfyLeaseDocId: String
+  landlordAssignmentSigningStatus: ObjectLandlordAssignmentSigningStatus
+  agentAssignmentSigningStatus: ObjetAgentAssignmentSigningStatus
+  assignmentSigningMeta: ObjectLeaseSigningMeta
+  draftAssignmentDoc: Boolean
+  draftLeaseDoc: Boolean
+  holdPayout: Boolean
+  finalSettlementStatus: String
+  assignmentSignatureMechanism: String
+  isEsignReminderSentToLandlordForAssint: Boolean
+  statementMeta: [ObjectStatementMeta]
+  templateId: String
+  isFinalSettlementDone: Boolean
+  hasAssignmentSignerXmlFileInS3: Boolean
+  assignmentSignerXmlFileInS3At: Date
+  hasAssignmentPadesFile: Boolean
+  assignmentPadesFileCreatedAt: Date
+  idfyErrorsForAssingment: [Object]
+  isSendAssignmentPdf: Boolean
+  assignmentPdfGenerated: Boolean
+  evictionCases: [ObjectEvictionCases]
+  history: [ObjectHistory]
+  createdAt: Date
+  createdBy: String
+}
+
+type CommonContractObject {
+  status: String
+  createdAt: Date
+  createdBy: String
+  tenantId: String
+  tenant: Tenant
+  contractStartDate: Date
+  contractEndDate: Date
+  minimumStay: Number
+  monthlyRentAmount: Number
+  depositAmount: Number
+  firstInvoiceDueDate: Date
+  dueDate: Number
+  movingInDate: Date
+  isMovedIn: Boolean
+  fileIds: [String]
+  noticePeriod: Number
+  noticeInEffect: String
+  terminateReasons: String
+  terminateComments: String
+  invoiceAccountNumber: String
+  cancelled: String
+  cancelledBy: String
+  cancelledAt: Date
+  addons: [ObjectAddons]
+  leaseSerial: Number
+  invoiceStartFrom: Date
+  invoicedAsOn: Date
+  creditWholeInvoice: Boolean
+  signedAt: Date
+  cpiEnabled: Boolean
+  lastCpiDate: Date
+  nextCpiDate: Date
+  terminatedBy: String
+  enabledNotification: Boolean
+  enabledJointlyLiable: Boolean
+  disableCompello: Boolean
+  disableVipps: Boolean
+  soonTerminatedNoticeSendDate: Date
+  naturalTerminatedNoticeSendDate: Date
+  lastCPINotificationSentOn: Date
+  futureRentAmount: Number
+  cpiNotificationSentHistory: [Date]
+  invoiceCalculation: String
+  internalLeaseId: String
+  tenants: [ObjectTenants]
+  isVatEnable: Boolean
+  estimatedPayouts: ObjectEstimatedPayouts
+  cpiFromMonth: Date
+  cpiInMonth: Date
+  leaseSigningComplete: Boolean
+  landlordLeaseSigningStatus: ObjectLandlordLeaseSigningStatus
+  tenantLeaseSigningStatus: [ObjectTenantLeaseSigningStatus]
+  enabledLeaseEsigning: Boolean
+  leaseSigningMeta: ObjectLeaseSigningMeta
+  leaseSignatureMechanism: String
+  isEsignReminderSentToLandlordForLease: Boolean
+  isEsignReminderSentToTenantForLease: Boolean
+  enabledAnnualStatement: Boolean
+  templateId: String
+  hasLeaseSignerXmlFileInS3: Boolean
+  leaseSignerXmlInS3At: Date
+  leasePdfGenerated: Boolean
+  hasLeasePadesFile: Boolean
+  leasePadesFileCreatedAt: Date
+  idfyErrorsForLease: [Object]
+  isSendEsignNotify: Boolean
+  enabledDepositAccount: Boolean
+  hasSignersAttachmentPadesFile: Boolean
+  enabledJointDepositAccount: Boolean
+  depositAccountError: [Object]
+  depositType: String
+  depositInsuranceId: String
+  leaseWelcomeEmailSentAt: Date
+  leaseWelcomeEmailSentInProgress: Boolean
+}
+
+type ObjetAgentAssignmentSigningStatus {
+  idfySignerId: String
+  agentId: String
+  internalUrl: String
+  signingUrl: String
+  signed: Boolean
+  signedAt: Date
+}
+
+type ObjectAddons {
+  isRecurring: Boolean
+  hasCommission: Boolean
+  type: String
+  addonId: String
+  tax: Number
+  taxPercentage: Number
+  price: Number
+  total: Number
+  productServiceId: String
+}
+
+type ObjectDueCommission {
+  dueBrokeringCommission: Number
+  dueRentalManagementCommission: Number
+}
+
+type ObjectEstimatedPayouts {
+  firstMonth: Number
+  secondMonth: Number
+  thirdMonth: Number
+  firstMonthManagementCommission: Number
+  secondMonthManagementCommission: Number
+  thirdMonthManagementCommission: Number
+  firstMonthPayoutAddons: Number
+  secondMonthPayoutAddons: Number
+  thirdMonthPayoutAddons: Number
+  firstMonthAddonsCommission: Number
+  secondMonthAddonsCommission: Number
+  thirdMonthAddonsCommission: Number
+  secondAmountMovedFromLastPayout: Number
+  thirdAmountMovedFromLastPayout: Number
+  firstRentInvoice: Number
+  secondRentInvoice: Number
+  thirdRentInvoice: Number
+}
+
+type ObjectEvictionCases {
+  evictionInvoiceIds: [String]
+  invoiceId: String
+  status: String
+  leaseSerial: Number
+  tenants: [ObjectTenants]
+  agentId: String
+  tenantId: String
+  hasPaid: Boolean
+  contractStartDate: Date
+  contractEndDate: Date
+  firstInvoiceDueDate: Date
+  dueDate: Number
+  amount: Number
+}
+
+type ObjectFiles {
+  fileId: String
+  context: String
+  serialId: String
+}
+
+type ObjectHistory {
+  name: String
+  oldValue: String
+  newValue: String
+  oldUpdatedAt: Date
+  newUpdatedAt: Date
+}
+
+type ObjectLandlordAssignmentSigningStatus {
+  idfySignerId: String
+  landlordId: String
+  internalUrl: String
+  signingUrl: String
+  signed: Boolean
+  signedAt: Date
+}
+
+type ObjectListingInfo {
+  availabilityStartDate: Date
+  availabilityEndDate: Date
+  minimumStay: Number
+  monthlyRentAmount: Number
+  depositAmount: Number
+}
+
+type ObjectLandlordLeaseSigningStatus {
+  idfySignerId: String
+  landlordId: String
+  internalUrl: String
+  signingUrl: String
+  signed: Boolean
+  signedAt: Date
+}
+
+type ObjectLeaseSigningMeta {
+  signedTime: String
+  signers: [Object]
+  documentId: String
+  externalDocumentId: String
+  signer: Object
+}
+
+type ObjectPayoutMonthMeta {
+  payoutId: String
+  invoiceId: String
+  invoiceSummaryId: String
+  payoutAt: Date
+}
+
+type ObjectStatementMeta {
+  id: String
+  fileId: String
+  startDate: Date
+  endDate: Date
+  status: String
+  reason: String
+  createdAt: Date
+}
+
+type ObjectTenantLeaseSigningStatus {
+  idfySignerId: String
+  tenantId: String
+  internalUrl: String
+  signingUrl: String
+  signed: Boolean
+  signedAt: Date
+  attachmentPadesFileCreatedAt: Date
+  hasAttachmentPadesFile: Boolean
+  idfyAttachmentId: String
+  isSentDepositDataToBank: Boolean
+  attachmentFileId: String
+}
+
+type ObjectTenants {
+  tenantId: String
+}
+
+type QueryContract {
+  data: [ContractQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input ContractsQueryDataType {
+  _id: String
+  status: String
+  partnerId: String
+  hasBrokeringContract: Boolean
+  brokeringCommissionType: String
+  brokeringCommissionAmount: Number
+  hasRentalManagementContract: Boolean
+  rentalManagementCommissionType: String
+  rentalManagementCommissionAmount: Number
+  hasRentalContract: Boolean
+  rentalCommission: Number
+  noOfPayoutMonth: Number
+  payoutTo: String
+  assignmentSerial: Number
+  leaseSerial: Number
+  isDefaulted: Boolean
+  cancelledBy: String
+  cancelledAt: Date
+  monthlyPayoutDate: Number
+  internalAssignmentId: String
+  assignmentFrom: Date
+  assignmentTo: Date
+  representativeId: String
+  signDate: Date
+  terminatedByUserId: String
+  enabledEsigning: Boolean
+  assignmentContractPdfGenerated: Boolean
+  leaseContractPdfGenerated: Boolean
+  idfyAssignmentDocId: String
+  idfyLeaseDocId: String
+  draftAssignmentDoc: Boolean
+  draftLeaseDoc: Boolean
+  holdPayout: Boolean
+  finalSettlementStatus: String
+  assignmentSignatureMechanism: String
+  isEsignReminderSentToLandlordForAssint: Boolean
+  templateId: String
+  isFinalSettlementDone: Boolean
+  hasAssignmentSignerXmlFileInS3: Boolean
+  assignmentSignerXmlFileInS3At: Date
+  hasAssignmentPadesFile: Boolean
+  assignmentPadesFileCreatedAt: Date
+  isSendAssignmentPdf: Boolean
+  assignmentPdfGenerated: Boolean
+  createdAt: Date
+  createdBy: String
+}
+
+input JournalExcelCreatorQueryDataType {
+  queueId: String
+}
+
+type JournalExcelCreatorQuery {
+  assignmentId: String
+  propertyLocation: String
+  gnrBnrSnr: String
+  type: String
+  propertyType: String
+  signDate: String
+  status: String
+  changes: String
+  assignmentFrom: String
+  assignmentTo: String
+  journaled: String
+  monthlyRentAmount: Number
+  pursuant: String
+  agent: String
+  account: String
+  representative: String
+  #some extra property for turnover journals
+  leaseId: String
+  reacted: String
+  tenant: String
+  commissions: Number
+  other: Number
+  totalIncome: Number
+}
+
+type QueryJournalExcelCreator {
+  data: [JournalExcelCreatorQuery]
+  total: Number
+}
+
+enum UpdateEvictionStatusEnum {
+  completed
+  canceled
+}
+
+input UpdateContractEvictionCaseDataType {
+  contractId: String
+  invoiceId: String
+  status: UpdateEvictionStatusEnum
+}
+
+type UpdateContractEvictionCaseType {
+  success: Boolean
+}
+
+type ProduceEvictionDocumentsType {
+  success: Boolean
+}
+
+input ProduceEvictionDocumentsDataType {
+  contractId: String
+  invoiceId: String
+  evictionPrevDoc: String
+  # Only for Meteor
+  partnerId: String
+  userId: String
+}
+
+enum EvictionStatusEnum {
+  new
+  in_progress
+  completed
+  canceled
+}
+
+input EvictionsQueryDataType {
+  """
+  Sort will be using [createdAt, invoice.invoiceTotal, invoice.totalDue]
+  """
+  accountId: String
+  agentId: String
+  branchId: String
+  contractId: String
+  createdAtDateRange: CommonStartDateAndEndDateInputDataType
+  hasPaid: Boolean
+  leaseSerial: Int
+  propertyId: String
+  requestFrom: RequestFromEnum
+  searchKeyword: String
+  status: EvictionStatusEnum
+  tenantId: String
+}
+
+type InvoiceForEvictionSchema {
+  _id: String
+  invoiceSerialId: Int
+  invoiceTotal: Number
+  totalPaid: Number
+  creditedAmount: Number
+  totalDue: Number
+}
+
+type AccountSchemaForEvictionList {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type AgentSchemaForEvictionList {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type TenantForEvictionQuery {
+  _id: String
+  name: String
+  avatarKey: String
+  serial: Int
+}
+
+type BranchForEvictionQuery {
+  _id: String
+  name: String
+}
+
+type EvictionPropertySchema {
+  _id: String
+  imageUrl: String
+  location: ListingLocationObj
+  apartmentId: String
+  propertyTypeId: String
+  listingTypeId: String
+  serial: Int
+}
+
+type EvictionQuerySchema {
+  _id: String
+  account: AccountSchemaForEvictionList
+  agent: AgentSchemaForEvictionList
+  amount: Number
+  branch: BranchForEvictionQuery
+  createdAt: Date
+  files: [File]
+  hasPaid: Boolean
+  invoice: InvoiceForEvictionSchema
+  invoiceId: String
+  leaseSerial: Number
+  property: EvictionPropertySchema
+  status: String
+  tenant: TenantForEvictionQuery
+}
+
+type EvictionQueryType {
+  data: [EvictionQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type EvictionsSummaryType {
+  totalInvoiced: Number
+  totalRentDue: Number
+  totalEvictionProduced: Number
+}
+
+type PropertyInfoObject {
+  _id: String
+  title: String
+  location: ListingLocationObj
+  listed: Boolean
+  propertyStatus: String
+}
+
+type partnerInfoObject {
+  _id: String
+  name: String
+}
+
+type EsigningStatusForLease {
+  signed: Boolean
+  signingUrl: String
+}
+
+type FirstRentForLeaseDetails {
+  amount: Number
+  kidNumber: String
+  status: String
+  accountNumber: String
+}
+
+type SingleLeaseForPublicSiteType {
+  _id: String
+  propertyId: String
+  property: ListingLocationObj
+  partner: String
+  contractStartDate: Date
+  contractEndDate: Date
+  agent: LeaseAgentSchema
+  leaseStatus: String
+  invoiceStatus: String
+  rentStatus: String
+  invoiceAmount: Number
+  amount: Number
+  monthlyRentAmount: Number
+  dueDate: Int
+  security: String
+  depositAccountStatus: String
+  depositAmount: Number
+  depositAccountNumber: Number
+  depositAccountBankName: String
+  depositAccountCreatedAt: Date
+  payoutTo: String
+  monthlyPayoutDate: Int
+  assignmentFrom: String
+  assignmentTo: String
+  brokeringCommissionAmount: Number
+  brokeringCommissionType: String
+  rentalManagementCommissionType: String
+  rentalManagementCommissionAmount: Number
+  addons: String
+  nextPayoutAmount: Number
+  nextPayoutDate: String
+  nextPayoutInvoicePaid: Boolean
+  invoiceAccountNumber: String
+  kidNumber: String
+  invoicePaidAfterPayoutDate: Boolean
+  payBeforeMonthEnabled: Boolean
+  payBeforeMonth: Int
+  invoiceDueDate: String
+  nextInvoiceDate: String
+  evictionNoticeSentOn: String
+  evictionNoticeFileId: String
+  evictionLetterFileId: String
+  leaseFileId: String
+  depositInsuranceStatus: String
+  depositInsuranceBankAccount: Number
+  depositInsuranceKid: String
+  depositInsuranceAmount: Number
+  depositInsurancePayable: Number
+  depositInsuranceCreatedAt: Date
+  depositInsuranceRefNumber: String
+  leaseContractPdfGenerated: Boolean
+  enabledLeaseEsigning: Boolean
+  tenantLeaseSigningStatus: EsigningStatusForLease
+  landlordLeaseSigningStatus: EsigningStatusForLease
+  assignmentContractPdfGenerated: Boolean
+  enabledEsigning: Boolean
+  agentAssignmentSigningStatus: EsigningStatusForLease
+  landlordAssignmentSigningStatus: EsigningStatusForLease
+  firstInvoice: FirstRentForLeaseDetails
+  leaseSerial: Int
+  assignmentSerial: Int
+}
+
+input SingleLeaseQueryDataType {
+  contractId: String
+  personType: PersonTypeEnum
+}
+
+type InvoicePaymentForALease {
+  _id: String
+  amount: Number
+  paymentDate: Date
+  createdAt: Date
+  invoices: [String]
+}
+
+type total {
+  totalDocuments: Int
+}
+
+type QueryInvoicePaymentForALease {
+  data: [InvoicePaymentForALease]
+  metaData: total
+}
+
+input invoicePaymentForALeaseQueryDataType {
+  contractId: String
+  propertyId: String
+}
+
+enum PersonTypeEnum {
+  tenant
+  landlord
+}
+
+input LeasesQueryDataType {
+  personType: PersonTypeEnum
+  isClosed: Boolean
+  searchKeyword: String
+}
+
+type LeaseAgentSchema {
+  _id: String
+  name: String
+  avatar: String
+  email: String
+  phoneNumber: String
+}
+
+type Lease {
+  _id: String
+  accountId: String
+  accountInfo: CommonNameAvatarKeyType
+  agent: LeaseAgentSchema
+  amount: Number
+  coTenants: [TenantUserInfo]
+  contractEndDate: String
+  contractStartDate: String
+  enabledLeaseEsigning: Boolean
+  hasInvoices: Boolean
+  invoiceStatus: String
+  isMovedIn: Boolean
+  landlordSigned: Boolean
+  leaseStatus: String
+  leaseTerminated: Boolean
+  mainTenant: TenantUserInfo
+  numOfIssues: Number
+  partner: String
+  property: ListingLocationObj
+  propertyId: String,
+  tenantSigned: Boolean
+}
+
+type LeaseType {
+  data: [Lease]
+  metaData: MetaDataQuerySchema
+}
+
+type InvoiceAttachmentType {
+  _id: String
+  createdAt: Date
+  name: String
+  title: String
+  type: String
+}
+
+type getAllInvoiceForPublicSite {
+  _id: String
+  attachments: [InvoiceAttachmentType]
+  dueDate: Date
+  status: String
+  invoiceTotal: Number
+  invoiceSerialId: Number
+  invoiceMonth: Date
+  fileId: String
+}
+
+type QueryLeaseAllInvoice {
+  data: [getAllInvoiceForPublicSite]
+}
+
+enum LeaseInvoiceFileTypeEnum {
+  landlord
+  tenant
+}
+
+input LeaseAllInvoice {
+  contractId: String
+  neededFileType: LeaseInvoiceFileTypeEnum
+  propertyId: String
+}
+
+type TenantUserInfo {
+  _id: String
+  name: String
+  email: String
+  phoneNumber: String
+  avatarKey: String
+}
+
+type MainTenantInfo {
+  _id: String
+  user: TenantUserInfo
+}
+
+type LeaseTenantData {
+  _id: String
+  mainTenant: MainTenantInfo
+  coTenants: [MainTenantInfo]
+}
+
+type LeaseTenantType {
+  data: LeaseTenantData
+}
+
+input LeaseTenantsDataType {
+  contractId: String
+}
+
+type AllPayoutData {
+  _id: String
+  amount: Number
+  payoutDate: Date
+  referanse: Int
+  status: String
+}
+
+type QueryFullPayoutHistoryForLease {
+  data: [AllPayoutData]
+}
+
+input fullPayoutHistoryForLeaseQueryDataType {
+  contractId: String
+  propertyId: String
+}
+
+input ContractQueryDataType {
+  contractId: String
+  populate: [String]
+}
+
+input AgentOrLandlordAssignmentSigningStatusInputType {
+  idfySignerId: String
+  signed: Boolean
+  signedAt: Date
+  signingUrl: String
+  internalUrl: String
+}
+input AssignmentSigningMetaInputType {
+  documentId: String
+  externalDocumentId: String
+  signedTime: String
+  signers: [Object]
+}
+
+input ContractUpdateDataType {
+  pdfContext: String
+  lastCPINotificationSentOn: Date
+  attachmentFileId: ID
+  futureRentAmount: Float
+  cpiNotificationSentHistory: [Date]
+  attachmentPadesFileCreatedAt: Date
+  hasAttachmentPadesFile: Boolean
+  hasSignersAttachmentPadesFile: Boolean
+  type: String
+  monthlyRentAmount: Float
+  cpiFromMonth: Date
+  lastCpiDate: Date
+  cpiInMonth: Date
+  nextCpiDate: Date
+  #  Assignment
+  status: String
+  agentAssignmentSigningStatus: AgentOrLandlordAssignmentSigningStatusInputType
+  landlordAssignmentSigningStatus: AgentOrLandlordAssignmentSigningStatusInputType
+  assignmentSigningMeta: AssignmentSigningMetaInputType
+  signDate: Date
+  # Pdf Tag
+  draftAssignmentDoc: Boolean
+  hasAssignmentPadesFile: Boolean
+  assignmentPadesFileCreatedAt: Date
+  #  Xml Tag
+  hasAssignmentSignerXmlFileInS3: Boolean
+  assignmentSignerXmlFileInS3At: Date
+  hasLeaseSignerXmlFileInS3: Boolean
+  leaseSignerXmlInS3At: Date
+  # Lease
+  draftLeaseDoc: Boolean
+  idfyLeaseDocId: String
+  landlordLeaseSigningStatus: Object
+  leaseSigningComplete: Boolean
+  tenantLeaseSigningStatus: Array
+  isSendToBank: Boolean
+  tenantId: ID
+  leaseSigningMeta: Object
+  signedAt: Date
+}
+
+input ContractUnsetDataType {
+  futureRentAmount: Boolean
+  lastCPINotificationSentOn: Boolean
+  unsetDepositAccountCreationTestProcessing: Boolean
+  unsetIncomingPaymentTestProcessing: Boolean
+}
+
+input ContractQueryAndUpdateDataType {
+  contractId: String
+  data: ContractUpdateDataType
+  unsetData: ContractUnsetDataType
+  inputData: LogInputDataForContract
+  queueId: String # To complete current appQueue
+}
+
+input ContractQueryAndUnsetDataType {
+  contractId: String
+  unsetData: ContractUnsetDataType
+}
+
+input ContractESigningAndAppQueueAddType {
+  callBackAction: String
+  callBackEvent: String
+  contractId: String
+  eSigningType: String
+  fileType: String
+}
+
+enum JournalEnum {
+  assignment_journals
+  turnover_journals
+}
+
+enum JournalStatusEnum {
+  archived
+  vacant
+  occupied
+}
+
+input JournalQueryInputType {
+  type: JournalEnum
+  branchId: String
+  agentId: String
+  accountId: String
+  propertyId: String
+  assignmentStatus: [JournalStatusEnum]
+  leaseStatus: [JournalStatusEnum]
+  assignmentDateRange: DateRangeType
+  leaseDateRange: DateRangeType
+}
+
+input JournalDownloadInputType {
+  type: JournalEnum
+  branchId: String
+  agentId: String
+  accountId: String
+  propertyId: String
+  assignmentStatus: [JournalStatusEnum]
+  leaseStatus: [JournalStatusEnum]
+  assignmentDateRange: DateRangeType
+  leaseDateRange: DateRangeType
+  """
+  Use sort during download journal, Example: Sort by createdAt: 1/-1 etc
+  """
+  sort: Object
+}
+
+type JournalPartnerType {
+  _id: String
+  serial: Int
+}
+
+type JournalPropertyType {
+  _id: String
+  imageUrl: String
+  location: ListingLocationObj
+  listingTypeId: String
+  propertyTypeId: String
+  apartmentId: String
+  serial: Int
+  gnr: String
+  bnr: String
+  snr: String
+  monthlyRentAmount: Number
+}
+
+type JournalQuerySchema {
+  _id: String
+  # For Assignment journal
+  propertyInfo: JournalPropertyType
+  partnerInfo: JournalPartnerType
+  signDate: Date
+  status: String
+  rentalTenantIdExist: Boolean
+  changeLogs: Boolean
+  assignmentFrom: Date
+  assignmentTo: Date
+  createdAt: Date
+  accountInfo: CommonNameAvatarKeyType
+  agentInfo: CommonNameAvatarKeyType
+  representativeInfo: CommonNameAvatarKeyType
+  #  For Turnover journal
+  assignmentSerial: Int
+  leaseSerial: Int
+  signedAt: Date
+  leaseCreatedAt: Date
+  yearlyRent: Number
+  commissions: Number
+  others: Number
+  totalIncome: Number
+  tenantInfo: JournalTenantType
+}
+
+type JournalTenantType {
+  _id: String
+  serial: Int
+}
+
+type QueryJournalType {
+  data: [JournalQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type DownloadAJournalType {
+  status: Int
+  message: String
+}
+
+input LeaseDetailsInputType {
+  contractId: String
+}
+
+type FSLandlordInvoice {
+  _id: String
+  invoiceSerialId: String
+  invoiceTotal: Number
+  totalPaid: Number
+}
+
+type LeaseDetailsType {
+  _id: String
+  FSLandlordInvoice: FSLandlordInvoice
+  invoiceTotalAmount: Number
+  landlordInvoices: [LandlordInvoiceQuerySchema]
+  landlordInvoiceDueTotal: Number
+  leaseSerial: Int
+  pendingPayouts: [LeasePendingPayoutsType]
+  propertyInfo: LeasePropertyType
+  refundPayments: [LeaseRefundPaymentType]
+  rentInvoices: [RentInvoiceQuerySchema]
+  rentInvoiceDueTotal: Number
+}
+
+type LeasePendingPayoutsType {
+  _id: String
+  amount: Number
+  numberOfFails: Int
+  paymentStatus: String
+  serialId: Number
+  status: String
+}
+
+type LeaseRefundPaymentType {
+  _id: String
+  amount: Number
+  paymentDate: Date
+  refundStatus: String
+  refundPaymentStatus: String
+}
+
+type LeasePropertyType {
+  _id: String
+  location: ListingLocationObj
+  imageUrl: String
+}
+
+input AssignmentsInputType {
+  propertyId: String
+  showClosedAssignment: Boolean
+}
+
+type AssignmentType {
+  _id: String
+  agentInfo: CommonNameAvatarKeyType
+  status: String
+  assignmentSerial: Int
+  hasBrokeringContract: Boolean
+  hasRentalContract: Boolean
+  hasRentalManagementContract: Boolean
+  enabledEsigning: Boolean
+  assignmentContractPdfGenerated: Boolean
+  agentSigned: Boolean
+  landlordSigned: Boolean
+  agentSigningUrl: String
+  showRegenerateSigning: Boolean
+}
+
+type QueryAssignmentType {
+  data: [AssignmentType]
+  metaData: MetaDataQuerySchema
+}
+
+input LeaseListForPartnerAppInputType {
+  propertyId: String
+  showClosedLease: Boolean
+}
+
+type DepositAccountErrorSchema {
+  title: String
+  errorReason: String
+}
+
+type CompletedPropertyItemType {
+  _id: String
+  movingFileId: String
+  type: String
+}
+
+type EsignInitiatePropertyItemType {
+  _id: String
+  agentSigningStatus: EsigningStatusForLease
+  isEsigningInitiate: Boolean
+  landlordSigningStatus: EsigningStatusForLease
+  moveInCompleted: Boolean
+  moveOutCompleted: Boolean
+  movingInPdfGenerated: Boolean
+  movingInSigningComplete: Boolean
+  movingOutPdfGenerated: Boolean
+  movingOutSigningComplete: Boolean
+  tenantSigningStatus: [EsigningStatusForLease]
+  type: String
+}
+
+type LeaseSchemaForPartnerApp {
+  _id: String
+  addonTotal: Number
+  completedPropertyItems: [CompletedPropertyItemType]
+  contractEndDate: Date
+  contractStartDate: Date
+  cpiEnabled: Boolean
+  depositAccountError: [DepositAccountErrorSchema]
+  depositAmount: Number
+  depositInsuranceErrors: [String]
+  depositInsuranceStatus: String
+  depositType: String
+  enabledLeaseEsigning: Boolean
+  esignInitiatePropertyItems: [EsignInitiatePropertyItemType]
+  hasSignersAttachmentPadesFile: Boolean
+  holdPayout: Boolean
+  isDefaulted: Boolean
+  isDepositAccountDocumentPreparing: Boolean
+  isDepositAccountCreated: Boolean
+  isDepositAmountPaid: Boolean
+  isDepositDataSentToBank: Boolean
+  isDocumentPreparing: Boolean
+  isEnabledDepositAccountProcess: Boolean
+  isMovedIn: Boolean
+  isMovingIn: Boolean
+  isMovingOut: Boolean
+  isFullPaid: Boolean
+  isAnyAccountPartiallyPaid: Boolean
+  isShowNewLease: Boolean
+  isTenantWaiting: Boolean
+  landlordLeaseSigningUrl: String
+  landlordSigned: Boolean
+  lastCpiDate: Date
+  leaseContractPdfGenerated: Boolean
+  leaseSerial: Int
+  leaseSigningComplete: Boolean
+  mainTenantId: String
+  monthlyRentAmount: Number
+  nextCpiDate: Date
+  showCancelMoveIn: Boolean
+  showCancelMoveOut: Boolean
+  status: String
+  tenantsInfo: [CommonNameAvatarKeyType]
+  tenantSigned: Boolean
+  isDepositAccountCreationTestProcessing: Boolean
+  isDepositAccountPaymentTestProcessing: Boolean
+  leaseTerminated: Boolean
+}
+
+type QueryLeaseListForPartnerApp {
+  data: [LeaseSchemaForPartnerApp]
+  metaData: MetaDataQuerySchema
+}
+
+type QueryTurnoverJournalSummary {
+  totalRent: Number
+  totalCommissions: Number
+  totalOthers: Number
+  totalIncome: Number
+}
+
+input AssignmentDetailsInputType {
+  contractId: String
+}
+
+type AssignmentPeriodType {
+  assignmentFrom: Date
+  assignmentTo: Date
+}
+
+type AssignmentLocationType {
+  name: String
+  city: String
+  country: String
+  postalCode: String
+}
+
+type AssignmentPropertyInfoType {
+  _id: String
+  location: AssignmentLocationType
+  imageUrl: String
+}
+
+type AddonForAContractType {
+  addonId: String
+  allowPriceEdit: Boolean
+  amount: Number
+  isRecurring: Boolean
+  name: String
+  taxPercentage: Number
+}
+
+type TenantsForAssignmentDetails {
+  name: String
+  avatarKey: String
+  email: String
+  phoneNumber: String
+  serial: Number
+}
+
+type QueryAssignmentDetailsType {
+  _id: String
+  accountInfo: CommonNameAvatarKeyType
+  addons: [AddonForAContractType]
+  agentSigned: Boolean
+  agentSigningUrl: String
+  assignmentContractPdfGenerated: Boolean
+  assignmentPeriod: AssignmentPeriodType
+  assignmentSerial: Number
+  branchInfo: CommonNameType
+  brokeringCommissionAmount: Number
+  brokeringCommissionType: String
+  createdAt: Date
+  createdByInfo: CommonNameAvatarKeyType
+  enabledEsigning: Boolean
+  hasBrokeringContract: Boolean
+  hasRentalContract: Boolean
+  hasRentalManagementContract: Boolean
+  internalAssignmentId: String
+  landlordSigned: Boolean
+  listingInfo: ObjectListingInfo
+  monthlyPayoutDate: Date
+  ownerInfo: CommonNameAvatarKeyType
+  payoutTo: String
+  propertyInfo: AssignmentPropertyInfoType
+  rentalManagementCommissionAmount: Number
+  rentalManagementCommissionType: String
+  representativeInfo: CommonNameAvatarKeyType
+  signDate: Date
+  status: String
+  tenants: [TenantsForAssignmentDetails]
+}
+
+input JournalChangeLogQueryInputType {
+  """
+  Use sort like: { 'history.newUpdatedAt': -1 } or { 'history.oldUpdatedAt': -1 } etc
+  """
+  context: JournalEnum
+  contractId: String
+}
+
+type HistoryTypeSchema {
+  name: String
+  oldValue: String
+  newValue: String
+  oldUpdatedAt: Date
+  newUpdatedAt: Date
+}
+
+type ChangeLogData {
+  accountUserNewInfo: CommonNameAvatarKeyType
+  accountUserOldInfo: CommonNameAvatarKeyType
+  agentUserNewInfo: CommonNameAvatarKeyType
+  agentUserOldInfo: CommonNameAvatarKeyType
+  history: HistoryTypeSchema
+  name: String
+  newTenantInfo: [CommonNameAvatarKeyType]
+  oldTenantInfo: [CommonNameAvatarKeyType]
+  representativeUserNewInfo: CommonNameAvatarKeyType
+  representativeUserOldInfo: CommonNameAvatarKeyType
+}
+
+type ChangeLogType {
+  data: [ChangeLogData]
+  metaData: MetaDataQuerySchema
+}
+
+input LeaseDetailsQueryInputType {
+  contractId: String
+  leaseSerial: Number
+}
+
+type LocationInfoType {
+  city: String
+  country: String
+  name: String
+  postalCode: Number
+  streetNumber: Number
+}
+
+type PropertyInfoType {
+  _id: String
+  imageUrl: String
+  location: LocationInfoType
+}
+
+type DepositAccountErrorType {
+  createdAt: Date
+  title: String
+  errorReason: String
+}
+
+type LeaseDetailsQueryType {
+  accountInfo: CommonNameAvatarKeyType
+  addons: [AddonForAContractType]
+  contractEndDate: Date
+  contractStartDate: Date
+  cpiEnabled: Boolean
+  createdAt: Date
+  createdByInfo: CommonNameAvatarKeyType
+  depositAccountError: [DepositAccountErrorType]
+  depositAmount: Number
+  depositInsuranceStatus: String
+  depositInsuranceErrors: [String]
+  depositType: String
+  disableCompello: Boolean
+  disableVipps: Boolean
+  dueDate: Date
+  enabledAnnualStatement: Boolean
+  enabledJointDepositAccount: Boolean
+  enabledJointlyLiable: Boolean
+  enabledLeaseEsigning: Boolean
+  firstInvoiceDueDate: Date
+  internalLeaseId: String
+  invoiceAccountNumber: String
+  invoiceFrequency: Date
+  invoiceStartFrom: Date
+  isAnyAccountPartiallyPaid: Boolean
+  isDocumentPreparing: Boolean
+  isEnabledRecurringDueDate: Boolean
+  isMovedIn: Boolean
+  isEnabledDepositAccountProcess: Boolean
+  isDepositAccountDocumentPreparing: Boolean
+  isDepositAccountCreated: Boolean
+  isDepositDataSentToBank: Boolean
+  isFullPaid: Boolean
+  isDepositAmountPaid: Boolean
+  isShowMoveIn: Boolean
+  isShowMoveOut: Boolean
+  isTenantWaiting: Boolean
+  isVatEnable: Boolean
+  landlordSigned: Boolean
+  landlordLeaseSigningUrl: String
+  lastCpiDate: Date
+  leaseContractPdfGenerated: Boolean
+  leaseSigningComplete: Boolean
+  leaseSerial: Number
+  mainTenantInfo: CommonNameAvatarKeyType
+  minimumStay: Number
+  monthlyRentAmount: Number
+  movingInDate: Date
+  movingInInfo: MovingInInfoForLeaseType
+  movingOutInfo: MovingOutInfoForLeaseType
+  nextCpiDate: Date
+  noticeInEffect: String
+  noticePeriod: Number
+  otherTenantInfo: [CommonNameAvatarKeyType]
+  ownerInfo: CommonNameAvatarKeyType
+  propertyInfo: PropertyInfoType
+  representativeInfo: CommonNameAvatarKeyType
+  showSigningUrl: Boolean
+  signedAt: Date
+  status: String
+  terminateComments: String
+  terminatedByInfo: CommonNameAvatarKeyType
+  terminateReasons: String
+  tenantSigned: Boolean
+}
+
+type MovingInInfoForLeaseType {
+  documentPreparing: Boolean
+  isEsigningInitiate: Boolean
+  isTenantSignedOfMoveInOut: Boolean
+  isTenantSigningStatusExists: Boolean
+  isAgentSignedOfMoveIn: Boolean
+  isLandlordSignedOfMoveIn: Boolean
+  moveInCompleted: Boolean
+  movingInSigningComplete: Boolean
+  pdfFileId: String
+  signingUrl: String
+}
+
+type MovingOutInfoForLeaseType {
+  isAgentSignedMovingOut: Boolean
+  isEsigningInitiate: Boolean
+  isTenantSignedOfMoveInOut: Boolean
+  isLandlordSignedOfMoveOut: Boolean
+  moveOutCompleted: Boolean
+  movingOutSigningComplete: Boolean
+  pdfFileId: String
+  signingUrl: String
+}
+
+type QueryLeaseStatusForPartnerDashboard {
+  endingLeaseInNextSevenDays: Number
+  soonEndingLease: Number
+  soonEndingLeaseWihtoutNewLease: Number
+  totalEvictionsReadyToSend: Number
+  totalFinalSettlementsNotDone: Number
+  upcomingLeaseInNextSevenDays: Number
+}
+
+enum BrokeringCommissionTypeEnum {
+  fixed
+  percent
+}
+
+input AssignmentFileInput {
+  name: String
+  size: Number
+  title: String
+}
+
+input AssignmentListingInfoInput {
+  availabilityEndDate: Date
+  availabilityStartDate: Date
+  depositAmount: Number
+  minimumStay: Int
+  monthlyRentAmount: Number
+}
+
+enum AssignmentAddonTypeEnum {
+  assignment
+}
+
+enum LeaseAddonTypeEnum {
+  lease
+}
+
+input AssignmentAddonInput {
+  addonId: String
+  hasCommission: Boolean
+  isRecurring: Boolean
+  price: Number
+  total: Number
+  type: AssignmentAddonTypeEnum
+}
+
+input LeaseAddonInput {
+  addonId: String
+  hasCommission: Boolean
+  isRecurring: Boolean
+  price: Number
+  total: Number
+  type: LeaseAddonTypeEnum
+}
+
+enum AssignmentSignatureMechanismEnum {
+  add_assignment_and_print
+  bank_id
+  get_assignment
+  hand_written
+}
+
+enum AssignmentActionTypeEnum {
+  add_and_print
+  esigning
+}
+
+input CreateAnAssignmentDataType {
+  actionType: AssignmentActionTypeEnum
+  addons: [AssignmentAddonInput]
+  agentId: String
+  assignmentFrom: Date
+  assignmentSignatureMechanism: AssignmentSignatureMechanismEnum
+  assignmentTo: Date
+  brokeringCommissionAmount: Number
+  brokeringCommissionType: BrokeringCommissionTypeEnum
+  esigningPdfContent: String
+  fileVisibleToLandlord: Boolean
+  files: [AssignmentFileInput]
+  hasBrokeringContract: Boolean
+  hasRentalManagementContract: Boolean
+  internalAssignmentId: String
+  listingInfo: AssignmentListingInfoInput
+  monthlyPayoutDate: Int
+  partnerId: String
+  payoutTo: String
+  propertyId: String
+  rentalCommission: Number
+  rentalManagementCommissionAmount: Number
+  rentalManagementCommissionType: BrokeringCommissionTypeEnum
+  representativeId: String
+  signDate: Date
+  templateId: String
+  userId: String
+}
+
+enum ContractTypeEnum {
+  assignment
+  lease
+}
+
+input RegenerateContractEsigningInputType {
+  contractId: String
+  contractType: ContractTypeEnum
+  esigningPdfContent: String
+  partnerId: String #Only for lambda
+  signatureMechanism: AssignmentSignatureMechanismEnum
+  userId: String #Only for lambda
+}
+input CpiResetQueryData {
+  partnerId: ID
+  contractId: ID
+  cpiDate: Date
+}
+type RegenerateContractEsigningType {
+  _id: String
+  agentSigned: Boolean
+  agentSigningUrl: String
+  assignmentContractPdfGenerated: Boolean
+  landlordSigned: Boolean
+  landlordLeaseSigningUrl: String
+  leaseContractPdfGenerated: Boolean
+  status: String
+  tenantSigned: Boolean
+}
+
+enum DepositTypeEnum {
+  deposit_account
+  deposit_insurance
+  no_deposit
+}
+
+enum LeaseTypeEnum {
+  esigning
+  lease_and_print
+}
+enum NoticeInEffectEnum {
+  first_of_next_month
+  immediately
+}
+
+type InvalidTenantsOrBusinessLandlord {
+  _id: String
+  avatarUrl: String
+  isInvalidOrgId: Boolean
+  name: String
+  organizationId: String
+  ssn: Number
+  type: String
+  userId: String
+}
+
+input CreateALeaseDataType {
+  addons: [LeaseAddonInput]
+  contractEndDate: Date
+  contractId: String
+  contractStartDate: Date
+  cpiEnabled: Boolean
+  depositAmount: Number
+  depositType: DepositTypeEnum
+  disableCompello: Boolean
+  disableVipps: Boolean
+  dueDate: Number
+  enabledJointDepositAccount: Boolean
+  enabledJointlyLiable: Boolean
+  enabledNotification: Boolean
+  fileIds: [String]
+  firstInvoiceDueDate: Date
+  internalLeaseId: String
+  invoiceAccountNumber: String
+  invoiceFrequency: Number
+  invoiceStartFrom: Date
+  isEnabledRecurringDueDate: Boolean
+  isMovedIn: Boolean
+  isVatEnable: Boolean
+  lastCpiDate: Date
+  leaseEsigningPdfContent: String
+  leaseSignatureMechanism: LeaseSignatureMechanism
+  leaseType: LeaseTypeEnum
+  minimumStay: Int
+  monthlyRentAmount: Number
+  movingInDate: Date
+  nextCpiDate: Date
+  noticeInEffect: NoticeInEffectEnum
+  noticePeriod: Int
+  partnerId: String #Only for lambda
+  propertyId: String
+  signedAt: Date
+  templateId: String
+  tenantId: String
+  tenants: [String]
+  userId: String #Only for lambda
+}
+
+enum LeaseSignatureMechanism {
+  bank_id
+  hand_written
+}
+
+input TerminateAssignmentInputType {
+  contractId: String
+  propertyId: String
+}
+
+type AssignmentTerminateType {
+  _id: String
+  status: String
+}
+
+input UpdateContractAddonInputType {
+  addonId: String
+  contractId: String
+  fieldName: AddonFieldNameEnum
+  isRecurring: Boolean
+  price: Number
+}
+
+enum AddonFieldNameEnum {
+  isRecurring
+  price
+}
+
+input AddAddonInputType {
+  addonId: String
+  contractId: String
+  price: Number
+}
+
+type ContractAddonType {
+  addonId: String
+  hasCommission: Boolean
+  isRecurring: Boolean
+  price: Number
+  total: Number
+  type: String
+}
+
+input LogInputDataForContract {
+  oldVal: Float
+  newVal: Float
+  contractId: String
+  fieldName: String
+  CPIBasedIncrement: Boolean
+}
+
+input LeaseDropdownQueryData {
+  accountId: String
+  propertyId: String
+  tenantId: String
+}
+
+type LeaseSerialType {
+  _id: String
+  leaseSerial: String
+}
+
+type LeaseDropdownSchemaType {
+  data: [LeaseSerialType]
+  metaData: MetaDataQuerySchema
+}
+
+input updateAssignmentInputType {
+  agentId: String
+  assignmentFrom: Date
+  assignmentTo: Date
+  availabilityEndDate: Date
+  availabilityStartDate: Date
+  brokeringCommissionAmount: Number
+  brokeringCommissionType: BrokeringCommissionTypeEnum
+  contractId: String
+  depositAmount: Number
+  hasBrokeringContract: Boolean
+  hasRentalManagementContract: Boolean
+  internalAssignmentId: String # should be resolved later
+  minimumStay: Number
+  monthlyPayoutDate: Int
+  monthlyRentAmount: Number
+  payoutTo: String
+  propertyId: String
+  rentalManagementCommissionAmount: Number
+  rentalManagementCommissionType: BrokeringCommissionTypeEnum
+  representativeId: String
+}
+
+type UpdateAssignmentType {
+  _id: String
+  accountId: String
+  agentId: String
+  assignmentFrom: Date
+  assignmentTo: Date
+  availabilityEndDate: Date
+  availabilityStartDate: Date
+  branchId: String
+  brokeringCommissionAmount: Number
+  brokeringCommissionType: String
+  depositAmount: Number
+  hasBrokeringContract: Boolean
+  hasRentalManagementContract: Boolean
+  internalAssignmentId: String
+  listingInfo: ObjectListingInfo
+  minimumStay: Number
+  monthlyPayoutDate: Int
+  monthlyRentAmount: Number
+  payoutAccount: String
+  propertyId: String
+  rentalManagementCommissionAmount: Number
+  rentalManagementCommissionType: String
+  representativeId: String
+}
+
+input UpdateContractPayoutPauseStatusInputType {
+  contractId: String
+  holdPayout: Boolean
+  unpauseAllPayouts: Boolean
+}
+
+input CheckCommissionChangesAndAddHistoryInput {
+  contractId: String
+}
+
+input updateLeaseInputType {
+  contractId: String
+  cpiEnabled: Boolean
+  disableCompello: Boolean
+  disableVipps: Boolean
+  dueDate: Date
+  enabledAnnualStatement: Boolean
+  enabledJointlyLiable: Boolean
+  extendContractEndDate: Date
+  internalLeaseId: String
+  isEnabledRecurringDueDate: Boolean
+  isVatEnable: Boolean
+  lastCpiDate: Date
+  leaseSerial: Number
+  monthlyRentAmount: Number
+  newTenantIds: [String]
+  nextCpiDate: Date
+  partnerId: String # Only for lambda
+  propertyId: String
+  removeTenantIds: [String]
+  setMainTenantId: String
+  userId: String # Only for lambda
+}
+
+enum TerminatedByEnum {
+  landlord
+  tenant
+}
+
+input FilesForTerminateLease {
+  name: String
+  size: Number
+  title: String
+}
+
+input TerminateLeaseDataType {
+  contractEndDate: Date
+  contractId: String
+  creditWholeInvoice: Boolean
+  enabledNotification: Boolean
+  files: [FilesForTerminateLease]
+  partnerId: String #Only for lambda
+  propertyId: String
+  terminateComment: String
+  terminateReason: String
+  terminatedBy: TerminatedByEnum
+  userId: String #Only for lambda
+}
+
+input CancelLeaseDataType {
+  contractId: String
+  partnerId: String #Only for lambda
+  propertyId: String
+  userId: String #Only for lambda
+}
+
+input CancelLeaseForWrongSSNDataType {
+  contractId: String
+  partnerId: String
+  propertyId: String
+  signerType: String
+  signerId: String
+}
+
+input PauseUnPausePayoutInputDataType {
+  contractId: String
+  holdPayout: Boolean
+  isAnyPayoutHold: Boolean
+}
+
+type ItemIssues {
+  id: String
+  name: String
+  quantity: Int
+  status: String
+  description: String
+  responsibleForFixing: String
+  taskId: String
+  title: String
+}
+
+type InventoryItemsType {
+  _id: String
+  files: [String]
+  propertyItemIssues: [ItemIssues]
+}
+
+type RoomIssuesType {
+  id: String
+  status: String
+  title: String
+  description: String
+  name: String
+}
+
+type RoomItemsType {
+  _id: String
+  name: String
+  type: String
+  files: [String]
+  issues: [RoomIssuesType]
+}
+
+type TenantLeaseIssues {
+  inventoryIssues: [InventoryItemsType]
+  roomIssues: [RoomItemsType]
+}
+
+input TenantLeaseIssuesQueryType {
+  contractId: String
+}
+
+input PreviewInvoicesQueryType {
+  addons: [LeaseAddonInput]
+  contractId: String
+  contractStartDate: Date
+  contractEndDate: Date
+  dueDate: Int
+  firstInvoiceDueDate: Date
+  invoiceFrequency: Int
+  invoiceStartFrom: Date
+  monthlyRentAmount: Number
+  partnerId: String
+  propertyId: String
+  tenantId: String
+}
+
+input checkContractDurationQueryType {
+  contractId: String
+  contractStartDate: Date
+  contractEndDate: Date
+  propertyId: String
+}
+
+enum RemoveFromEnum {
+  assignment
+  lease
+}
+
+input RemoveContractAddonInputType {
+  addonId: String
+  contractId: String
+}
+
+type RemoveAddonContractType {
+  message: String
+}
+
+input JanitorOverviewListQueryType {
+  contractId: String
+  propertyId: String
+}
+
+type OverviewTenantType {
+  _id: String
+  avatarKey: String
+  name: String
+  serial: Int
+}
+
+type QueryJanitorOverviewList {
+  _id: String
+  depositStatus: String
+  depositType: String
+  firstInvoiceStatus: String
+  tenantInfo: OverviewTenantType
+}
+
+input sendCPINotificationInputDataType {
+  contractId: String
+  createdAt: String
+}
+
+input UpdateCpiContractRentAmountInputDataType {
+  contractId: String
+}
+
+input InitiateMonthlyCreateInvoiceJobInput {
+  appHealthId: String
+}
+
+type JanitorOverviewListType {
+  data: [QueryJanitorOverviewList]
+  metaData: MetaDataQuerySchema
+}
+
+type JanitorPropertyLocationType {
+  city: String
+  country: String
+  name: String
+  postalCode: String
+  streetNumber: String
+}
+
+type JanitorPropertyInfoType {
+  _id: String
+  apartmentId: String
+  imageUrl: String
+  listingTypeId: String
+  location: JanitorPropertyLocationType
+  propertyTypeId: String
+  serial: String
+}
+
+type JanitorMovingInOutPropertyListType {
+  _id: String
+  movingIn: [String]
+  movingOut: [String]
+  propertyInfo: JanitorPropertyInfoType
+}
+
+type QueryJanitorMovingInOutList {
+  data: [JanitorMovingInOutPropertyListType]
+  metaData: MetaDataQuerySchema
+}
+
+input RemoveEvictionCaseInputType {
+  contractId: String
+  invoiceId: String
+}
+
+input AgedDebtorsReportQueryDataType {
+  accountId: String
+  agentId: String
+  branchId: String
+  createdAtDateRange: CommonStartDateAndEndDateInputDataType
+  due: YesNoAllEnum
+  propertyId: String
+  sort: Object
+  tenantId: String
+}
+
+input AgedDebtorsReportForExcelManagerDataType {
+  accountId: String
+  agentId: String
+  branchId: String
+  createdAtDateRange: CommonStartDateAndEndDateInputDataType
+  due: YesNoAllEnum
+  partnerId: String
+  propertyId: String
+  tenantId: String
+  userLanguage: String
+}
+
+type AgeDebtorsReportPropertyType {
+  _id: String
+  apartmentId: String
+  location: ListingLocationObj
+}
+
+type AgedDebtorsReportType {
+  _id: String
+  hasEviction: String
+  propertyInfo: AgeDebtorsReportPropertyType
+  tenantInfo: CommonNameAvatarKeyType
+  totalDue: Number
+  totalNinetyPlusOverDue: Number
+  totalOverDue: Number
+  totalSevenToTwentyNineOverDue: Number
+  totalSixtyToEightyNineOverDue: Number
+  totalThirtyToFiftyNineOverDue: Number
+  totalZeroToSixOverDue: Number
+}
+
+type AgedDebtorsReportForExcelManagerType {
+  _id: String
+  apartmentId: String
+  hasEviction: String
+  propertyName: String
+  tenantName: String
+  totalDue: Number
+  totalNinetyPlusOverDue: Number
+  totalOverDue: Number
+  totalSevenToTwentyNineOverDue: Number
+  totalSixtyToEightyNineOverDue: Number
+  totalThirtyToFiftyNineOverDue: Number
+  totalZeroToSixOverDue: Number
+}
+
+type AgedDebtorsReportQueryType {
+  data: [AgedDebtorsReportType]
+  metaData: MetaDataQuerySchema
+}
+
+type AgedDebtorsReportForExcelManagerQueryType {
+  data: [AgedDebtorsReportForExcelManagerType]
+}
+
+type AgedDebtorsReportSummaryType {
+  activeEvictionNum: Int
+  numberOfTenant: Int
+  totalDue: Number
+  totalNinetyPlusOverDue: Number
+  totalOverDue: Number
+  totalSixtyToEightyNineOverDue: Number
+  totalSevenToTwentyNineOverDue: Number
+  totalThirtyToFiftyNineOverDue: Number
+  totalZeroToSixOverDue: Number
+}
+
+input CancelLeaseTerminationInputType {
+  contractId: String
+  contractEndDate: Date
+  propertyId: String
+}
+
+extend type Query {
+  journalChangeLogForPartnerApp(
+    optionData: OptionDataType
+    queryData: JournalChangeLogQueryInputType
+  ): ChangeLogType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+        "partner_accounting"
+      ]
+    )
+  contracts(
+    queryData: ContractsQueryDataType
+    optionData: OptionDataType
+  ): QueryContract @auth(requires: ["no_role"])
+  getSingleLeaseForPublicSite(
+    queryData: SingleLeaseQueryDataType
+  ): SingleLeaseForPublicSiteType
+    @auth(requires: ["user", "partner_tenant", "partner_landlord"]) # user role has been removed later
+  getFullPayoutHistory(
+    queryData: fullPayoutHistoryForLeaseQueryDataType
+  ): QueryFullPayoutHistoryForLease
+    @auth(requires: ["partner_tenant", "partner_landlord", "user"]) # user role has been removed later
+  getAllInvoicePaymentForALease(
+    queryData: invoicePaymentForALeaseQueryDataType
+  ): QueryInvoicePaymentForALease
+    @auth(requires: ["user", "partner_tenant", "partner_landlord"]) # user role has been removed later
+  getAllInvoiceForPartnerPublicSite(
+    queryData: LeaseAllInvoice
+  ): QueryLeaseAllInvoice
+    @auth(requires: ["partner_tenant", "partner_landlord"])
+  # journal
+  getJournal(
+    queryData: JournalQueryInputType
+    optionData: OptionDataType
+  ): QueryJournalType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+        "partner_accounting"
+      ]
+    )
+  turnoverJournalSummary(
+    queryData: JournalQueryInputType
+  ): QueryTurnoverJournalSummary
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+        "partner_accounting"
+      ]
+    )
+  getLeaseStatusForPartnerDashboard(
+    queryData: PartnerDashboardFilterQueryDataType
+  ): QueryLeaseStatusForPartnerDashboard
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  getJanitorDashboardMovingInOutList(
+    optionData: OptionDataType
+  ): QueryJanitorMovingInOutList @auth(requires: ["partner_janitor"])
+  # lambda
+  getJournalForExcelCreator(
+    queryData: JournalExcelCreatorQueryDataType
+    optionData: OptionDataType
+  ): QueryJournalExcelCreator @auth(requires: ["lambda_manager"])
+  evictions(
+    queryData: EvictionsQueryDataType
+    optionData: OptionDataType
+  ): EvictionQueryType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+        "partner_accounting"
+      ]
+    )
+  evictionsSummary(queryData: EvictionsQueryDataType): EvictionsSummaryType
+    @auth(requires: ["partner_admin", "app_manager"])
+  #  For tenant and landlord leases in public app
+  leases(queryData: LeasesQueryDataType, optionData: OptionDataType): LeaseType
+    @auth(requires: ["partner_tenant", "partner_landlord"])
+  getLeaseTenants(queryData: LeaseTenantsDataType): LeaseTenantType
+    @auth(requires: ["user", "partner_tenant", "partner_landlord"]) # user role has been removed later
+  getAContract(queryData: ContractQueryDataType): ContractQuerySchema
+    @auth(requires: ["lambda_manager"])
+  contractIdForLambda(partnerId: ID, type: String, dataToSkip: Int): [String]
+    @auth(requires: ["lambda_manager"])
+  leaseDetails(queryData: LeaseDetailsInputType): LeaseDetailsType
+    @auth(requires: ["app_manager", "partner_admin"])
+  assignments(
+    queryData: AssignmentsInputType
+    optionData: OptionDataType
+  ): QueryAssignmentType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  assignmentDetails(
+    queryData: AssignmentDetailsInputType
+  ): QueryAssignmentDetailsType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "partner_agent"
+      ]
+    )
+  leaseListForPartnerApp(
+    queryData: LeaseListForPartnerAppInputType
+    optionData: OptionDataType
+  ): QueryLeaseListForPartnerApp
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  # Lease details for partner app only
+  leaseDetailsForPartnerApp(
+    queryData: LeaseDetailsQueryInputType
+  ): LeaseDetailsQueryType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  leaseDropdown(
+    queryData: LeaseDropdownQueryData
+    optionData: OptionDataType
+  ): LeaseDropdownSchemaType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+  getContractDataForCpiSettlement(contractId: ID): Contract
+    @auth(requires: ["lambda_manager"])
+  getContractWithFileDataForDepositAccount(
+    contractId: ID
+    tenantId: ID
+  ): Contract @auth(requires: ["lambda_manager"])
+  contractIdsForLeaseLambda(queryData: Object): [ContractIdAndPartnerIdType]
+    @auth(requires: ["lambda_manager"])
+  gettingAllIssuesForTenantLease(
+    queryData: TenantLeaseIssuesQueryType
+  ): TenantLeaseIssues
+    @auth(requires: ["user", "partner_tenant", "partner_landlord"])
+  getInvoicePreview(queryData: PreviewInvoicesQueryType): [Invoice]
+    @auth(
+      requires: ["app_manager", "lambda_manager", "partner_admin", "partner_agent"]
+    )
+  getTenantIdForDepositAccount(contractId: ID): [String]
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  checkContractDuration(queryData: checkContractDurationQueryType): Boolean
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  janitorOverviewList(
+    queryData: JanitorOverviewListQueryType
+    optionData: OptionDataType
+  ): JanitorOverviewListType @auth(requires: ["app_manager", "partner_janitor"])
+  agedDebtorsReport(
+    queryData: AgedDebtorsReportQueryDataType
+    optionData: OptionDataType
+  ): AgedDebtorsReportQueryType
+    @auth(requires: ["app_manager", "partner_admin"])
+  agedDebtorsReportSummary(
+    queryData: AgedDebtorsReportQueryDataType
+  ): AgedDebtorsReportSummaryType
+    @auth(requires: ["app_manager", "partner_admin"])
+  agedDebtorsReportForExcelManager(
+    queryData: AgedDebtorsReportForExcelManagerDataType
+    optionData: OptionDataType
+  ): AgedDebtorsReportForExcelManagerQueryType
+    @auth(requires: ["lambda_manager"])
+}
+
+extend type Mutation {
+  updateContractEvictionCase(
+    inputData: UpdateContractEvictionCaseDataType
+  ): UpdateContractEvictionCaseType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+      ]
+    )
+  produceEvictionDocuments(
+    inputData: ProduceEvictionDocumentsDataType
+  ): ProduceEvictionDocumentsType
+    @auth(requires: ["app_manager", "lambda_manager", "partner_admin"])
+  updateAContractForLambda(
+    inputData: ContractQueryAndUpdateDataType
+  ): ContractQuerySchema @auth(requires: ["lambda_manager"])
+  unsetContractDataForLambda(
+    inputData: ContractQueryAndUnsetDataType
+  ): ContractQuerySchema @auth(requires: ["lambda_manager"])
+  prepareContractESigningDataAndCreateAppQueue(
+    inputData: ContractESigningAndAppQueueAddType
+  ): AppQueueIdType @auth(requires: ["lambda_manager"])
+  downloadJournal(inputData: JournalDownloadInputType): DownloadAJournalType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+      ]
+    )
+  createAnAssignment(inputData: CreateAnAssignmentDataType): AssignmentType
+    @auth(
+      requires: ["app_manager", "partner_admin", "partner_agent", "lambda_manager"]
+    )
+  regenerateContractEsigning(
+    inputData: RegenerateContractEsigningInputType
+  ): RegenerateContractEsigningType
+    @auth(
+      requires: ["app_manager", "partner_admin", "partner_agent", "lambda_manager"]
+    )
+  terminateAssignment(
+    inputData: TerminateAssignmentInputType
+  ): AssignmentTerminateType
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  resetCpiFutureRentAmount(queryData: CpiResetQueryData): Contract
+    @auth(requires: ["lambda_manager"])
+  resetSingleCpiFutureRentAmount(queryData: CpiResetQueryData): Contract
+    @auth(requires: ["lambda_manager"])
+  updateContractAddon(
+    inputData: UpdateContractAddonInputType
+  ): ContractAddonType
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  removeContractAddon(
+    inputData: RemoveContractAddonInputType
+  ): RemoveAddonContractType
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  addAddonInContract(inputData: AddAddonInputType): ContractAddonType
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  dailyNaturalTerminationNoticeSend(contractId: ID): MsgWithCode
+    @auth(requires: ["lambda_manager"])
+  dailySoonEnding(contractId: ID): MsgWithCode
+    @auth(requires: ["lambda_manager"])
+  dailyAssignmentESigningReminder(option: Object): MsgWithCode
+    @auth(requires: ["lambda_manager"])
+  sendLeaseESigningReminder(option: Object): MsgWithCode
+    @auth(requires: ["lambda_manager"])
+  movingInSigningReminder(option: Object): MsgWithCode
+    @auth(requires: ["lambda_manager"])
+  movingOutSigningReminder(option: Object): MsgWithCode
+    @auth(requires: ["lambda_manager"])
+  updateContractAndAddLog(
+    inputData: ContractQueryAndUpdateDataType
+  ): MsgWithCode @auth(requires: ["lambda_manager"])
+  updateContractStatusFromLambda(contractId: ID, status: String): MsgWithCode
+    @auth(requires: ["lambda_manager"])
+  updateContractPayoutPauseStatus(
+    inputData: UpdateContractPayoutPauseStatusInputType
+  ): Contract
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+  updateAssignment(inputData: updateAssignmentInputType): UpdateAssignmentType
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  checkCommissionChangesAndAddHistory(
+    inputData: CheckCommissionChangesAndAddHistoryInput
+  ): ReturnBoolean @auth(requires: ["lambda_manager"])
+  updateLeaseTerms(inputData: updateLeaseInputType): Contract
+    @auth(
+      requires: ["app_manager", "partner_admin", "partner_agent", "lambda_manager"]
+    )
+  createALease(inputData: CreateALeaseDataType): Contract
+    @auth(
+      requires: ["app_manager", "partner_admin", "partner_agent", "lambda_manager"]
+    )
+  terminateLease(inputData: TerminateLeaseDataType): Contract
+    @auth(
+      requires: ["app_manager", "partner_admin", "partner_agent", "lambda_manager"]
+    )
+  cancelLease(inputData: CancelLeaseDataType): Contract
+    @auth(
+      requires: ["app_manager", "partner_admin", "partner_agent", "lambda_manager"]
+    )
+  cancelLeaseForWrongSSN(inputData: CancelLeaseForWrongSSNDataType): Contract
+    @auth(requires: ["lambda_manager"])
+  updatePauseUnPausePayouts(
+    inputData: PauseUnPausePayoutInputDataType
+  ): ReturnBoolean
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+  sendCPINotification(inputData: sendCPINotificationInputDataType): MsgWithCode
+    @auth(requires: ["lambda_manager"])
+  updateCpiContractRentAmount(
+    inputData: UpdateCpiContractRentAmountInputDataType
+  ): MsgWithCode @auth(requires: ["lambda_manager"])
+  initiateMonthlyCreateInvoiceJob(
+    inputData: InitiateMonthlyCreateInvoiceJobInput
+  ): MsgWithCode @auth(requires: ["app_admin"])
+  removeEvictionCase(
+    inputData: RemoveEvictionCaseInputType
+  ): UpdateContractEvictionCaseType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+      ]
+    )
+  downloadAgedDebtorsReport(inputData: AgedDebtorsReportQueryDataType): CommonDownloadReturnType
+    @auth(requires: ["app_manager", "partner_admin"])
+  cancelLeaseTermination(inputData: CancelLeaseTerminationInputType): MsgWithCode
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+}

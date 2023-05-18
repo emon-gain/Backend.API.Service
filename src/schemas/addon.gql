@@ -1,0 +1,156 @@
+type Addon {
+  _id: String
+  isRecurring: Boolean
+  price: Number
+  type: AddonTypeEnum
+  enableCommission: Boolean
+  allowPriceEdit: Boolean
+  name: String
+  partnerId: String
+  enable: Boolean
+  productName: String
+  commissionPercentage: Number
+  isNonRent: Boolean
+  debitAccountId: String
+  creditAccountId: String
+  createdAt: Date
+  createdBy: String
+}
+
+type TaxCodeTaxPercentageObj {
+  # For Admin addons Filters
+  taxCode: Number
+  taxPercentage: Number
+}
+
+type LedgerAccountQuerySchemaForAdminAddonFilters {
+  # For Admin addons Filters
+  _id: String
+  partnerId: String
+  accountNumber: Number
+  accountName: String
+  taxCodeId: String
+  taxCodeInfo: TaxCodeTaxPercentageObj
+}
+
+type AddonQuerySchema {
+  _id: String
+  isRecurring: Boolean
+  price: Number
+  type: String
+  enableCommission: Boolean
+  allowPriceEdit: Boolean
+  name: String
+  partnerId: String
+  partner: Partner
+  enable: Boolean
+  productName: String
+  commissionPercentage: Number
+  isNonRent: Boolean
+  debitAccountId: String
+  debitAccount: LedgerAccountQuerySchemaForAdminAddonFilters
+  creditAccountId: String
+  creditAccount: LedgerAccountQuerySchemaForAdminAddonFilters
+  createdAt: Date
+  createdBy: String
+  # For Admin addons Filters
+  ledgerAccounts: [LedgerAccountQuerySchemaForAdminAddonFilters]
+}
+
+type QueryAddon {
+  data: [AddonQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+enum AddonTypeEnum {
+  lease
+  assignment
+}
+
+input AddonAddType {
+  isRecurring: Boolean
+  price: Number
+  type: AddonTypeEnum
+  isNonRent: Boolean
+  enableCommission: Boolean
+  allowPriceEdit: Boolean
+  name: String
+  enable: Boolean
+  debitAccountId: String
+  creditAccountId: String
+  commissionPercentage: Int
+}
+
+input AddonUpdateDataType {
+  commissionPercentage: Number
+  isRecurring: Boolean
+  price: Number
+  type: String
+  enableCommission: Boolean
+  allowPriceEdit: Boolean
+  name: String
+  enable: Boolean
+  debitAccountId: String
+  creditAccountId: String
+}
+
+input AddonUpdateType {
+  _id: String
+  partnerId: String
+  data: AddonUpdateDataType
+}
+
+input AddonRemoveType {
+  _id: String
+}
+
+enum AddonStatusEnum {
+  activated
+  deactivated
+}
+
+enum AddonTypeEnumForFilter {
+  assignment
+  leaseRent
+  leaseNonRent
+  lease
+}
+
+input AddonsQueryDataType {
+  _id: String
+  isRecurring: Boolean
+  price: Number
+  enableCommission: Boolean
+  name: String
+  enable: Boolean
+  productName: String
+  commissionPercentage: Number
+  isNonRent: Boolean
+  debitAccountId: String
+  creditAccountId: String
+
+  # For Admin addons Filters
+  createdDateRange: CommonStartDateAndEndDateInputDataType
+  type: AddonTypeEnumForFilter
+  status: AddonStatusEnum
+  priceRange: CommonMinMaxInputDataType
+}
+
+extend type Query {
+  addons(
+    queryData: AddonsQueryDataType,
+    optionData: OptionDataType
+  ): QueryAddon @auth(requires: ["app_admin", "app_manager", "partner_admin", "partner_agent"])
+}
+
+extend type Mutation {
+  addAddon(
+    inputData: AddonAddType
+  ): [Addon] @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+
+  updateAddon(
+    inputData: AddonUpdateType
+  ): Addon @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+
+  removeAddon(inputData: AddonRemoveType): Addon @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+}

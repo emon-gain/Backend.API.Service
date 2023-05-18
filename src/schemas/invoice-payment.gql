@@ -1,0 +1,741 @@
+type InvoicePayment {
+  _id: String
+  contractId: String
+  contract: Contract
+  agentId: String
+  branchId: String
+  partnerId: String
+  paymentId: String
+  accountId: String
+  propertyId: String
+  tenantId: String
+  invoiceId: String
+  amount: Number
+  paymentDate: Date
+  paymentType: String
+  status: String
+  note: String
+  meta: PaymentMetaObject
+  receivedFileName: String
+  netsReceivedFileId: String
+  invoices: [InvoicesContentObject]
+  type: String
+  refundedAmount: Number
+  refundToAccountNumber: String
+  refundToAccountName: String
+  refunded: Boolean
+  refundedMeta: [RefundedPaymentMetaObject]
+  partiallyRefunded: Boolean
+  sentToNETS: Boolean
+  sentToNETSOn: Date
+  numberOfFails: Number
+  refundStatus: String
+  refundPaymentIds: [String]
+  bookingDate: Date
+  refundPaymentStatus: String
+  feedbackStatusLog: [FeedbackHistorySchemaObject]
+  tenants: [ObjectTenants]
+  paymentReason: String
+  isManualRefund: Boolean
+  manualRefundDate: Date
+  manualRefundReason: String
+  isFinalSettlement: Boolean
+  refundBankRef: String
+  isDepositInsurancePayment: Boolean
+  depositInsuranceId: String
+  appInvoiceId: String
+  appPartnerId: String
+  createdAt: Date
+  createdBy: String
+  nodeIndex: Number
+}
+
+input InvoicePaymentsInput {
+  data: [InvoicePaymentAddType]
+}
+
+input InvoicePaymentAddType {
+  _id: String
+  contractId: String
+  agentId: String
+  branchId: String
+  partnerId: String
+  paymentId: String
+  accountId: String
+  propertyId: String
+  tenantId: String
+  invoiceId: String
+  amount: Number
+  paymentDate: Date
+  paymentType: String
+  status: String
+  note: String
+  meta: Object
+  receivedFileName: String
+  netsReceivedFileId: String
+  type: String
+  refundedAmount: Number
+  refundToAccountNumber: String
+  refundToAccountName: String
+  refunded: Boolean
+  refundedMeta: [Object]
+  partiallyRefunded: Boolean
+  sentToNETS: Boolean
+  sentToNETSOn: Date
+  numberOfFails: Number
+  refundStatus: String
+  refundPaymentIds: [String]
+  bookingDate: Date
+  refundPaymentStatus: String
+  feedbackStatusLog: [Object]
+  invoices: [Object]
+  tenants: [Object]
+  paymentReason: String
+  isManualRefund: Boolean
+  manualRefundDate: Date
+  manualRefundReason: String
+  isFinalSettlement: Boolean
+  refundBankRef: String
+  isDepositInsurancePayment: Boolean
+  depositInsuranceId: String
+  appInvoiceId: String
+  appPartnerId: String
+  createdAt: Date
+  createdBy: String
+  nodeIndex: Number
+  additionalTaxInfo: String
+}
+
+type InvoicePaymentQuerySchema {
+  _id: String
+  contractId: String
+  contract: Contract
+  agentId: String
+  agent: User
+  branchId: String
+  branch: Branch
+  partnerId: String
+  partner: Partner
+  paymentId: String
+  accountId: String
+  account: Account
+  propertyId: String
+  property: Listing
+  tenantId: String
+  tenant: Tenant
+  invoiceId: String
+  invoice: Invoice
+  amount: Number
+  paymentDate: Date
+  paymentType: String
+  status: String
+  note: String
+  meta: PaymentMetaObject
+  receivedFileName: String
+  netsReceivedFileId: String
+  invoices: [InvoicesContentObject]
+  type: String
+  refundedAmount: Number
+  refundToAccountNumber: String
+  refundToAccountName: String
+  refunded: Boolean
+  refundedMeta: [RefundedPaymentMetaObject]
+  partiallyRefunded: Boolean
+  sentToNETS: Boolean
+  sentToNETSOn: Date
+  numberOfFails: Number
+  refundStatus: String
+  refundPaymentIds: [String]
+  bookingDate: Date
+  refundPaymentStatus: String
+  feedbackStatusLog: [FeedbackHistorySchemaObject]
+  tenants: [ObjectTenants]
+  paymentReason: String
+  isManualRefund: Boolean
+  manualRefundDate: Date
+  manualRefundReason: String
+  isFinalSettlement: Boolean
+  refundBankRef: String
+  createdAt: Date
+  createdBy: String
+  #For payment lambda #10482
+  nodeIndex: Number
+}
+
+type InvoicePaymentLambdaQuerySchema {
+  _id: String
+  contractId: String
+  contract: Contract
+  agentId: String
+  agent: User
+  branchId: String
+  branch: Branch
+  partnerId: String
+  partner: Partner
+  paymentId: String
+  accountId: String
+  account: Account
+  propertyId: String
+  property: Listing
+  tenantId: String
+  tenant: Tenant
+  invoiceId: String
+  invoice: Invoice
+  amount: Number
+  paymentDate: Date
+  paymentType: String
+  status: String
+  note: String
+  meta: PaymentMetaObject
+  receivedFileName: String
+  netsReceivedFileId: String
+  invoices: [InvoicesContentObject]
+  type: String
+  refundedAmount: Number
+  refundToAccountNumber: String
+  refundToAccountName: String
+  refunded: Boolean
+  refundedMeta: [RefundedPaymentMetaObject]
+  partiallyRefunded: Boolean
+  sentToNETS: Boolean
+  sentToNETSOn: Date
+  numberOfFails: Number
+  refundStatus: String
+  refundPaymentIds: [String]
+  bookingDate: Date
+  refundPaymentStatus: String
+  feedbackStatusLog: [FeedbackHistorySchemaObject]
+  tenants: [ObjectTenants]
+  paymentReason: String
+  isManualRefund: Boolean
+  manualRefundDate: Date
+  manualRefundReason: String
+  isFinalSettlement: Boolean
+  refundBankRef: String
+  createdAt: Date
+  createdBy: String
+  #For payment lambda #10482
+  nodeIndex: Number
+  invoiceInfo: Invoice
+  partnerSettings: PartnerSetting
+}
+
+type FeedbackHistorySchemaObject {
+  createdAt: Date
+  status: String
+  reason: String
+  receivedFileName: String
+  netsReceivedFileId: String
+}
+
+type InvoicesContentObject {
+  invoiceId: String
+  amount: Number
+  remaining: Number
+}
+
+type PaymentMetaObject {
+  kidNumber: String
+  dbTrName: String
+  dbTrAddress: String
+  dbTrAccountNumber: String
+  cdTrName: String
+  cdTrAddress: String
+  cdTrAccountNumber: String
+  settlementDate: Date
+  bankRef: String
+}
+
+type RefundedPaymentMetaObject {
+  refundPaymentId: String
+  amount: Number
+  refundedAt: Date
+}
+
+type InvoicePaymentSummaryQuerySchema {
+  totalPaymentAmount: Number
+  totalRegisteredAmount: Number
+  totalUnspecifiedAmount: Number
+  totalRefundAmount: Number
+}
+
+type InvoicePaymentInvoice {
+  _id: String
+  invoiceSerialId: Int
+}
+
+type InvoicePaymentTenant {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type InvoicePaymentProperty {
+  _id: String
+  apartmentId: String
+  imageUrl: String
+  listingTypeId: String
+  location: ListingLocationObj
+  propertyTypeId: String
+}
+
+type ApprovePendingPaymentsSchema {
+  data: AppQueue
+}
+
+type InvoiceInfoType {
+  _id: String
+  creditedAmount: Number
+  invoiceMonth: Date
+  invoiceTotal: Number
+  invoiceType: String
+  isPayable: Boolean
+  lostMeta: LostMetaType
+  totalPaid: Number
+  totalBalanced: Number
+}
+
+type InvoicePaymentSchema {
+  _id: String
+  amount: Number
+  bankRef: String
+  createdAt: Date
+  contractId: String
+  isManualRefund: Boolean
+  invoicesInfo: [InvoicePaymentInvoice]
+  invoiceInfo: InvoiceInfoType
+  isFinalSettlementDone: Boolean
+  leaseSerial: Number
+  meta: PaymentMetaObject
+  numberOfFails: Int
+  partiallyRefunded: Boolean
+  paymentDateText: Date
+  paymentType: String
+  paymentReason: String
+  propertyInfo: InvoicePaymentProperty
+  refunded: Boolean
+  refundPaymentStatus: String
+  refundStatus: String
+  refundToAccountNumber: String
+  status: String
+  tenantInfo: InvoicePaymentTenant
+  type: String
+}
+
+type esignInfo {
+  _id: String
+  amount: Number
+  createdAt: String
+  paymentsApprovalEsigningUrl: String
+}
+
+type QueryInvoicePayment {
+  actions: [esignInfo]
+  data: [InvoicePaymentSchema]
+  metaData: MetaDataQuerySchema
+}
+
+type InsurancePaymentsSummaryQuerySchema {
+  totalPayment: Number
+  totalRegistered: Number
+  totalUnspecified: Number
+}
+
+enum InvoicePaymentRefundStatusEnum {
+  created
+  estimated
+  in_progress
+  completed
+  failed
+  canceled
+  pending_for_approval
+  waiting_for_signature
+  approved
+}
+
+enum InvoicePaymentStatusEnum {
+  new
+  unspecified
+  registered
+}
+
+enum InvoicePaymentPaymentTypeEnum {
+  manual
+  bank
+}
+
+enum InvoicePaymentTypeEnum {
+  payment
+  refund
+}
+
+enum InsurancePaymentStatusEnum {
+  new
+  registered
+  unspecified
+}
+
+enum InsurancePaymentTypeEnum {
+  bank
+  manual
+}
+
+input InsurancePaymentsListDataType {
+  amount: Number
+  dateRange: CommonStartDateAndEndDateInputDataType
+  serialId: Number
+  searchKeyword: String
+  status: [InsurancePaymentStatusEnum]
+  type: InsurancePaymentTypeEnum
+}
+
+type InsurancePaymentTenant {
+  _id: String
+  avatarKey: String
+  name: String
+}
+
+type InsurancePaymentProperty {
+  _id: String
+  imageUrl: String
+  location: ListingLocationObj
+}
+
+type InsurancePaymentInvoiceInfoType {
+  _id : String
+  serialId: Number
+}
+
+type InsurancePaymentsListSchema {
+  _id: String
+  amount: Number
+  createdAt: Date
+  invoiceInfo: InsurancePaymentInvoiceInfoType
+  partner: Partner
+  paymentReason: String
+  paymentType: String
+  paymentBookingDate: Date
+  propertyInfo: InsurancePaymentProperty
+  status: String
+  tenantInfo: InsurancePaymentTenant
+}
+
+type InsurancePaymentsListQuery{
+  data: [InsurancePaymentsListSchema]
+  metaData: MetaDataQuerySchema
+}
+
+input InvoicePaymentsDataType {
+  accountId: String
+  agentId: String
+  amount: Number
+  bankReferenceId: String
+  branchId: String
+  context: String
+  contractId: String
+  createdDateRange: CommonStartDateAndEndDateInputDataType
+  dateRange: CommonStartDateAndEndDateInputDataType
+  invoiceId: String
+  invoiceSerialId: Number
+  invoiceSummaryId: String
+  isInvoicesTab: Boolean
+  leaseSerial: Int
+  partnerId: String
+  paymentType: [InvoicePaymentPaymentTypeEnum]
+  propertyId: String
+  refundStatus: [InvoicePaymentRefundStatusEnum]
+  requestFrom: RequestFromEnum
+  searchKeyword: String
+  sort: Object
+  status: [InvoicePaymentStatusEnum]
+  tenantId: String
+  type: [InvoicePaymentTypeEnum]
+}
+input paymentForExcelQueryDataType {
+  queueId: String
+}
+input PaymentForXmlQueryDataType {
+  paymentId: String
+}
+
+input PaymentForLambdaQueryDataType {
+  receivedFileName: String
+  nodeIndex: Number
+}
+
+type QueryPaymentExcelCreatorType {
+  invoiceId: Number
+  date: Date
+  tenantId: Number
+  tenant: String
+  objectId: String
+  property: String
+  apartmentId: String
+  status: String
+  amount: Number
+}
+
+type QueryPaymentExcelCreator {
+  data: [QueryPaymentExcelCreatorType]
+  total: Number
+}
+
+type MetaTypeSchema {
+  bankRef: String
+  cdTrName: String
+  cdTrAccountNumber: String
+  dbTrName: String
+  dbTrAccountNumber: String
+  kidNumber: String
+}
+
+type RefundPaymentMetaSchema {
+  refundPaymentId: String
+  amount: Number
+}
+
+type InvoicesSchema {
+  amount: Number
+  invoiceId: String
+  invoiceSerialId: Int
+  isFinalSettlement: Boolean
+  isPayable: Boolean
+}
+
+type locationForPaymentType {
+  name: String
+  city: String
+  country: String
+  streetNumber: String
+  sublocality: String
+  postalCode: String
+}
+
+type propertyInfoType {
+  listingTypeId: String
+  propertyTypeId: String
+  imageUrl: String
+  location: locationForPaymentType
+  apartmentId: String
+  floor: String
+}
+
+type branchInfoType {
+  _id: String
+  name: String
+}
+
+type CdTrInformation {
+  address: String
+  avatarKey: String
+  name: String
+}
+
+type InvoicePaymentDetailsQuerySchema {
+  _id: String
+  accountInfo: CommonNameAvatarKeyType
+  additionalTaxInfo: String
+  agentInfo: CommonNameAvatarKeyType
+  amount: Number
+  branchInfo: branchInfoType
+  cdTrInfos: [CdTrInformation]
+  invoiceInfo: InvoicesSchema
+  invoices: [InvoicesSchema]
+  isFinalSettlementDone: Boolean
+  mainTenant: CommonNameAvatarKeyType
+  manualRefundReason: String
+  meta: MetaTypeSchema
+  numberOfFails: Int
+  otherTenants: [CommonNameAvatarKeyType]
+  partner: Partner
+  partiallyRefunded: Boolean
+  paymentDate: Date
+  paymentId: String
+  paymentReason: String
+  paymentType: String
+  propertyId: String
+  propertyInfo: propertyInfoType
+  refundableAmount: Number
+  refundBankRef: String
+  refunded: Boolean
+  refundStatus: String
+  refundPaymentStatus: String
+  refundedMeta: [RefundPaymentMetaSchema]
+  refundToAccountNumber: String
+  refundToAccountName: String
+  status: String
+  totalPaymentAmount: Number
+  type: String
+}
+
+input InvoicePaymentDetailsDataType {
+  paymentId: String
+  invoiceId: String
+}
+
+input FeedbackHistoryDataType {
+  createdAt: Date
+  netsReceivedFileId: String
+  reason: String
+  receivedFileName: String
+  status: String
+}
+
+enum PendingForApprovalTypeEnum {
+  payment
+  payout
+}
+
+input GetCollectionsIdsDataType {
+  type: PendingForApprovalTypeEnum
+}
+
+input InvoicePaymentDataType {
+  nodeIndex: Number
+  receivedFileName: String
+}
+
+input ApprovePendingPaymentInputDataType {
+  selectedPendingPaymentIds: [String]
+}
+
+input PaymentUpdateData {
+  paymentUpdateData: [InvoicePaymentsUpdateDataType]
+}
+
+input InvoicePaymentsUpdateDataType {
+  feedbackInfo: [Object]
+  paymentId: String
+}
+
+input pendingPaymentsListDataType {
+  propertyId: String
+}
+
+input MarkPaymentAsEstimatedInputType {
+  paymentId: String
+}
+
+type MarkPaymentAsEstimatedType {
+  _id: String
+  refundStatus: String
+}
+
+input TestPayoutOrPaymentInputType {
+  limit: Int
+  isAdvancedPayout: Boolean
+  isInvoiceCredited: Boolean
+  paymentId: String
+  payoutId: String
+}
+
+extend type Query {
+  invoicePayments(
+    queryData: InvoicePaymentsDataType
+    optionData: OptionDataType
+  ): QueryInvoicePayment
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+
+  getInvoicePaymentDetails(
+    queryData: InvoicePaymentDetailsDataType
+  ): InvoicePaymentDetailsQuerySchema
+    @auth(
+      requires: [
+        "app_admin",
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+
+  getInvoicePaymentSummary(
+    queryData: InvoicePaymentsDataType
+  ): InvoicePaymentSummaryQuerySchema
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+
+  getPaymentForExcelCreator(
+    queryData: paymentForExcelQueryDataType
+    optionData: OptionDataType
+  ): QueryPaymentExcelCreator @auth(requires: ["lambda_manager"])
+
+  getInvoicePaymentsForXml(
+    queryData: PaymentForXmlQueryDataType
+  ): InvoicePaymentQuerySchema @auth(requires: ["lambda_manager"])
+
+  getInvoicePaymentsForPaymentLambda(
+    queryData: PaymentForLambdaQueryDataType
+  ): InvoicePaymentQuerySchema @auth(requires: ["lambda_manager"])
+
+  getRelationalDataForAddPayment(
+    queryData: PaymentForXmlQueryDataType
+  ): InvoicePaymentLambdaQuerySchema @auth(requires: ["lambda_manager"])
+
+  getCollectionIdsForApproval(queryData: GetCollectionsIdsDataType): [String]
+    @auth(requires: ["partner_accounting"])
+
+  getPendingPaymentsList(
+     queryData: pendingPaymentsListDataType
+     optionData: OptionDataType
+  ): QueryInvoicePayment
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+
+  insurancePaymentsSummary(
+    queryData: InsurancePaymentsListDataType
+  ): InsurancePaymentsSummaryQuerySchema
+  @auth(
+    requires: [
+      "app_admin"
+    ]
+  )
+
+  insurancePaymentsList(
+    queryData: InsurancePaymentsListDataType
+    optionData: OptionDataType
+  ): InsurancePaymentsListQuery
+    @auth(
+     requires: [
+       "app_admin"
+     ]
+   )
+}
+
+extend type Mutation {
+  addInvoicePayments(inputData: InvoicePaymentsInput): [InvoicePayment]
+    @auth(requires: ["lambda_manager"])
+  updatePaymentsForLambda(inputData: PaymentUpdateData): Boolean
+    @auth(requires: ["lambda_manager"])
+  downloadInvoicePayments(
+    inputData: InvoicePaymentsDataType
+  ): CommonDownloadReturnType
+    @auth(requires: ["app_manager", "partner_admin", "partner_accounting"])
+  approvePendingRefundPayments(
+    inputData: ApprovePendingPaymentInputDataType
+  ): ApprovePendingPaymentsSchema
+    @auth(requires: ["partner_accounting"])
+  markPaymentAsEstimated(inputData: MarkPaymentAsEstimatedInputType): MarkPaymentAsEstimatedType
+    @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent"])
+  createPayoutsOrRefundPaymentsForTest(inputData: TestPayoutOrPaymentInputType): AppQueue
+    @auth(requires: ["app_admin"])
+}

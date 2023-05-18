@@ -1,0 +1,13 @@
+type CpiDataSet {
+  _id: String
+  cpiDataSet: Object
+  createdBy: String
+}
+
+input CpiDataSetAddType {
+  CPIData: Object
+}
+
+extend type Mutation {
+  addCpiDataSet(inputData: CpiDataSetAddType): [CpiDataSet] @auth(requires: ["lambda_manager"])
+}

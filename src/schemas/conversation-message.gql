@@ -1,0 +1,92 @@
+type PreviewMetaSchema {
+  url: String
+  title: String
+  description: String
+  image: String
+  s3FileName: String
+}
+
+type ConversationMessage {
+  _id: String
+  createdBy: String
+  conversationId: String
+  content: String
+  createdAt: Date
+  fileUrl: String
+  isFile: Boolean
+  previewMeta: PreviewMetaSchema
+}
+
+type ConversationMessageDataType {
+  _id: String
+  createdBy: String
+  conversationId: String
+  content: String
+  createdAt: Date
+  conversationInfo: Conversation
+  fileUrl: String
+  isFile: Boolean
+  listingInfo: Listing
+  previewMeta: PreviewMetaSchema
+  userInfo: User
+}
+
+type ConversationMessagesType {
+  data: [ConversationMessageDataType]
+  metaData: MetaDataQuerySchema
+}
+
+input PreviewMetaSchemaInput {
+  url: String
+  title: String
+  description: String
+  image: String
+  s3FileName: String
+}
+
+input ConversationMessageAddType {
+  conversationId: String
+  content: String
+  isFile: Boolean
+  previewMeta: PreviewMetaSchemaInput
+  partnerId: String
+  accountId: String
+  propertyId: String
+  tenantId: String
+}
+
+input ConversationMessageAddByLambdaInput {
+  conversationId: String
+  identityUserId: String
+  messageContent: String
+  attachmentsFileName: [String]
+}
+
+input ConversationMessagesQueryType {
+  accountId: String
+  conversationId: String
+  keyword: String
+  listingId: String
+  propertyId: String
+  tenantId: String
+  type: String
+}
+
+input SendConversationNotificationInputInput {
+  conversationId: String
+  partnerId: String
+}
+
+extend type Mutation {
+  addConversationMessage(inputData: ConversationMessageAddType): [ConversationMessage]
+    @auth(requires: ["user"])
+  # For lambda
+  addConversationMessagesByLambda(inputData: ConversationMessageAddByLambdaInput): [ConversationMessage]
+    @auth(requires: ["lambda_manager"])
+  sendConversationNotification(inputData: SendConversationNotificationInputInput): MsgWithCode
+    @auth(requires: ["lambda_manager"])
+}
+
+extend type Query {
+  getConversationMessages(queryData: ConversationMessagesQueryType, optionData: OptionDataType): ConversationMessagesType @auth(requires: ["app_manager", "partner_admin", "user"])
+}

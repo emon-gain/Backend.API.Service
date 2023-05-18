@@ -1,0 +1,887 @@
+type Tenant {
+  _id: String
+  name: String
+  type: String
+  userId: String
+  partnerId: String
+  contract: Contract
+  properties: [TenantPropertiesObj]
+  serial: Number
+  billingAddress: String
+  lastUpdate: Date
+  aboutText: String
+  city: String
+  country: String
+  zipCode: String
+  user: User
+  backupAddress: String
+  powerOffice: Array
+  depositAccountMeta: Object
+  creditRatingInfo: Object
+  createdAt: Date
+  createdBy: String
+  avatarKey: String
+}
+
+type TenantUserSchema {
+  _id: String
+  name: String
+  email: String
+  phoneNumber: String
+}
+
+type TenantEmployerMetaObj {
+  employerName: String
+  employerPhoneNumber: String
+  workingPeriod: String
+}
+
+type TenantPreviousEmployerMetaObj {
+  reference: String
+  previousLandlordName: String
+  previousLandlordPhoneNumber: String
+  previousLanlordEmail: String
+}
+
+type TenantInterestFormMetaObj {
+  movingFrom: String
+  employerMeta: TenantEmployerMetaObj
+  previousEmployerMeta: TenantPreviousEmployerMetaObj
+}
+
+type TenantPropertiesObj {
+  propertyId: String
+  property: Listing
+  accountId: String
+  branchId: String
+  branch: Branch
+  agentId: String
+  contractId: String
+  contract: Contract
+  status: String
+  createdAt: Date
+  createdBy: String
+  wantsRentFrom: Date
+  numberOfTenant: Number
+  interestFormMeta: TenantInterestFormMetaObj
+  fileIds: [String]
+}
+
+type TenantQuerySchema {
+  _id: String
+  name: String
+  type: String
+  userId: String
+  user: UserQuerySchema
+  partnerId: String
+  partner: Partner
+  serial: Number
+  billingAddress: String
+  address: String
+  lastUpdate: Date
+  aboutText: String
+  city: String
+  country: String
+  zipCode: String
+  backupAddress: String
+  powerOffice: Array
+  depositAccountMeta: Object
+  creditRatingInfo: Object
+  createdAt: Date
+  createdBy: String
+  # For lambda accounting bridge pogo #10175
+  id: Number
+  userInfo: TenantUserSchema
+  # For tenant details
+  totalOverDue: Number
+  totalDue: Number
+  properties: [TenantPropertiesObj]
+}
+
+type QueryTenant {
+  data: [TenantQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type QueryTenantDetails {
+  _id: String
+  aboutText: String
+  billingAddress: String
+  city: String
+  country: String
+  creditRatingInfo: Object
+  creditRatingRiskClass: String
+  creditRatingScore: String
+  creditRatingTermsAcceptedOn: Date
+  invoiceThisMonth: Number
+  isAskForCreditRating: Boolean
+  name: String
+  properties: [TenantPropertiesObj]
+  serial: Int
+  taskDue: Number
+  totalDue: Number
+  totalOverDue: Number
+  type: String
+  userInfo: TenantUserType
+  zipCode: String
+}
+
+type TenantUserType {
+  _id: String
+  email: String
+  phoneNumber: String
+  nin: String
+  birthDate: Date
+  avatarKey: String
+  organizationNumber: String
+}
+
+input TenantAddDataInputType {
+  propertyId: String
+  name: String
+  email: String
+  norwegianNationalIdentification: String
+  organizationNumber: String # For Compello
+  billingAddress: String
+  phoneNumber: String
+  zipCode: String
+  city: String
+  country: String
+}
+
+input TenantAddType {
+  data: TenantAddDataInputType
+  isShowError: Boolean
+  isDemo: Boolean
+}
+
+input TenantAboutUpdateType {
+  partnerId: String
+  tenantId: String
+  aboutText: String
+}
+
+enum TenantPropertyStatusEnumForUpdate {
+  interested
+  not_interested
+  rejected
+}
+
+input TenantPropertyStatusUpdateType {
+  propertyId: String
+  status: TenantPropertyStatusEnumForUpdate
+  tenantId: String
+}
+
+enum StatusTypeEnum {
+  active
+  archived
+}
+
+input TenantTypeUpdateType {
+  tenantId: String
+  changeStatus: StatusTypeEnum
+}
+
+input TenantUpdateType {
+  billingAddress: String
+  city: String
+  country: String
+  contractId: String
+  email: String
+  isFormSubmittedToBank: Boolean
+  name: String
+  norwegianNationalIdentification: String
+  organizationNumber: String
+  partnerId: String
+  phoneNumber: String
+  referenceNumber: String
+  serial: Number
+  tenantId: String
+  zipCode: String
+}
+
+input TenantsQueryDataType {
+  _id: String
+  name: String
+  type: String
+  userId: String
+  partnerId: String
+  serial: Number
+  # For lambda accounting bridge pogo
+  dataType: String
+  directPartnerAccountId: String
+}
+
+# For lambda accounting bridge pogo
+input TenantPowerOfficeType {
+  id: String
+  code: String
+  hasError: Boolean
+  accountId: String
+  syncedAt: Date
+}
+
+input TenantUpdateForPogoType {
+  _id: String
+  partnerId: String
+  name: String
+  type: String
+  billingAddress: String
+  powerOffice: TenantPowerOfficeType
+}
+
+input TenantExcelCreatorQueryDataType {
+  queueId: String
+}
+
+input TenantsDropdownQueryDataType {
+  accountId: String
+  contractId: String
+  propertyId: String
+  searchString: String
+  tenantId: String
+  status: String
+}
+
+type TenantExcelCreatorQuery {
+  name: String
+  tenantId: Int
+  email: String
+  phone: String
+  birthDate: String
+  totalOverDue: Number
+  objectId: Int
+  address: String
+  apartmentId: String
+  periodFrom: Date
+  periodTo: Date
+  meeterNumber: String
+  deposit: String
+  rentAmount: Number
+  isVatEnable: String
+  contractLastCpiDate: Date
+  contractNextCpiDate: Date
+  rentAddons: String
+  contractRemainingDays: Date
+  status: String
+}
+
+type QueryTenantExcelCreator {
+  data: [TenantExcelCreatorQuery]
+  total: Number
+}
+
+type TenantsDropdownQuerySchema {
+  _id: String
+  avatar: String
+  creditScore: Number
+  name: String
+  norwegianNationalIdentification: String
+  hasNegativePaymentRemarks: Boolean
+}
+
+type QueryTenantsDropdown {
+  data: [TenantsDropdownQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type QuerySsnReturnDataType {
+  norwegianNationalIdentification: String
+}
+
+# For xledger
+type QueryTenantForXledger {
+  _id: String
+  code: Number
+  country: String
+  dbId: String
+  description: String
+  email: String
+  place: String
+  phone: String
+  streetAddress: String
+  zipCode: String
+}
+
+input TenantDetailsQueryDataType {
+  tenantId: String
+}
+
+input TenantSSNDataType {
+  tenantId: String
+}
+
+input AddInterestFormUserData {
+  birthday: Date
+  termsAcceptedOn: Date
+  phoneNumber: String
+  movingFrom: String
+  employerName: String
+  employerPhoneNumber: String
+  workingPeriod: String
+  reference: String
+  previousLandlordName: String
+  previousLandlordPhoneNumber: String
+  previousLandlordEmail: String
+  norwegianNationalIdentification: String
+  isSmoker: Boolean
+  hasPets: Boolean
+}
+
+input AddInterestFormDataType {
+  listingId: String
+  userData: AddInterestFormUserData
+  # For tenantInterestFormData
+  aboutYou: String
+  creditRatingTermsAcceptedOn: Date
+  # For tenantPropertiesData
+  wantsRentFrom: Date
+  numberOfTenant: Int
+  preferredLengthOfLease: String
+}
+
+enum TenantQueryStatusEnum {
+  upcoming
+  active
+  closed
+}
+
+enum TenantTypeEnum {
+  archived
+}
+
+enum TenantHasInProgressLease {
+  hasInProgressLease
+}
+
+enum TenantHasProspectEnum {
+  yes
+}
+
+enum HasTerminatedContractEnum {
+  yes
+  no
+  all
+}
+
+enum TenantDepositAccountStatus {
+  waitingForCreation
+  sentToBank
+  waitingForPayment
+  paid
+  partiallyPaid
+  overPaid
+  noDeposit
+}
+
+enum TenantPaymentStatusEnum {
+  unpaid
+  partially_paid
+  overpaid
+  overdue
+  defaulted
+}
+
+enum TenantPropertyStatusEnum {
+  invited
+  interested
+  rejected
+  not_interested
+}
+
+enum TenantESignStatusEnum {
+  sentToTenant
+  signedByTenant
+}
+enum xledgerTenantDataTypeEnum {
+  get_update_tenant
+}
+
+input TenantsQueryDataTypeForPartnerApp {
+  name: String
+  email: String
+  phoneNumber: String
+  ssn: String
+  searchKeyword: String
+  status: [TenantQueryStatusEnum]
+  type: [TenantTypeEnum]
+  hasInProgressLease: [TenantHasInProgressLease]
+  hasProspect: [TenantHasProspectEnum]
+  branchId: String
+  agentId: String
+  accountId: String
+  propertyId: String
+  hasTerminatedContract: HasTerminatedContractEnum
+  depositAccountStatus: [TenantDepositAccountStatus]
+  depositInsuranceStatus: [DepositInsuranceStatusEnum]
+  paymentStatus: [TenantPaymentStatusEnum]
+  leaseStartDateRange: CommonStartDateAndEndDateInputDataType
+  leaseEndDateRange: CommonStartDateAndEndDateInputDataType
+  prospectStatus: [TenantPropertyStatusEnum]
+  createdAtDateRange: CommonStartDateAndEndDateInputDataType
+  eSignStatus: [TenantESignStatusEnum]
+  sort: Object
+}
+
+input TenantsAddSsnOrOrgIdDataType {
+  tenantsSsnOrLandlordInput: [TenantSsnOrLandlordOrgIdInputType]
+}
+
+input UploadAvatarKeyInputType {
+  avatarKey: String
+  tenantId: String
+}
+
+input TenantSsnOrLandlordOrgIdInputType {
+  organizationId: String
+  orgId: String
+  ssn: String
+  type: String
+  userId: String
+}
+
+type TenantUserInfoSchema {
+  _id: String
+  avatarKey: String
+  email: String
+  nin: String
+  phoneNumber: String
+}
+
+type TenantPropertySchema {
+  _id: String
+  apartmentId: String
+  imageUrl: String
+  leaseEndDate: Date
+  leaseStartDate: Date
+  listingTypeId: String
+  location: TenantPropertyLocationSchema
+  propertyTypeId: String
+  serial: Int
+}
+
+type TenantPropertyLocationSchema {
+  name: String
+  city: String
+  country: String
+  postalCode: String
+}
+
+type TenantProperties {
+  property: TenantPropertySchema
+  status: String
+}
+
+type TenantQuerySchemaForPartnerApp {
+  _id: String
+  createdAt: Date
+  creditRatingInfo: Object
+  creditRatingRiskClass: String
+  creditRatingScore: String
+  creditRatingTermsAcceptedOn: Date
+  isAskForCreditRating: Boolean
+  properties: [TenantProperties]
+  name: String
+  serial: Int
+  totalDue: Number
+  totalOverDue: Number
+  type: String
+  userInfo: TenantUserInfoSchema
+}
+
+type QueryTenantForPartnerApp {
+  data: [TenantQuerySchemaForPartnerApp]
+  metaData: MetaDataQuerySchema
+}
+
+input FileDataTypeForAddFilesInTenants {
+  title: String
+  size: Number
+  name: String
+}
+
+input AddFilesInTenantsDataType {
+  fileData: [FileDataTypeForAddFilesInTenants]
+  propertyId: String
+}
+
+enum InterestFormContextEnum {
+  tenant
+  property
+}
+
+input InterestFormsQueryDataType {
+  context: InterestFormContextEnum
+  tenantId: String
+  propertyId: String
+}
+
+input TenantKycFormDataType {
+  referenceNumber: String
+}
+
+type InterestFormQuerySchema {
+  _id: String
+  serial: Int
+  name: String
+  userInfo: InterestFormUserType
+  status: String
+  submittedAt: Date
+  propertyId: String
+  propertyInfo: InterestFormPropertyType
+  filesInfo: [InterestFormFileType]
+}
+
+type InterestFormFileType {
+  _id: String
+  name: String
+  title: String
+}
+
+type InterestFormPropertyType {
+  _id: String
+  imageUrl: String
+  location: ListingLocationObj
+  propertyTypeId: String
+  listingTypeId: String
+  apartmentId: String
+  serial: Int
+  listed: Boolean
+  propertyStatus: String
+  hasActiveLease: Boolean
+  hasUpcomingLease: Boolean
+  hasInProgressLease: Boolean
+}
+
+type InterestFormUserType {
+  _id: String
+  email: String
+  phoneNumber: String
+  avatarKey: String
+}
+
+type QueryInterestFormType {
+  data: [InterestFormQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+enum ProspectQueryStatusEnum {
+  all
+  invited
+  interested
+  offer
+  signed
+  rejected
+  not_interested
+}
+
+input ProspectQueryInputType {
+  contractId: String
+  propertyId: String
+  status: ProspectQueryStatusEnum
+}
+
+type ProspectUserInfoType {
+  _id: String
+  avatarKey: String
+}
+
+type ProspectsData {
+  _id: String
+  createdAt: Date
+  creditRatingRiskClass: String
+  creditRatingScore: String
+  isShowInterestForm: Boolean
+  isShowNewLease: Boolean
+  name: String
+  status: String
+  userInfo: ProspectUserInfoType
+}
+
+type ProspectsType {
+  data: [ProspectsData]
+  metaData: MetaDataQuerySchema
+}
+
+type UpdateTenantPropertyStatusType {
+  _id: String
+  status: String
+}
+
+type TenantKycQueryDataType {
+  isFormSubmitted: Boolean
+  norwegianNationalIdentification: String
+  signingUrl: String
+}
+
+input AskForCreditRatingInputType {
+  tenantId: String
+}
+
+input AddTenantCreditRatingInfoDataType {
+  creditRatingTermsAcceptedOn: Boolean
+  propertyId: String
+  tenantId: String
+}
+
+input TenantQueryDataTypeForLambda {
+  referenceNumber: String
+}
+
+# For Xledger
+input TenantForXledgerQueryInputType {
+  accountId: String
+  dataType: xledgerTenantDataTypeEnum
+  partnerId: String
+}
+
+type UpdateTenantType {
+  _id: String
+  type: String
+}
+
+input PreviewInterestFormDataType {
+  propertyId: String
+  tenantId: String
+}
+
+type QueryPreviewInterestForm {
+  _id: String
+  aboutMe: String
+  avatarKey: String
+  birthday: String
+  email: String
+  employerName: String
+  employerPhoneNumber: String
+  hasPets: Boolean
+  isSmoker: Boolean
+  name: String
+  numberOfTenant: Number
+  phoneNumber: String
+  preferredLengthOfLease: String
+  userId: String
+  wantsRentFrom: String
+  workingPeriod: String
+}
+
+extend type Query {
+  # For Xledger
+  getTenantForXledger(
+    queryData: TenantForXledgerQueryInputType
+  ): QueryTenantForXledger @auth(requires: ["lambda_manager"])
+  #  For pogo
+  tenants(
+    queryData: TenantsQueryDataType
+    optionData: OptionDataType
+  ): QueryTenant @auth(requires: ["lambda_manager"])
+
+  #  For partner app
+  tenantsForPartnerApp(
+    queryData: TenantsQueryDataTypeForPartnerApp
+    optionData: OptionDataType
+  ): QueryTenantForPartnerApp
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+
+  tenantsDropdown(
+    queryData: TenantsDropdownQueryDataType
+    optionData: OptionDataType
+  ): QueryTenantsDropdown
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+
+  getTenantSsn(queryData: TenantSSNDataType): QuerySsnReturnDataType
+    @auth(requires: ["public"])
+
+  tenantDetails(queryData: TenantDetailsQueryDataType): QueryTenantDetails
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+
+  getTenantForExcelCreator(
+    queryData: TenantExcelCreatorQueryDataType
+    optionData: OptionDataType
+  ): QueryTenantExcelCreator @auth(requires: ["lambda_manager"])
+
+  interestForms(
+    queryData: InterestFormsQueryDataType
+    optionData: OptionDataType
+  ): QueryInterestFormType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_landlord"
+      ]
+    )
+
+  getProspects(
+    queryData: ProspectQueryInputType
+    optionData: OptionDataType
+  ): ProspectsType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  getATenantForLambda(queryData: TenantQueryDataTypeForLambda): Tenant
+    @auth(requires: ["lambda_manager"])
+
+  getTenantKycFormData(
+    queryData: TenantKycFormDataType
+  ): TenantKycQueryDataType @auth(requires: ["public"])
+
+  previewInterestForm(
+    queryData: PreviewInterestFormDataType
+  ): QueryPreviewInterestForm
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_landlord"
+      ]
+    )
+}
+
+type AddFilesInTenantsType {
+  _id: String
+  name: String
+  title: String
+}
+
+input TenantKYCFormInputType {
+  contractId: String
+  depositAmount: Number
+  referenceNumber: String
+  tenantId: String
+  appQueueParams: Object
+}
+
+type AddTenantSnnErrorType {
+  msg: String
+  userId: String
+}
+
+type AddTenantsSsnOrLandloadOrgIdType {
+  errors: [AddTenantSnnErrorType]
+}
+
+enum IsAskForCreditRatingEnum {
+  yes
+  no
+}
+
+input SubmitAskForCreditRatingInput {
+  isAskForCreditRating: IsAskForCreditRatingEnum
+  ssn: String
+  tenantId: String
+  token: String
+}
+
+input InterestFormDeleteType {
+  propertyId: String
+  tenantId: String
+}
+
+type DeleteInterestFormType {
+  _id: String
+}
+
+extend type Mutation {
+  addTenant(inputData: TenantAddType): Tenant
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  updateTenantAbout(inputData: TenantAboutUpdateType): Tenant
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  updateTenantPropertyStatus(
+    inputData: TenantPropertyStatusUpdateType
+  ): UpdateTenantPropertyStatusType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_landlord"
+      ]
+    )
+  updateTenantType(inputData: TenantTypeUpdateType): UpdateTenantType
+    @auth(requires: ["app_manager", "partner_admin"])
+  updateTenant(inputData: TenantUpdateType): Tenant
+    @auth(
+      requires: ["app_manager", "lambda_manager", "partner_admin", "partner_agent"]
+    )
+  deleteInterestForm(inputData: InterestFormDeleteType): DeleteInterestFormType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_landlord"
+      ]
+    )
+
+  updateTenantForPogo(inputData: TenantUpdateForPogoType): TenantQuerySchema
+    @auth(requires: ["lambda_manager"])
+  # For public app
+  addInterestForm(inputData: AddInterestFormDataType): ReturnBoolean
+    @auth(requires: ["user", "partner_tenant"])
+  addFilesInTenants(
+    inputData: AddFilesInTenantsDataType
+  ): [AddFilesInTenantsType] @auth(requires: ["user"])
+  removeInterestForm(partnerId: ID): [File] @auth(requires: ["lambda_manager"])
+  askForCreditRating(inputData: AskForCreditRatingInputType): ReturnBoolean
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent", "partner_landlord"])
+  addTenantCreditRatingInfo(
+    inputData: AddTenantCreditRatingInfoDataType
+  ): Tenant @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  updateAndAddTenantKYCForm(inputData: TenantKYCFormInputType): Tenant
+    @auth(requires: ["lambda_manager"])
+  downloadTenants(
+    inputData: TenantsQueryDataTypeForPartnerApp
+  ): CommonDownloadReturnType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+      ]
+    )
+  addTenantsSsnOrLandloadOrgId(
+    inputData: TenantsAddSsnOrOrgIdDataType
+  ): AddTenantsSsnOrLandloadOrgIdType
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  uploadTenantAvatarKey(inputData: UploadAvatarKeyInputType): String
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  submitAskForCreditRating(
+    inputData: SubmitAskForCreditRatingInput
+  ): ReturnBoolean @auth(requires: ["public"])
+}

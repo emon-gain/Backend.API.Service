@@ -1,0 +1,131 @@
+type Rule {
+  _id: String
+  partnerId: String
+  status: String
+  event: String
+  country: String
+  notifyTo: [ObjectNotifyTo]
+  todoNotifyTo: [ObjectTodoNotifyTo]
+  createdAt: Date
+  createdBy: String
+}
+
+type RuleQuerySchema {
+  _id: String
+  event: String
+  country: String
+  partnerId: String
+  partner: Partner
+  status: String
+  notifyTo: [ObjectNotifyTo]
+  todoNotifyTo: [ObjectTodoNotifyTo]
+  createdAt: Date
+  createdBy: String
+}
+
+type ObjectTemplateInfo {
+  _id: String
+  title: LanguageSubSchema
+  content: LanguageSubSchema
+  subject: LanguageSubSchema
+  uniqueId: String
+}
+
+type ObjectNotifyTo {
+  id: String
+  required: Boolean
+  type: String
+  templateUniqueId: String
+  templateInfo: ObjectTemplateInfo
+}
+
+type ObjectTodoNotifyTo {
+  id: String
+  enabled: Boolean
+  days: Number
+}
+
+type QueryRules {
+  data: [RuleQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input NotifyToInputDataType {
+  id: String
+  type: String
+  templateUniqueId: String
+  templateInfo: Object
+}
+
+input TodoNotifyToInputDataType {
+  id: String
+  enabled: Boolean
+  days: Int
+}
+
+input NotificationSettingAddType {
+  event: String
+  country: String
+  notifyTo: NotifyToInputDataType
+  todoNotifyTo: [TodoNotifyToInputDataType]
+}
+
+input NotificationSettingRemoveType {
+  _id: String
+  notifyTo: NotifyToInputDataType
+}
+
+input NotificationSettingUpdateType {
+  country: String
+  event: String
+  todoNotifyTo: [TodoNotifyToInputDataType]
+}
+
+input LambdaRulesQueryOptionsDataType {
+  event: String
+  partnerId: String
+}
+
+input RulesQueryDataType {
+  _id: String
+  country: String
+  status: String
+  createdAt: Date
+  event: String
+  #  For Lambda services
+  options: LambdaRulesQueryOptionsDataType
+}
+
+input RulesForPartnerAPPQueryDataType {
+  _id: String
+  country: String
+  status: String
+  createdAt: Date
+  event: String
+}
+
+input NotificationSettingResetType {
+  event: String
+}
+
+extend type Query {
+  rules(queryData: RulesQueryDataType, optionData: OptionDataType): QueryRules
+    @auth(
+      requires: ["app_admin", "app_manager", "partner_admin", "lambda_manager"]
+    )
+  rulesForPartnerAPP(
+    queryData: RulesForPartnerAPPQueryDataType
+    optionData: OptionDataType
+  ): QueryRules @auth(requires: ["app_manager", "partner_admin"])
+}
+
+extend type Mutation {
+  addNotificationSetting(inputData: NotificationSettingAddType): [Rule]
+    @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+  removeNotificationSetting(inputData: NotificationSettingRemoveType): Rule
+    @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+  updateNotificationSetting(inputData: NotificationSettingUpdateType): Rule
+    @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+  resetToDefaultSetting(inputData: NotificationSettingResetType): Rule
+    @auth(requires: ["app_manager", "partner_admin"])
+}

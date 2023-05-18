@@ -1,0 +1,759 @@
+type MapAccounts {
+  accountingId: String
+  accountName: String
+  accountNumber: Number
+  pogoId: Number
+  pogoAccountNumber: Number
+  pogoAccountName: String
+  pogoVatCode: String
+}
+
+type MapXledgerAccounts {
+  accountingId: String
+  accountName: String
+  accountNumber: Number
+  xledgerAccountName: String
+  xledgerAccountNumber: Number
+  xledgerId: Number
+  xledgerVatCode: String
+}
+
+type MapBranches {
+  branchName: String
+  branchSerialId: String
+  pogoId: Number
+  pogoBranchName: String
+  pogoBranchSerialId: String
+}
+
+type MapXledgerBranches {
+  branchName: String
+  branchSerialId: String
+  xledgerId: Number
+  xledgerBranchName: String
+  xledgerBranchSerialId: String
+}
+
+type MapGroups {
+  propertyGroupId: String
+  pogoId: Number
+  pogoGroupName: String
+  pogoPropertyGroupId: String
+}
+
+type MapXledgerGroups {
+  propertyGroupId: String
+  xledgerGroupName: String
+  xledgerId: Number
+  xledgerPropertyGroupId: String
+}
+type SubLedgerSeries {
+  subledgerSeriesId: String
+  toInclusive: Number
+  fromInclusive: Number
+  subLedgerType: Number
+}
+
+type UlAccountType {
+  _id: String
+  accountName: String
+  accountNumber: Number
+  taxCodeId: String
+}
+
+type UlBranchType {
+  _id: String
+  branchSerialId: Int
+  name: String
+}
+
+type UlGroupType {
+  _id: String
+  groupId: String
+}
+
+type IntegrationErrorsMetaType {
+  branchErrorCode: [Int]
+  digitErrorAccountCode: [Int]
+  groupErrorCode: [Int]
+  missingAccountCode: [Int]
+  missingTaxCode: [Int]
+  vatCodeMismatchAccountCode: [Int]
+}
+
+type IntegrationForPartnerApp {
+  _id: String
+  accountId: String
+  accountSubledgerSeries: SubLedgerSeries
+  applicationKey: String
+  clientKey: String
+  createdAt: Date
+  enabledPowerOfficeIntegration: Boolean
+  errorsMeta: IntegrationErrorsMetaType
+  fromDate: Date
+  isGlobal: Boolean
+  isStatusChecking: Boolean
+  mapAccounts: [MapAccounts]
+  mapBranches: [MapBranches]
+  mapGroups: [MapGroups]
+  projectDepartmentType: String
+  status: String
+  tenantAccountType: String
+  tenantSubledgerSeries: SubLedgerSeries
+  ul_accounts: [UlAccountType]
+  ul_branches: [UlBranchType]
+  ul_groups: [UlGroupType]
+}
+
+type Integration {
+  _id: String
+  accountId: String
+  accountSubledgerSeries: SubLedgerSeries
+  applicationKey: String
+  clientKey: String
+  companyDbId: String
+  createdAt: Date
+  createdBy: String
+  enabledPeriodSync: Boolean
+  enabledPowerOfficeIntegration: Boolean
+  errorsMeta: IntegrationErrorsMetaType
+  fromDate: Date
+  isGlobal: Boolean
+  mapAccounts: [MapAccounts]
+  mapBranches: [MapBranches]
+  mapGroups: [MapGroups]
+  mapXledgerAccounts: [MapXledgerAccounts]
+  mapXledgerBranches: [MapXledgerBranchesType]
+  mapXledgerEmployeeIds: [MapXledgerEmployeeId]
+  mapXledgerGlObjects: MapGlObject
+  mapXledgerGroups: [MapXledgerGroupsType]
+  mapXledgerInternalAssignmentIds: [MapXledgerInternalAssignmentIdType]
+  mapXledgerInternalLeaseIds: [MapXledgerInternalLeaseId]
+  mapXledgerObjectKinds: [MapXledgerObjectKindsType]
+  mapXledgerTaxCodes: [MapXledgerTaxCodesType]
+  mapXledgerTransactionText: [MapXledgerTransactionTextType]
+  ownerDbId: String
+  partnerId: String
+  projectDepartmentType: String
+  status: String
+  tenantAccountType: String
+  tenantSubledgerSeries: SubLedgerSeries
+  type: String
+  ul_accounts: [UlAccountType]
+  ul_branches: [UlBranchType]
+  ul_groups: [UlGroupType]
+  ul_taxCodes: [UlTaxCodeType]
+  updatedAt: Date
+}
+
+type MapXledgerBranchesType {
+  branchId: String
+  branchName: String
+  branchSerialId: String
+  glObjectCode: String
+  glObjectDbId: String
+  glObjectName: String
+}
+
+type MapXledgerInternalAssignmentIdType {
+  internalAssignmentId: String
+  glObjectCode: String
+  glObjectDbId: String
+  glObjectName: String
+}
+
+type MapXledgerInternalLeaseId {
+  internalLeaseId: String
+  glObjectCode: String
+  glObjectDbId: String
+  glObjectName: String
+}
+
+type MapXledgerEmployeeId {
+  employeeId: String
+  glObjectCode: String
+  glObjectDbId: String
+  glObjectName: String
+}
+
+type MapXledgerGroupsType {
+  propertyGroupId: String
+  glObjectCode: String
+  glObjectDbId: String
+  glObjectName: String
+}
+
+type MapXledgerObjectKindsType {
+  field: String
+  objectKindDbId: String
+  objectKindName: String
+}
+
+type MapGlObject {
+  glObject1: String
+  glObject2: String
+  glObject3: String
+  glObject4: String
+  glObject5: String
+}
+
+type UlTaxCodeType {
+  _id: String
+  name: String
+  taxCode: Int
+}
+
+type MapXledgerTaxCodesType {
+  taxCode: Int
+  taxCodeId: String
+  taxCodeName: String
+  xledgerId: Int
+  xledgerTaxCode: String
+  xledgerTaxCodeName: String
+}
+
+type MapXledgerTransactionTextType {
+  type: String
+  value: String
+}
+
+type CreateIntegrationType {
+  _id: String
+  accountId: String
+  applicationKey: String
+  clientKey: String
+  enabledPowerOfficeIntegration: Boolean
+  fromDate: Date
+  isGlobal: Boolean
+  mapAccounts: [MapAccounts]
+  mapBranches: [MapBranches]
+  mapGroups: [MapGroups]
+  partnerId: String
+  projectDepartmentType: String
+  status: String
+  tenantAccountType: String
+}
+
+type CreateXledgerIntegrationType {
+  clientKey: String
+  enabledPeriodSync: Boolean
+  fromDate: Date
+  partnerId: String
+  status: String
+  tenantAccountType: String
+}
+
+type UpdateIntegrationSchemaType {
+  _id: String
+  accountSubledgerSeries: SubLedgerSeries
+  mapAccounts: [MapAccounts]
+  mapBranches: [MapBranches]
+  mapGroups: [MapGroups]
+  tenantSubledgerSeries: SubLedgerSeries
+}
+
+type UpdateIntegrationItemSchemaType {
+  _id: String
+  mapXledgerAccounts: [MapXledgerAccounts]
+}
+
+type enableOrDisableSchemaType {
+  _id: String
+  enabledPowerOfficeIntegration: Boolean
+  status: String
+}
+
+enum ProjectDepartmentEnumType {
+  branch_department_and_group_project
+  branch_project_and_group_department
+}
+
+input IntegrationAddType {
+  accountId: String
+  applicationKey: String
+  clientKey: String
+  enabledPeriodSync: Boolean
+  fromDate: Date
+  projectDepartmentType: ProjectDepartmentEnumType
+  mapXledgerGlObjects: MapXledgerGlObjectsInputType
+  tenantAccountType: String
+}
+
+input InputMapAccount {
+  accountingId: String
+  accountName: String
+  accountNumber: Number
+  pogoId: Number
+  pogoAccountNumber: Number
+  pogoAccountName: String
+  pogoVatCode: String
+}
+
+input MapXledgerAccountInputType {
+  accountingId: String
+  accountName: String
+  accountNumber: Number
+  xledgerId: Number
+  xledgerAccountNumber: Number
+  xledgerAccountName: String
+  xledgerVatCode: String
+}
+
+input MapXledgerTaxCodeInputType {
+  taxCode: Int
+  taxCodeId: String
+  taxCodeName: String
+  xledgerId: Int
+  xledgerTaxCode: String
+  xledgerTaxCodeName: String
+}
+
+enum TransactionTextTypeEnum {
+  field
+  text
+}
+
+input MapXledgerTransactionTextInputType {
+  type: TransactionTextTypeEnum
+  value: String
+}
+
+input InputSubLedgerSeries {
+  subledgerSeriesId: String
+  toInclusive: Number
+  fromInclusive: Number
+  subLedgerType: Number
+}
+
+input InputMapBranch {
+  branchName: String
+  branchSerialId: String
+  pogoId: Number
+  pogoBranchName: String
+  pogoBranchSerialId: String
+}
+
+input InputMapGroup {
+  propertyGroupId: String
+  pogoId: Number
+  pogoGroupName: String
+  pogoPropertyGroupId: String
+}
+
+input InputSubLedger {
+  accountSubledgerSeries: InputSubLedgerSeries
+  subLedgerSeries: InputSubLedgerSeries
+  type: String
+  tenantAccountType: String
+  tenantSubledgerSeries: InputSubLedgerSeries
+}
+
+enum UpdateIntegrationTypeEnum {
+  addMapAccount
+  addMapBranch
+  addMapGroup
+  addOrRemoveSubLedgerSeries
+  removeMapAccount
+  removeMapBranch
+  removeMapGroup
+}
+
+input IntegrationData {
+  accountId: String
+  branchSerialId: String
+  ledgerAccountId: String
+  mapAccount: InputMapAccount
+  mapBranch: InputMapBranch
+  mapGroup: InputMapGroup
+  propertyGroupId: String
+  subledger: InputSubLedger
+}
+
+input IntegrationUpdateType {
+  data: IntegrationData
+  updateType: UpdateIntegrationTypeEnum
+}
+
+enum UpdateIntegrationItemTypeEnum {
+  addXledgerMapAccount
+  addXledgerMapBranches
+  addXledgerMapEmployeeId
+  addXledgerMapGlObjects
+  addXledgerMapGroups
+  addXledgerMapInternalAssignmentId
+  addXledgerMapInternalLeaseId
+  addXledgerMapObjectKind
+  addXledgerMapTaxCode
+  addXledgerMapTransactionText
+  removeXledgerMapAccount
+  removeXledgerMapBranch
+  removeXledgerMapEmployeeId
+  removeXledgerMapGroup
+  removeXledgerMapInternalAssignmentId
+  removeXledgerMapInternalLeaseId
+  removeXledgerMapObjectKind
+  removeXledgerMapTaxCode
+}
+
+enum GlObjectValueTypesEnum {
+  agentEmployeeId
+  branch
+  group
+  internalAssignmentId
+  internalLeaseId
+}
+
+input MapXledgerGlObjectsInputType {
+  glObject1: GlObjectValueTypesEnum
+  glObject2: GlObjectValueTypesEnum
+  glObject3: GlObjectValueTypesEnum
+  glObject4: GlObjectValueTypesEnum
+  glObject5: GlObjectValueTypesEnum
+}
+
+input MapXledgerGroupInputType {
+  glObjectCode: String
+  glObjectDbId: String
+  glObjectName: String
+  propertyGroupId: String
+}
+
+input MapXledgerBranchInputType {
+  branchId: String
+  branchName: String
+  branchSerialId: String
+  glObjectCode: String
+  glObjectDbId: String
+  glObjectName: String
+}
+
+input MapXledgerInternalAssignmentIdInputType {
+  internalAssignmentId: String
+  glObjectCode: String
+  glObjectDbId: String
+  glObjectName: String
+}
+
+input MapXledgerInternalLeaseIdInputType {
+  internalLeaseId: String
+  glObjectCode: String
+  glObjectDbId: String
+  glObjectName: String
+}
+
+input MapXledgerEmployeeIdInputType {
+  employeeId: String
+  glObjectCode: String
+  glObjectDbId: String
+  glObjectName: String
+}
+
+input MapXledgerObjectKindInputType {
+  field: GlObjectValueTypesEnum
+  objectKindDbId: String
+  objectKindName: String
+}
+
+input UpdateIntegrationItemData {
+  branchId: String
+  employeeId: String
+  internalAssignmentId: String
+  internalLeaseId: String
+  ledgerAccountId: String
+  mapXledgerAccount: MapXledgerAccountInputType
+  mapXledgerBranch: MapXledgerBranchInputType
+  mapXledgerEmployeeId: MapXledgerEmployeeIdInputType
+  mapXledgerGlObjects: MapXledgerGlObjectsInputType
+  mapXledgerGroup: MapXledgerGroupInputType
+  mapXledgerInternalAssignmentId: MapXledgerInternalAssignmentIdInputType
+  mapXledgerInternalLeaseId: MapXledgerInternalLeaseIdInputType
+  mapXledgerObjectKind: MapXledgerObjectKindInputType
+  mapXledgerTaxCode: MapXledgerTaxCodeInputType
+  mapXledgerTransactionText: [MapXledgerTransactionTextInputType]
+  objectKindField: GlObjectValueTypesEnum
+  propertyGroupId: String
+  taxCodeId: String
+}
+
+input UpdateIntegrationItemInputType {
+  accountId: String
+  data: UpdateIntegrationItemData
+  type: IntegrationQueryTypeEnum
+  updateType: UpdateIntegrationItemTypeEnum
+}
+
+input IntegrationQueryType {
+  partnerId: String
+  status: String
+  type: String
+  accountId: String
+}
+
+input IntegrationForPartnerAppQueryType {
+  accountId: String
+}
+
+input PogoAccountListQueryType {
+  accountId: String
+}
+
+type PogoAccountList {
+  id: Number
+  code: Number
+  name: String
+  vatCode: String
+  isVatCodeLockedAfterPosting: Boolean
+  isDepartmentRequired: Boolean
+  isProjectRequired: Boolean
+  isActive: Boolean
+  lastChanged: Date
+}
+
+type PogoAccountListSchemaType {
+  data: [PogoAccountList]
+}
+
+input PogoSubledgerQueryType {
+  accountId: String
+}
+
+type PogoSubledgerSeriesList {
+  id: String
+  type: Number
+  fromInclusive: Number
+  toInclusive: Number
+  generalLedgerAccountCode: Number
+  name: String
+  isClientTrust: Boolean
+  isDefault: Boolean
+}
+
+type PogoSubledgerSeriesSchemaType {
+  data: [PogoSubledgerSeriesList]
+}
+
+input PogoDepartmentQueryType {
+  accountId: String
+}
+
+type PogoBranchList {
+  id: Number
+  name: String
+  code: String
+  isActive: Boolean
+  lastChanged: String
+}
+
+type PogoDepartmentSchemaType {
+  data: [PogoBranchList]
+}
+
+type PogoGroupListData {
+  id: Number
+  code: String
+  name: String
+  isBillable: Boolean
+  status: Number
+  allowAllActivities: Boolean
+  allowAllEmployees: Boolean
+  lastChanged: Date
+  isInternal: Boolean
+  progress: Number
+  purchaseOrderNo: String
+  attachExpenseVouchersWhenBilling: Boolean
+  markupHourlyRateEnabled: Boolean
+  markupOtherExpensesEnabled: Boolean
+  billingMethod: Number
+  billingHourlyRateSpecification: Number
+  fixedPrice: Number
+}
+
+type PogoProjectSchemaType {
+  data: [PogoGroupListData]
+}
+
+input PogoProjectQueryType {
+  accountId: String
+}
+
+input enableOrDisableUpdateType {
+  accountId: String
+  enabledPowerOfficeIntegration: Boolean
+}
+
+input CheckPogoIntegrationStatusQueryType {
+  accountId: String
+}
+
+type CheckPogoIntegrationStatusSchemaType {
+  branchErrorCode: [String]
+  digitErrorAccountCode: String
+  groupErrorCode: [String]
+  hasError: Boolean
+  missingAccountCode: String
+  status: String
+  vatCodeMismatchAccountCode: String
+}
+
+input UpdateIntegrationFromLambdaInput {
+  errorsMeta: Object
+  integrationId: String
+  isStatusChecking: Boolean
+  status: String
+  unsetErrors: Boolean
+}
+
+input CheckPogoIntegrationStatusInput {
+  accountId: String
+}
+
+input OptionDataTypeForXledger {
+  limit: Int
+  cursor: String
+}
+
+enum XledgerContextEnumType {
+  accounts
+  companies
+  glObjects
+  objectKinds
+  owners
+  projects
+  taxRules
+}
+
+input XledgerQueryDataType {
+  context: XledgerContextEnumType
+  mappingContext: GlObjectValueTypesEnum
+}
+
+enum IntegrationQueryTypeEnum {
+  xledger
+}
+
+input IntegrationQueryDataType {
+  accountId: String
+  type: IntegrationQueryTypeEnum
+}
+
+type XledgerOwnerType {
+  dbId: Int
+  description: String
+}
+
+type XledgerNodeDataType {
+  code: String
+  companyNumber: String
+  dbId: Int
+  description: String
+  owner: XledgerOwnerType
+}
+
+type XledgerObjectKind {
+  dbId: String
+  name: String
+}
+
+type GlSetUpEntriesFieldObjectType {
+  objectKind: XledgerObjectKind
+}
+
+type XledgerInfoDataType {
+  # This fieldObject used for gl objects kind
+  fieldObject: GlSetUpEntriesFieldObjectType
+  node: XledgerNodeDataType
+}
+
+type XledgerInfoReturnDataType {
+  data: [XledgerInfoDataType]
+  metaData: MetaDataXledgerQuerySchema
+}
+
+type MetaDataXledgerQuerySchema {
+  filteredDocuments: Int
+  lastCursor: String
+}
+
+enum IntegrationContextEnum {
+  xledger
+}
+
+input CheckIntegrationStatusInput {
+  accountId: String
+  context: IntegrationContextEnum
+}
+
+input EnableOrDisableIntegrationInput {
+  accountId: String
+  context: IntegrationQueryTypeEnum
+  enabledIntegration: Boolean
+}
+
+type EnableOrDisableIntegrationType {
+  _id: String
+  enabledIntegration: Boolean
+  status: String
+}
+
+extend type Mutation {
+  addIntegration(inputData: IntegrationAddType): CreateIntegrationType
+    @auth(requires: ["app_manager", "partner_admin"])
+  updateOrRemoveIntegration(
+    inputData: IntegrationUpdateType
+  ): UpdateIntegrationSchemaType
+    @auth(requires: ["app_manager", "partner_admin"])
+  updateOrRemoveIntegrationItem(
+    inputData: UpdateIntegrationItemInputType
+  ): UpdateIntegrationItemSchemaType
+    @auth(requires: ["app_manager", "partner_admin"])
+  enableOrDisablePogoIntegration(
+    inputData: enableOrDisableUpdateType
+  ): enableOrDisableSchemaType @auth(requires: ["app_manager", "partner_admin"])
+  updateIntegrationFromLambda(
+    inputData: UpdateIntegrationFromLambdaInput
+  ): ReturnBoolean @auth(requires: ["lambda_manager"])
+  checkPogoIntegrationStatusForPartnerAop(
+    inputData: CheckPogoIntegrationStatusInput
+  ): ReturnBoolean @auth(requires: ["app_manager", "partner_admin"])
+  checkIntegrationStatusForPartnerApp(
+    inputData: CheckIntegrationStatusInput
+  ): ReturnBoolean @auth(requires: ["app_manager", "partner_admin"])
+  addIntegrationForXledger(
+    inputData: IntegrationAddType
+  ): CreateXledgerIntegrationType
+    @auth(requires: ["app_manager", "partner_admin"])
+  enableOrDisableIntegration(
+    inputData: EnableOrDisableIntegrationInput
+  ): EnableOrDisableIntegrationType @auth(requires: ["app_manager", "partner_admin"])
+}
+
+extend type Query {
+  #For lambda accounting bridge pogo #10175
+  integration(queryData: IntegrationQueryType): Integration
+    @auth(requires: ["lambda_manager"])
+  getIntegrationForPartnerApp(
+    queryData: IntegrationForPartnerAppQueryType
+  ): IntegrationForPartnerApp @auth(requires: ["app_manager", "partner_admin"])
+  getPogoAccountList(
+    queryData: PogoAccountListQueryType
+  ): PogoAccountListSchemaType @auth(requires: ["app_manager", "partner_admin"])
+  getPogoSubledgerSeriesList(
+    queryData: PogoSubledgerQueryType
+  ): PogoSubledgerSeriesSchemaType
+    @auth(requires: ["app_manager", "partner_admin"])
+  getPogoDepartmentList(
+    queryData: PogoDepartmentQueryType
+  ): PogoDepartmentSchemaType @auth(requires: ["app_manager", "partner_admin"])
+  getPogoProjectList(queryData: PogoProjectQueryType): PogoProjectSchemaType
+    @auth(requires: ["app_manager", "partner_admin"])
+  checkPogoIntegrationStatus(
+    queryData: CheckPogoIntegrationStatusQueryType
+  ): CheckPogoIntegrationStatusSchemaType
+    @auth(requires: ["app_manager", "partner_admin"])
+  getXledgersInfo(
+    queryData: XledgerQueryDataType
+    optionData: OptionDataTypeForXledger
+  ): XledgerInfoReturnDataType @auth(requires: ["app_manager", "partner_admin"])
+  getIntegration(queryData: IntegrationQueryDataType): Integration
+    @auth(requires: ["app_manager", "partner_admin"])
+}

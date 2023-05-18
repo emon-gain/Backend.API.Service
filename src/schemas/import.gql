@@ -1,0 +1,104 @@
+type Import {
+    _id: String
+    partnerId: String
+    importRefId: String
+    collectionName: String
+    collectionId: String
+    jsonData: Object
+    hasError: Boolean
+    errorMessage: String
+    createdAt: Date
+    createdBy: String
+}
+
+type ImportQueryType {
+    # _id will be importRefId
+    _id: String
+    partnerId: String
+    partner: Partner
+    status: String
+    fileKey: String
+    fileBucket: String
+    errorMessage: String
+    totalBranchCount: Int
+    totalBranchSuccessCount: Int
+    totalUserCount: Int
+    totalUserSuccessCount: Int
+    totalAccountCount: Int
+    totalAccountSuccessCount: Int
+    totalRoomCount: Int
+    totalRoomSuccessCount: Int
+    totalInventoryCount: Int
+    totalInventorySuccessCount: Int
+    totalAddonCount: Int
+    totalAddonSuccessCount: Int
+    totalPropertyCount: Int
+    totalPropertySuccessCount: Int
+    totalTenantCount: Int
+    totalTenantSuccessCount: Int
+    createdAt: Date
+    createdBy: String
+}
+
+type QueryImports {
+  data: [ImportQueryType]
+  metaData: MetaDataQuerySchema
+}
+
+type ErrorImports {
+    data: [Object]
+}
+
+input ImportQueryDataType {
+    importRefId: String
+    partnerId: String
+    status: String
+    createdBy: String
+}
+
+input ImportErrorQueryDataType {
+    _id: String
+    partnerId: String
+    importRefId: String
+    collectionName: String
+    collectionId: String
+    jsonData: Object
+    hasError: Boolean
+    errorMessage: String
+    createdAt: Date
+    createdBy: String
+}
+
+input ImportAddType {
+    userId: String
+    partnerId: String
+    importRefId: String
+    collectionName: String
+    preparedDataArr: [Object]
+}
+
+input ExcelImportAddType {
+    collectionName: String
+    fileKey: String
+    fileBucket: String
+    importRefId: String
+    isImportingFromError: Boolean
+    partnerId: String
+}
+
+input ImportUpdateType {
+    importId: String
+    hasError: Boolean
+    errorMessage: String
+}
+
+extend type Query {
+  getImports(queryData: ImportQueryDataType, optionData: OptionDataType): QueryImports @auth(requires: ["app_admin"])
+  getErrorImports(queryData: ImportErrorQueryDataType): ErrorImports @auth(requires: ["lambda_manager"])
+}
+
+extend type Mutation {
+  addAnExcelImport(inputData: ExcelImportAddType): ImportQueryType @auth(requires: ["app_admin"])
+  addImportAndCollectionData(inputData: ImportAddType): [Import] @auth(requires: ["lambda_manager"])
+  updateImport(inputData: ImportUpdateType): Import @auth(requires: ["lambda_manager"])
+}

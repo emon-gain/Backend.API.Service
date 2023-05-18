@@ -1,0 +1,27 @@
+type TemplateBlockList {
+  _id: String
+  title: String
+  blockType: String
+  templateType: String
+  category: [String]
+  content: String
+  createdAt: Date
+  createdBy: String
+}
+
+type QueryTemplateBlockItem {
+  data: [TemplateBlockList]
+  metaData: MetaDataQuerySchema
+}
+
+input TemplateBlockItemQueryDataType {
+  _id: String
+  category: String
+}
+
+extend type Query {
+  templateBlockItems(
+    queryData: TemplateBlockItemQueryDataType
+    optionData: OptionDataType
+  ): QueryTemplateBlockItem @auth(requires: ["app_admin", "app_manager", "partner_admin", "partner_agent"])
+}

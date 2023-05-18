@@ -1,0 +1,89 @@
+type PartnersUsagesMeta {
+  invoiceId: String
+}
+
+type PartnerUsage {
+  _id: String
+  partnerId: String
+  type: String
+  branchId: String
+  tenantId: String
+  notificationLogId: String
+  total: Number
+  totalMessages: Number
+  errorReason: String
+  meta: PartnersUsagesMeta
+}
+
+input PartnersUsagesMetaInput {
+  invoiceId: String
+}
+
+input PartnerUsageAddType {
+  partnerId: String
+  type: String
+  branchId: String
+  tenantId: String
+  notificationLogId: String
+  total: Number
+  totalMessages: Number
+  errorReason: String
+  meta: PartnersUsagesMetaInput
+}
+
+enum PartnerUsageTypeEnum {
+  active_agents
+  active_agents_with_active_properties
+  active_properties
+  active_users
+  compello_invoice
+  credit_rating
+  deposit_account
+  esign
+  finn
+  outgoing_sms
+  parking_lots
+  vipps_invoice
+}
+
+input PartnerUsageQueryDataType {
+  partnerId: String
+  branchId: [String]
+  createdDateRange: CommonStartDateAndEndDateInputDataType
+  type: PartnerUsageTypeEnum
+}
+
+type PartnerUsageCount{
+  type: String
+  countedTotal: Number
+}
+
+type QueryPartnerUsage {
+  data: [PartnerUsageCount]
+}
+
+input partnerUsageTypesQueryDataType {
+  partnerId: String
+}
+
+type QueryPartnerUsageTypes {
+  data: [String]
+}
+
+input AddPartnerUsageDataType {
+  partnerId: String
+}
+
+extend type Query {
+  partnerUsages(
+    queryData: PartnerUsageQueryDataType
+  ): QueryPartnerUsage @auth(requires: ["app_admin"])
+  partnerUsageTypes(
+    queryData: partnerUsageTypesQueryDataType
+  ): QueryPartnerUsageTypes @auth(requires: ["app_admin"])
+}
+
+extend type Mutation {
+  addPartnerUsage(inputData: PartnerUsageAddType): [PartnerUsage] @auth(requires: ["lambda_manager"])
+  addPartnerUsageData(inputData: AddPartnerUsageDataType): ReturnBoolean @auth(requires: ["lambda_manager"])
+}

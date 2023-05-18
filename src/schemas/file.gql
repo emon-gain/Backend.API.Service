@@ -1,0 +1,606 @@
+type FileEventType {
+  createdAt: Date
+  note: String
+  status: String
+}
+
+type CreatedByInfo {
+  name: String
+  avatarKey: String
+}
+
+type File {
+  _id: String
+  partnerId: String
+  title: String
+  name: String
+  jsonFileName: String
+  size: Number
+  fileUrl: String
+  directive: String
+  context: String
+  propertyId: String
+  tenantId: String
+  agentId: String
+  taskId: String
+  contractId: String
+  type: String
+  status: String
+  events: [FileEventType]
+  invoiceId: String
+  notificationLogId: String
+  attachmentId: String
+  eventStatus: String
+  isOldInvoicePdf: Boolean
+  landlordPartnerId: String
+  s3FilePath: String
+  tenantPartnerId: String
+  movingId: String
+  fileUrlHash: String
+  isExistingFile: Boolean
+  importRefId: String
+  importCollectionName: String
+  createdAt: Date
+  createdBy: String
+  accountId: String
+  assignmentSerial: Int
+  leaseSerial: Int
+  isVisibleToTenant: Boolean
+  isVisibleToLandlord: Boolean
+  createdByInfo: CreatedByInfo
+  imageUrl: String
+  signerId: String
+}
+
+type FileQuerySchema {
+  _id: String
+  partnerId: String
+  title: String
+  name: String
+  jsonFileName: String
+  size: Number
+  directive: String
+  type: String
+  status: String
+  events: String
+  isOldInvoicePdf: Boolean
+  landlordPartnerId: String
+  s3FilePath: String
+  tenantPartnerId: String
+  movingId: String
+  fileUrlHash: String
+  isExistingFile: Boolean
+  createdAt: Date
+  createdBy: String
+}
+
+input FilesInputType {
+  _id: String
+  partnerId: String
+  title: String
+  name: String
+  propertyId: String
+  tenantId: String
+  agentId: String
+  taskId: String
+  status: String
+}
+
+input FileQueryDataType {
+  contractId: String
+  propertyId: String
+}
+
+input FileAddType {
+  _id: String
+  partnerId: String
+  title: String
+  name: String
+  jsonFileName: String
+  size: Number
+  directive: String
+  context: String
+  type: String
+  status: String
+  events: [FileEventInputType]
+  eventStatus: String
+  movingId: String
+  createdAt: Date
+  createdBy: String
+  propertyId: String
+  tenantId: String
+  agentId: String
+  taskId: String
+  contractId: String
+  invoiceId: String
+  notificationLogId: String
+  attachmentId: String
+  isOldInvoicePdf: Boolean
+  landlordPartnerId: String
+  s3FilePath: String
+  tenantPartnerId: String
+  fileUrlHash: String
+  isExistingFile: Boolean
+  importRefId: String
+  importCollectionName: String
+  signerId: String
+}
+
+input FileGetInput {
+  _id: String
+}
+
+input FileEventInputType {
+  createdAt: Date
+  note: String
+  status: String
+}
+
+input FileUpdateType {
+  fileId: String
+  event: FileEventInputType
+  eventStatus: String
+  partnerId: String
+  status: String
+}
+
+input FileRemoveType {
+  _id: String
+}
+
+##for lambda
+input tokenDataType {
+  token: String
+}
+
+type PolicyDataType {
+  name: String
+  value: String
+}
+
+type QueryUploadPolicy {
+  url: String
+  policyData: [PolicyDataType]
+}
+
+input UploadPolicyQueryDataType {
+  filename: String
+  directive: String
+  subFolderName: String
+}
+
+input FileAddForNotificationAttachmentsType {
+  attachmentFileIds: [String]
+}
+
+type fileIdsWithAttachmentFileIds {
+  attachmentFileId: String
+  fileId: String
+}
+
+type FileQuerySchemaForPublicApp {
+  _id: String
+  title: String
+  uploadedAt: Date
+}
+
+type QueryFileForPublicApp {
+  data: [FileQuerySchemaForPublicApp]
+  metaData: MetaDataQuerySchema
+}
+
+input FileDownloadUrlDataType {
+  fileId: String
+  isDownloadAble: Boolean
+}
+
+input ConversationFileDownloadUrlDataType {
+  conversationId: String
+  fileName: String
+}
+
+enum collectionNames {
+  branch
+  user
+  account
+  room
+  inventory
+  property
+  tenant
+  addon
+}
+
+input ImportErrorExcelFileDataType {
+  importRefId: String
+  importCollectionName: collectionNames
+}
+
+input PdfFileAndAppQueueAddType {
+  accountId: String
+  agentId: String
+  branchId: String
+  annualStatementId: String
+  assignmentSerial: Number
+  attachmentId: String
+  callBackAction: String
+  callBackDestination: String
+  callBackEvent: String
+  context: String
+  content: String
+  contractId: String
+  directRemittanceApprovalUserIds: [String]
+  isAssignmentPdf: Boolean
+  idfyDocId: String
+  isESigningEnabled: Boolean
+  isEvictionDocumentPdf: Boolean
+  isLeasePdf: Boolean
+  invoiceId: String
+  invoiceSerialId: Number
+  leaseSerial: Number
+  movingId: String
+  notificationLogId: String
+  partnerId: String
+  partnerPayoutId: String
+  priority: AppQueuePriorityEnum
+  propertyId: String
+  tenantId: String
+  type: String
+  userId: String
+}
+
+enum ContractFileContextEnum {
+  lease
+  assignment
+}
+
+enum EventStatusEnum {
+  created
+  processing
+  processed
+}
+
+enum FileTypeEnum {
+  assignment_pdf
+  lease_pdf
+  invoice_pdf
+  credit_note_pdf
+  pre_reminder_pdf
+  first_reminder_pdf
+  second_reminder_pdf
+  collection_notice_pdf
+  invoice_attachment_pdf
+  credit_note_attachment_pdf
+  pre_reminder_attachment_pdf
+  first_reminder_attachment_pdf
+  second_reminder_attachment_pdf
+  collection_notice_attachment_pdf
+  eviction_notice_attachment_pdf
+  eviction_due_reminder_notice_attachment_pdf
+  email_attachment_pdf
+  excel_attachment
+  esigning_assignment_pdf
+  esigning_lease_pdf
+  landlord_invoice_pdf
+  landlord_invoice_attachment_pdf
+  landlord_pre_reminder_pdf
+  landlord_first_reminder_pdf
+  landlord_second_reminder_pdf
+  landlord_collection_notice_pdf
+  landlord_pre_reminder_attachment_pdf
+  landlord_first_reminder_attachment_pdf
+  landlord_second_reminder_attachment_pdf
+  landlord_collection_notice_attachment_pdf
+  landlord_credit_note_pdf
+  landlord_credit_note_attachment_pdf
+  esigning_moving_in_pdf
+  esigning_moving_out_pdf
+  moving_in_ics
+  moving_out_ics
+  lease_statement_pdf
+  deposit_account_contract_pdf
+  esigning_assignment_xml
+  esigning_lease_xml
+  correction_invoice_pdf
+  eviction_document_pdf
+  xml_attachment
+  payouts_approval_esigning_pdf
+  payments_approval_esigning_pdf
+  esigning_deposit_insurance_pdf
+  app_invoice_pdf
+}
+
+input AddFileFromUIDataType {
+  accountId: String
+  assignmentSerial: Int
+  context: String
+  contractId: String
+  directive: String
+  eventStatus: EventStatusEnum
+  filesType: String
+  from: UpdateFromEnum
+  isVisibleToLandlord: Boolean
+  isVisibleToTenant: Boolean
+  landlordPartnerId: String
+  leaseSerial: Int
+  name: String
+  propertyFileType: PropertyFileTypeEnum
+  propertyId: String
+  propertyItemId: String
+  roomId: String
+  size: Number
+  subContext: ContractFileContextEnum
+  taskId: String
+  tenantId: String
+  tenantPartnerId: String
+  title: String
+  type: FileTypeEnum
+}
+
+enum FileUploadRequestFromEnum {
+  partner_public
+}
+
+input uploadFileDataType {
+  files: [AddFileFromUIDataType]
+  requestFrom: FileUploadRequestFromEnum
+}
+
+enum UpdateFromEnum {
+  moving_in
+  moving_out
+  property
+}
+
+enum PropertyFileTypeEnum {
+  inventory
+  keys
+  meterReading
+  rooms
+}
+
+enum FileListViewEnum {
+  account
+  assignment
+  interest_form
+  lease
+  property
+  task
+  tenant
+}
+
+input FileQueryForDetailsPageDataType {
+  accountId: String
+  context: FileListViewEnum
+  contractId: String
+  propertyId: String
+  taskId: String
+  tenantId: String
+  tenantUserId: String
+}
+
+type FileForDetailsData {
+  _id: String
+  createdAt: Date
+  imageUrl: String
+  isVisibleToLandlord: Boolean
+  isVisibleToTenant: Boolean
+  name: String
+  title: String
+  userInfo: CommonNameAvatarKeyType
+  type: String
+  accountInfo: CommonNameType
+  tenantsInfo: [CommonNameType]
+}
+
+type FileForDetailsPageType {
+  data: [FileForDetailsData]
+  metaData: MetaDataQuerySchema
+}
+
+enum PropertyUtilityContextTypeEnum {
+  inventories
+  keys
+  meterReading
+}
+
+input ImagesForPropertyUtilityDataType {
+  context: PropertyUtilityContextTypeEnum
+  isFurnished: Boolean
+  propertyId: String
+  propertyItemId: String
+}
+
+type ImagePathType {
+  fileId: String
+  path: String
+}
+
+type QueryImagesPropertyUtilityDataType {
+  data: [ImagePathType]
+  metaData: MetaDataQuerySchema
+}
+
+enum FileContextEnumForLambda {
+  assignment
+  lease
+  moving_in
+  moving_out
+}
+
+enum FileTypeEnumForLambda {
+  esigning_assignment_pdf
+  esigning_lease_pdf
+  esigning_assignment_xml
+  esigning_lease_xml
+}
+
+input FileQueryDataTypeForLambda {
+  context: FileContextEnumForLambda
+  contractId: String
+  eventStatus: String
+  fileId: String
+  movingId: String
+  partnerId: String
+  status: String
+  type: FileTypeEnumForLambda
+  statusWithNotProcessed: Boolean
+}
+
+input RemoveFileFromUIDataType {
+  context: RemoveFileFromUiContextEnum
+  contractId: String
+  fileId: String
+  from: UpdateFromEnum
+  propertyId: String
+  propertyItemId: String
+  roomId: String
+  subContext: RemoveFileFromUiSubContextEnum
+}
+
+enum RemoveFileFromUiContextEnum {
+  accounts
+  contract
+  otherContext
+  property
+  propertyRoom
+}
+
+enum RemoveFileFromUiSubContextEnum {
+  inventory
+  keys
+  meterReading
+  otherSubContext
+}
+
+input UpdateFileFromPartnerAppDataType {
+  fileId: String
+  isRequestFromCorrection: Boolean
+  isVisibleToLandlord: Boolean
+  isVisibleToTenant: Boolean
+}
+
+input ReproduceLogInputType {
+  fileId: String
+}
+
+extend type Mutation {
+  #for lambda
+  addFile(inputData: FileAddType): File @auth(requires: ["lambda_manager"])
+  updateFile(inputData: FileUpdateType): File
+    @auth(requires: ["lambda_manager"])
+  removeFile(inputData: FileRemoveType): File @auth(requires: ["no_role"])
+  #for lambda
+  addFileForNotificationAttachments(
+    inputData: FileAddForNotificationAttachmentsType
+  ): [fileIdsWithAttachmentFileIds] @auth(requires: ["lambda_manager"])
+  createFileAndAppQueueForPdfGeneration(
+    inputData: PdfFileAndAppQueueAddType
+  ): AppQueueIdType @auth(requires: ["lambda_manager"])
+  createProducedLogAndSendEvictionDueReminder(
+    inputData: ReproduceLogInputType
+  ): ReturnBoolean @auth(requires: ["lambda_manager"])
+  addFileFromUI(inputData: AddFileFromUIDataType): File
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+        "partner_landlord"
+        "partner_tenant"
+        "user"
+      ]
+    )
+  uploadFiles(inputData: uploadFileDataType): [File]
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+        "partner_janitor"
+        "partner_landlord"
+        "partner_tenant"
+        "user"
+      ]
+    )
+  removeFileFromUI(inputData: RemoveFileFromUIDataType): ReturnBoolean
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "partner_agent"
+        "partner_landlord"
+        "partner_tenant"
+        "user"
+      ]
+    )
+  updateFileFromPartnerApp(
+    inputData: UpdateFileFromPartnerAppDataType
+  ): ReturnBoolean
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+}
+
+extend type Query {
+  getFilesForDetailsPage(
+    queryData: FileQueryForDetailsPageDataType
+    optionData: OptionDataType
+  ): FileForDetailsPageType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  getConversationFileDownloadUrl(
+    queryData: ConversationFileDownloadUrlDataType
+  ): String @auth(requires: ["user"])
+  #  For partner public app
+  getUploadPolicy(
+    queryData: UploadPolicyQueryDataType
+    optionData: OptionDataType
+  ): QueryUploadPolicy
+    @auth(
+      requires: [
+        "app_admin"
+        "partner_janitor"
+        "partner_landlord"
+        "partner_tenant"
+        "user"
+      ]
+    ) # Todo: https://github.com/Uninite/uninite.com/issues/10486
+  #  For partner public app
+  getFilesForPublicApp(
+    queryData: FileQueryDataType
+    optionData: OptionDataType
+  ): QueryFileForPublicApp
+    @auth(requires: ["partner_tenant", "partner_landlord", "user"])
+
+  getFileDownloadUrl(queryData: FileDownloadUrlDataType): String
+    @auth(requires: ["app_admin", "user"])
+
+  validateTokenAndGetFileDownloadUrl(queryData: tokenDataType): String
+    @auth(requires: ["lambda_manager"]) # For lambda
+  getImportErrorExcelFileUrl(queryData: ImportErrorExcelFileDataType): String
+    @auth(requires: ["app_admin"])
+
+  getImagesForPropertyDetailsUtility(
+    queryData: ImagesForPropertyUtilityDataType
+    optionData: OptionDataType
+  ): QueryImagesPropertyUtilityDataType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+        "partner_janitor"
+      ]
+    )
+  getAFileForLambda(queryData: FileQueryDataTypeForLambda): File
+    @auth(requires: ["lambda_manager"]) # For lambda
+}

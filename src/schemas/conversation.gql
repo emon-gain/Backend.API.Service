@@ -1,0 +1,200 @@
+type Conversation {
+  participants: Array
+  userStatus: Array
+  lastMessageAt: Date
+  lastMessage: String
+  listingId: String
+  archivedBy: Array
+  favoriteBy: Array
+  published: Boolean
+  unreadBy: Array
+  uniqueInteraction: Boolean
+  identity: Array
+  uniqueInteractionAt: Date
+  partnerId: String
+  accountId: String
+  propertyId: String
+  tenantId: String
+  agentId: String
+  hideForPartner: Boolean
+  contractId: String
+  createdAt: Date
+  createdBy: String
+  _id: String
+}
+
+input ConversationAddType {
+  participants: Array
+  userStatus: Array
+  lastMessageAt: Date
+  lastMessage: String
+  listingId: String
+  archivedBy: Array
+  favoriteBy: Array
+  published: Boolean
+  unreadBy: Array
+  uniqueInteraction: Boolean
+  identity: Array
+  uniqueInteractionAt: Date
+  partnerId: String
+  accountId: String
+  propertyId: String
+  tenantId: String
+  agentId: String
+  hideForPartner: Boolean
+  contractId: String
+  createdAt: Date
+  createdBy: String
+  senderId: String
+  receiverId: String
+  chatWith: String
+}
+
+enum UpdateTypeEnum{
+  archive
+  addParticipant
+  favorite
+  seen
+  typingStatus
+}
+
+input ConversationUpdateType {
+  conversationId: String
+  updateType: UpdateTypeEnum
+  data: Object
+}
+
+input ConversationQueryDataType {
+  participantIdentityId: String
+}
+
+type ConversationQuerySchema {
+  participants: Array
+  userStatus: Array
+  lastMessageAt: Date
+  lastMessage: String
+  listingId: String
+  archivedBy: Array
+  favoriteBy: Array
+  published: Boolean
+  unreadBy: Array
+  uniqueInteraction: Boolean
+  identity: Array
+  uniqueInteractionAt: Date
+  partnerId: String
+  accountId: String
+  propertyId: String
+  tenantId: String
+  agentId: String
+  hideForPartner: Boolean
+  contractId: String
+  createdAt: Date
+  createdBy: String
+  _id: String
+}
+
+type QueryConversation {
+  data: [ConversationQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type ListingInfoSchema {
+  _id: String
+  imageUrl: String
+  listed: Boolean
+  location: ListingLocationObj
+  title: String
+}
+
+type UserInfoSchema {
+  _id: String
+  profile: UserProfileObj
+  avatarKey: String
+}
+type ContractInfoForConversation {
+  contractStartDate: Date,
+  contractEndDate: Date
+  status: String
+}
+type PartnerInfoForConversation {
+  name: String
+  subDomain: String
+}
+
+type LastMessageSchema {
+  _id: String
+  content: String
+  createdAt: Date
+  isFile: Boolean
+}
+
+type UserProfileInfoObj {
+  avatar: String
+  name: String
+  roomForRent: String
+  occupation: String
+  work: Array
+}
+
+type ParticipantUserInfoSchema {
+  _id: String
+  lastMessageInfo: LastMessageSchema
+  profile: UserProfileInfoObj
+}
+
+type ConversationForChatSchema {
+  _id: String
+  accountId: String
+  archivedBy: Array
+  createdBy: String
+  contractId: String
+  createdAt: Date
+  conversationMessage: [ConversationMessage]
+  contractInfo: ContractInfoForConversation
+  favoriteBy: Array
+  lastMessage: String
+  lastMessageAt: Date
+  listingInfo: ListingInfoSchema
+  listingId: String
+  partnerId: String
+  propertyId: String
+  partnerInfo: PartnerInfoForConversation
+  participants: Array
+  tenantId: String
+  usersInfo: [ParticipantUserInfoSchema]
+  unreadBy: Array
+}
+
+type QueryConversationForChat {
+  data: [ConversationForChatSchema]
+  metaData: MetaDataQuerySchema
+}
+
+input ConversationForChatQueryDataType {
+  accountId: String
+  contractId: String
+  isFavorite: Boolean
+  isListed: Boolean
+  isLease: Boolean
+  listingId: String
+  propertyId: String
+  searchKeyword: String
+  tenantId: String
+}
+
+extend type Query {
+  conversations(
+    queryData: ConversationQueryDataType
+    optionData: OptionDataType
+  ): QueryConversation @auth(requires: ["lambda_manager"])
+  getConversationsForChat(
+    queryData: ConversationForChatQueryDataType
+    optionData: OptionDataType
+  ): QueryConversationForChat
+    @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent", "partner_janitor", "partner_landlord" "user"])
+}
+
+extend type Mutation {
+  addConversations(inputData: ConversationAddType): [Conversation] @auth(requires: ["user"])
+  updateConversation(inputData: ConversationUpdateType): Conversation @auth(requires: ["user"])
+}

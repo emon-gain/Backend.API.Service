@@ -1,0 +1,197 @@
+type PropertyRoom {
+  _id: String
+  contractId: String
+  createdAt: Date
+  createdBy: String
+  files: Array
+  items: Array
+  movingId: String
+  moveInRoomId: String
+  name: String
+  newFiles: Array
+  partnerId: String
+  propertyId: String
+  propertyItemId: String
+  propertyRoomId: String
+  taskId: String
+  type: String
+}
+
+type filesInfo {
+  fileId: String
+  path: String
+}
+
+type PropertyRoomQuerySchema {
+  _id: String
+  createdAt: Date
+  files: [filesInfo]
+  hasMovingInOutProtocol: Boolean
+  items: [RoomItemObject]
+  name: String
+  propertyRoomId: String
+  type: String
+}
+
+type MovingInItemType {
+  id: String
+  description: String
+  dueDate: Date
+  name: String
+  responsibleForFixing: String
+  status: String
+  title: String
+}
+
+type RoomItemObject {
+  id: String
+  description: String
+  dueDate: Date
+  hasChange: Boolean
+  movingInItem: MovingInItemType
+  name: String
+  responsibleForFixing: String
+  status: String
+  title: String
+}
+
+type QueryPropertyRoom {
+  data: [PropertyRoomQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input RoomItemsInputType {
+  description: String
+  id: String
+  name: String
+  responsibleForFixing: String
+  status: String
+  title: String
+}
+
+input RoomDataType {
+  contractId: String
+  createdBy: String
+  files: [String]
+  items: [RoomItemsInputType]
+  movingId: String
+  name: String
+  propertyId: String
+  type: String
+}
+
+input PropertyRoomAddType {
+  roomData: RoomDataType
+  roomFor: String
+}
+
+input RoomDataSchemaType {
+  description: String
+  dueDate: Date
+  files: [String]
+  name: String
+  propertyRoomId: String
+  responsibleForFixing: String
+  roomItemId: String
+  status: String
+  title: String
+}
+
+enum RoomItemTypeEnum {
+  description
+  dueDate
+  responsibleForFixing
+  status
+  title
+}
+
+input PropertyRoomUpdateType {
+  roomId: String
+  roomData: RoomDataSchemaType
+  type: RoomItemTypeEnum
+}
+
+input PropertyRoomRemoveType {
+  roomId: String
+}
+
+input PropertyRoomQueryDataType {
+  movingId: String
+  propertyId: String
+}
+
+enum PropertyIssueType{
+  rooms
+  inventory
+}
+
+input PropertyIssueFileType {
+  name: String
+  size: Number
+  title: String
+}
+
+input PropertyIssueCreateType {
+  description: String
+  files: [PropertyIssueFileType]
+  issueType: PropertyIssueType
+  itemId: String
+  propertyId: String
+  propertyItemId: String # Only for inventory
+  quantity: Number # Only for inventory
+  roomId: String # Only for rooms
+  title: String
+}
+
+extend type Query {
+  propertyRooms(
+    queryData: PropertyRoomQueryDataType
+    optionData: OptionDataType
+  ): QueryPropertyRoom
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+}
+
+extend type Mutation {
+  addPropertyRoom(inputData: PropertyRoomAddType): [PropertyRoom]
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+        "partner_janitor"
+        "partner_landlord"
+        "partner_tenant"
+      ]
+    )
+  updatePropertyRoom(inputData: PropertyRoomUpdateType): PropertyRoom
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+        "partner_janitor"
+      ]
+    )
+  removePropertyRoom(inputData: PropertyRoomRemoveType): PropertyRoom
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+        "partner_janitor"
+      ]
+    )
+  createPropertyIssue(inputData: PropertyIssueCreateType): MsgWithCode
+  @auth(requires:["partner_tenant", "partner_landlord"])
+}

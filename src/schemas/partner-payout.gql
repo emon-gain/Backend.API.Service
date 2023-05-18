@@ -1,0 +1,224 @@
+type PartnerPayout {
+  _id: String
+  partnerId: String
+  type: String
+  hasPayouts: Boolean
+  events: [EventsQuerySchema]
+  status: String
+  payoutIds: Array
+  payoutProcessId: String
+  paymentIds: Array
+  hasRefundPayments: Boolean
+  directRemittanceESigningInitiatedAt: Date
+  directRemittanceIDFYDocumentId: String
+  directRemittanceSigningMeta: DirectRemittanceSigningMetaQuerySchema
+  directRemittanceSigningStatus: [DirectRemittanceSigningStatusQuerySchema]
+  createdAt: Date
+  createdBy: String
+}
+
+type DirectRemittanceSigningStatusQuerySchema {
+  authenticationReference: String
+  categoryPurposeCode: String
+  idfySignerId: String
+  internalUrl: String
+  signingUrl: String
+  signed: Boolean
+  signedAt: Date
+  userId: String
+}
+
+type DirectRemittanceSigningMetaQuerySchema {
+  documentId: String
+  externalDocumentId: String
+  signers: [Object]
+}
+
+type EventsQuerySchema {
+  createdAt: Date
+  status: String
+  note: String
+}
+
+type PartnerPayoutQuerySchema {
+  _id: String
+  partnerId: String
+  type: String
+  hasPayouts: Boolean
+  events: [EventsQuerySchema]
+  status: String
+  payoutIds: Array
+  payoutProcessId: String
+  paymentIds: Array
+  hasRefundPayments: Boolean
+  directRemittanceESigningInitiatedAt: Date
+  directRemittanceIDFYDocumentId: String
+  directRemittanceSigningMeta: DirectRemittanceSigningMetaQuerySchema
+  directRemittanceSigningStatus: [DirectRemittanceSigningStatusQuerySchema]
+  partnerPayoutId: String
+  createdAt: Date
+  createdBy: String
+  partner: Partner
+  S3SentFileUrl: String
+  feedbackStatusLog: Array
+  sentFileName: String
+}
+
+type QueryPartnerPayout {
+  data: [PartnerPayoutQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input PartnerPayoutsQueryDataType {
+  _id: String
+  hasPayouts: Boolean
+  hasRefundPayments: Boolean
+  # Admin payout status list
+  partnerId: String
+  hasPayout: String
+  statuses: [PartnerPayoutStatusListEnum]
+  createdDateRange: CommonStartDateAndEndDateInputDataType
+  sentFileName: String
+  receivedFileName: String
+  defaultSearchText: String
+}
+
+input PartnerPayoutsSignersQueryDataType {
+  partnerPayoutId: String
+}
+
+input PartnerPayoutInitiateDataType {
+  partnerPayoutId: String
+  partnerId: String
+}
+
+input UpdatePartnerPayoutDataType {
+  directRemittanceSigningMeta: DirectRemittanceSigningMetaInputType
+  directRemittanceSigningStatus: [DirectRemittanceSigningStatusInputType]
+  directRemittanceSignedUserId: String
+  eventStatus: String
+  eventNote: String
+  partnerId: String
+  paymentIds: [String]
+  payoutIds: [String]
+  partnerPayoutId: String
+  status: String
+}
+
+enum PartnerPayoutStatusListEnum {
+  created
+  pending_for_approval
+  waiting_for_signature
+  approved
+  processing
+  sent
+  error
+  asice_approved
+  validated
+  accepted
+  failed
+  partially_completed
+  completed
+}
+
+type PartnerPayoutSignerQueryType {
+  authenticationReference: String
+  categoryPurposeCode: String
+  norwegianNationalIdentification: String
+  partnerOrganizationId: String
+  userId: String
+}
+
+input DirectRemittanceSigningStatusInputType {
+  authenticationReference: String
+  categoryPurposeCode: String
+  idfySignerId: String
+  internalUrl: String
+  signingUrl: String
+  signed: Boolean
+  signedAt: Date
+  userId: String
+}
+
+input DirectRemittanceSigningMetaInputType {
+  documentId: String
+  externalDocumentId: String
+  signers: [Object]
+}
+
+input UpdatePayoutAndPayoutProcessInput {
+  directRemittanceSigningMeta: DirectRemittanceSigningMetaInputType
+  directRemittanceSigningStatus: [DirectRemittanceSigningStatusInputType]
+  fileId: String
+  partnerId: String
+  partnerPayoutId: String
+}
+
+input EventsInputType {
+  createdAt: Date
+  status: String
+  note: String
+}
+
+input PartnerPayoutAddInputType {
+  _id: String
+  partnerId: String
+  type: String
+  hasPayouts: Boolean
+  events: [EventsInputType]
+  status: String
+  payoutIds: Array
+  payoutProcessId: String
+  paymentIds: Array
+  hasRefundPayments: Boolean
+  directRemittanceESigningInitiatedAt: Date
+  directRemittanceIDFYDocumentId: String
+  directRemittanceSigningMeta: DirectRemittanceSigningMetaInputType
+  directRemittanceSigningStatus: [DirectRemittanceSigningStatusInputType]
+  partnerPayoutId: String
+  createdAt: Date
+  createdBy: String
+}
+
+type PartnerPayoutsDataForESigningCleaner {
+  directRemittanceIDFYDocumentId: String
+  fileId: String
+  partnerId: String
+  partnerPayoutId: String
+}
+
+extend type Query {
+  partnerPayouts(
+    queryData: PartnerPayoutsQueryDataType
+    optionData: OptionDataType
+  ): QueryPartnerPayout @auth(requires: ["app_admin"])
+  getPayoutSigners(
+    queryData: PartnerPayoutsSignersQueryDataType
+  ): [PartnerPayoutSignerQueryType] @auth(requires: ["lambda_manager"])
+  getPartnerPayoutForLambda(
+    queryData: PartnerPayoutsQueryDataType
+  ): PartnerPayoutQuerySchema @auth(requires: ["lambda_manager"])
+  getPartnerPayoutsDataForESigningCleaner(
+    queryData: CommonInputDataType
+  ): [PartnerPayoutsDataForESigningCleaner] @auth(requires: ["lambda_manager"])
+}
+
+#For lambda payments #10482
+extend type Mutation {
+  generatePartnerPayoutsDaily: String @auth(requires: ["lambda_manager"])
+  generatePartnerRefundPaymentsDaily: String @auth(requires: ["lambda_manager"])
+  initiatePartnerPayout(inputData: PartnerPayoutInitiateDataType): String
+    @auth(requires: ["lambda_manager"])
+  initiatePartnerRefundPayment(
+    inputData: PartnerPayoutInitiateDataType
+  ): String @auth(requires: ["lambda_manager"])
+  updatePartnerPayout(
+    inputData: UpdatePartnerPayoutDataType
+  ): PartnerPayoutQuerySchema @auth(requires: ["lambda_manager"])
+  updatePayoutAndPayoutProcess(
+    inputData: UpdatePayoutAndPayoutProcessInput
+  ): Boolean @auth(requires: ["lambda_manager"])
+  createPartnerPayout(
+    inputData: PartnerPayoutAddInputType
+  ): PartnerPayoutQuerySchema @auth(requires: ["lambda_manager"])
+}

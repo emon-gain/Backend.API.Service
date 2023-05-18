@@ -1,0 +1,289 @@
+type AppQueue {
+  _id: String
+  action: String
+  delaySeconds: Int
+  destination: String
+  completedAt: Date
+  createdAt: Date
+  createdBy: String
+  errorDetails: Object
+  event: String
+  flightAt: Date
+  history: [AppQueueHistory]
+  isManuallyCompleted: Boolean
+  isSequential: Boolean
+  noOfRetry: Int
+  notificationLogInfos: [NotificationLogInfosType]
+  params: Object
+  priority: String
+  retriedAt: Date
+  sequentialCategory: String
+  status: AppQueueStatusEnum
+  totalNotificationLogs: Int
+}
+
+type AppQueueHistory {
+  status: String
+  noOfRetry: Int
+  flightAt: Date
+  errorDetails: Object
+}
+
+enum AppQueueStatusEnum {
+  new
+  on_flight
+  sent
+  processing
+  completed
+  failed
+  hold
+}
+
+type NotificationLogInfosType {
+  logId: String
+  type: String
+  sendTo: String
+  sendToUserId: String
+}
+
+type MsgWithCode {
+  msg: String
+  code: String
+}
+
+input AppQueueInput {
+  action: String
+  delaySeconds: Int
+  destination: String
+  event: String
+  isSequential: Boolean
+  params: Object
+  priority: String
+  sequentialCategory: String
+}
+
+input AppQueuesInput {
+  data: [AppQueueInput]
+}
+
+input AppQueueUpdatingQueryData {
+  queueId: String
+  status: AppQueueStatusEnum
+  partnerId: String
+  action: String
+  event: String
+  ignoreQueueIds: [String]
+}
+
+input AppQueuesUpdatingQueryData {
+  queueIds: [String]
+  status: AppQueueStatusEnum
+}
+
+input AppQueuesToNewUpdatingQueryData {
+  status: AppQueueStatusEnum
+  limit: Int
+}
+
+input AppQueueUpdateParamsObject {
+  collectionsData: [Object]
+  contractData: [Object]
+  dataToSkip: Int
+  isLastAppQueue: Boolean
+  startingSerialId: Int
+  hasError: Boolean
+}
+
+input AppQueueUpdatingData {
+  delaySeconds: Int
+  status: AppQueueStatusEnum
+  errorDetails: Object
+  params: AppQueueUpdateParamsObject
+  startingIndex: Int
+  isManuallyCompleted: Boolean
+  noOfRetry: Int
+  isUnsetNoOfRetry: Boolean
+  priority: AppQueuePriorityEnum
+}
+
+input AppQueueQueryData {
+  destination: String
+  priority: String
+  queueId: String
+  status: String
+}
+
+input AppQueueQueryDataType {
+  _id: String
+  action: String
+  createdBy: String
+  destination: String
+  event: String
+  events: [String]
+  # If ignore queue IDs provided then _id will not work
+  ignoreQueueIds: [String]
+  ignoreStatuses: [String]
+  isManuallyCompleted: Boolean
+  isTransactionAppQueueComplete: Boolean
+  params: Object
+  priority: String
+  status: AppQueueStatusEnum
+  statusWithNotCompleted: Boolean
+}
+
+enum AppQueuePriorityEnum {
+  immediate
+  regular
+}
+
+input DistinctAppQueuesQueryDataType {
+  distinctField: String
+  isSequential: Boolean
+  priority: AppQueuePriorityEnum
+  status: AppQueueStatusEnum
+}
+
+type DistinctAppQueues {
+  destination: [String]
+}
+
+input createQueueItemsForPogoIntegratedPartnersDataType {
+  dataType: String
+  filter: String
+}
+
+input createQueueItemsForExternalIdTransactionCheckDataType {
+  partnerId: String
+}
+
+input makeDIDueAndSendDINotificationInputDataType {
+  appInvoiceId: String
+}
+
+input NotifierAppQueuesUpdatingParams {
+  errorDetails: Object
+  queueId: String
+  status: AppQueueStatusEnum
+  totalNotificationLogs: Int
+  notificationLogIds: [String]
+}
+
+input NotifierAppQueuesUpdatingParamsData {
+  params: [NotifierAppQueuesUpdatingParams]
+}
+
+input CleanUpSequentialAppQueuesInputDataType {
+  cleanUpOnlyFailedQueues: Boolean
+  limit: Int
+}
+type NumberOfCreatedQueueForXledgerType {
+  numberOfCreatedQueue: Number
+}
+
+type CleanUpSequentialAppQueuesResponse {
+  isCompleted: Boolean
+}
+
+extend type Mutation {
+  updateAppQueue(
+    queryData: AppQueueUpdatingQueryData
+    updatingData: AppQueueUpdatingData
+  ): AppQueue @auth(requires: ["lambda_manager"])
+  updateAppQueues(
+    queryData: AppQueuesUpdatingQueryData
+    updatingData: AppQueueUpdatingData
+  ): [AppQueue] @auth(requires: ["lambda_manager"])
+  updateAppQueuesToNew(
+    queryData: AppQueuesToNewUpdatingQueryData
+  ): NumberOfUpdate @auth(requires: ["lambda_manager"])
+  updateAppQueuesForNotifier(
+    params: NotifierAppQueuesUpdatingParamsData
+  ): NumberOfUpdated @auth(requires: ["lambda_manager"])
+  cleanUpAppQueue: MsgWithCode @auth(requires: ["lambda_manager"])
+  addAppQueue(inputData: AppQueueInput): AppQueue
+    @auth(requires: ["lambda_manager"])
+  addAppQueues(inputData: AppQueuesInput): [AppQueue]
+    @auth(requires: ["lambda_manager"])
+  addSequentialAppQueues(inputData: AppQueuesInput): [AppQueue]
+    @auth(requires: ["lambda_manager"])
+  #For lambda accountingBridgePogo #10175
+  createQueueItemsForPogoIntegratedPartners(
+    inputData: createQueueItemsForPogoIntegratedPartnersDataType
+  ): [AppQueue] @auth(requires: ["lambda_manager"])
+  createQueueItemsForXledgerIntegratedPartners(
+    optionData: OptionDataType
+  ): NumberOfCreatedQueueForXledgerType @auth(requires: ["lambda_manager"])
+  createQueueItemsForExternalIdTransactionCheck(
+    inputData: createQueueItemsForExternalIdTransactionCheckDataType
+  ): [AppQueue] @auth(requires: ["lambda_manager"])
+  makeDIDueAndSendDINotification(
+    inputData: makeDIDueAndSendDINotificationInputDataType
+  ): [AppQueue] @auth(requires: ["lambda_manager"])
+  cleanUpSequentialAppQueues(
+    inputData: CleanUpSequentialAppQueuesInputDataType
+  ): CleanUpSequentialAppQueuesResponse @auth(requires: ["lambda_manager"])
+}
+
+input ExistingAppQueueForPogoDataType {
+  _id: String
+  partnerId: String
+  directPartnerAccountId: String
+  action: String
+}
+
+type ExistingAppQueueForPogoType {
+  exists: Boolean
+}
+
+input AppQueueForAppHealthInput {
+  partnerId: ID
+}
+
+input AppQueueForAppHealthNotification {
+  params: Object
+  action: String
+  event: Object
+  destination: String
+  status: String
+}
+
+type AppQueueFailedInfo {
+  queueId: ID
+  queueEventType: String
+  queueActionType: String
+}
+
+type AppQueueForAppHealth {
+  failedInfo: [AppQueueFailedInfo]
+  totalFailedAppQueues: Int
+  count: Int
+}
+
+extend type Query {
+  # For accounting bridge pogo #10175
+  checkExistingAppQueueForPogo(
+    queryData: ExistingAppQueueForPogoDataType
+  ): ExistingAppQueueForPogoType @auth(requires: ["lambda_manager"])
+  getAppQueuesForAppHealth(partnerId: ID, type: String): AppQueueForAppHealth
+    @auth(requires: ["lambda_manager"])
+  getAppQueueForLambda(
+    optionData: OptionDataType
+    queryData: AppQueueQueryData
+  ): [AppQueue] @auth(requires: ["lambda_manager"])
+  getSingleAppQueue(queueId: String): AppQueue
+    @auth(requires: ["lambda_manager"])
+  getAppQueues(
+    optionData: OptionDataType
+    queryData: AppQueueQueryDataType
+  ): [AppQueue] @auth(requires: ["lambda_manager"])
+  getDistinctAppQueues(
+    queryData: DistinctAppQueuesQueryDataType
+  ): DistinctAppQueues @auth(requires: ["lambda_manager"])
+  getAppQueuesForAppHealthNotification(
+    queryData: AppQueueForAppHealthNotification
+  ): [AppQueue] @auth(requires: ["lambda_manager"])
+  getSequentialAppQueuesForLambda(
+    optionData: OptionDataType
+    queryData: AppQueueQueryData
+  ): [AppQueue] @auth(requires: ["lambda_manager"])
+}

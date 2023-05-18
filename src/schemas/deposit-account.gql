@@ -1,0 +1,323 @@
+type DepositAccount {
+  _id: String
+  bankAccountNumber: Number
+  bankNotificationId: Number
+  bankNotificationType: Int
+  branchId: String
+  contractId: String
+  depositAmount: Number
+  partnerId: String
+  payments: [DepositAccountIncomingPaymentsSchema]
+  propertyId: String
+  referenceNumber: String
+  tenantId: String
+  totalPaymentAmount: Number
+  createdAt: Date
+  createdBy: String
+}
+
+type DepositAccountIncomingPaymentsSchema {
+  id: String
+  paymentReference: String
+  paymentAmount: Number
+  currentBalance: Number
+  paymentDate: Date
+}
+
+type DepositAccountFileType {
+  _id: String
+  name: String
+  title: String
+}
+
+type DepositAccountQuerySchema {
+  _id: String
+  propertyInfo: DepositAccountProperty
+  accountInfo: DepositAccountAccountInfo
+  branchInfo: DepositAccountBranch
+  agentInfo: DepositAccountAgent
+  fileInfo: DepositAccountFileType
+  tenantInfo: DepositAccountTenent
+  bankAccountNumber: Number
+  totalPaymentAmount: Number
+  payments: [DepositAccountIncomingPaymentsSchema]
+  referenceNumber: String
+  depositAmount: Number
+  status: String
+  createdAt: Date
+}
+
+type DepositAccountAgent {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type DepositAccountAccountInfo {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type DepositAccountBranch {
+  _id: String
+  name: String
+}
+
+type DepositAccountTenent {
+  _id: String
+  name: String
+  avatarKey: String
+  email: String
+  phoneNumber: String
+  serial: Int
+  type: String
+}
+
+type DepositAccountProperty {
+  _id: String
+  location: ListingLocationObj
+  apartmentId: String
+  propertyTypeId: String
+  listingTypeId: String
+  serial: Int
+  imageUrl: String
+}
+
+enum DepositAccountStatusEnum {
+  waiting_for_creation
+  sent_to_bank
+  waiting_for_payment
+  paid
+  over_paid
+  partially_paid
+  no_deposit
+}
+
+input DepositAccountQueryDataType {
+  _id: String
+  accountId: String
+  agentId: String
+  bankAccountNumber: Number
+  branchId: String
+  contractId: String
+  createdAt: CommonStartDateAndEndDateInputDataType
+  propertyId: String
+  requestFrom: RequestFromEnum
+  searchKeyword: String
+  status: [DepositAccountStatusEnum]
+  tenantId: String
+}
+
+type QueryDepositAccount {
+  data: [DepositAccountQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type StatusSummaryType {
+  _id: String
+  depositAmount: Number
+}
+
+type depositAccountsSummaryQueryType {
+  totalDepositAmount: Number
+  statusSummary: [StatusSummaryType]
+}
+
+input IrregularIncome {
+  amount: Number
+  comment: String
+  type: String
+}
+
+input TaxableAbroad {
+  birthCountry: String
+  taxCountry: String
+  taxNumber: Number
+}
+
+input SubmitKycFormDataType {
+  irregularIncome: IrregularIncome
+  isPoliticallyExposedPerson: Boolean
+  isTaxResidentOrResidentOfUsa: Boolean
+  partnerId: String
+  referenceNumber: String
+  taxableAbroad: TaxableAbroad
+}
+
+type SubmitKycFormData {
+  signingUrl: String
+}
+
+input GetTenantLeaseSigningUrlQueryDataType {
+  contractId: String
+  tenantId: String
+}
+
+input GetDepositAccountForLambdaQueryDataType {
+  bankAccountNumber: Number
+  branchId: String
+  contractId: String
+  depositAmount: Number
+  depositAccountId: String
+  partnerId: String
+  propertyId: String
+  referenceNumber: String
+  tenantId: String
+}
+
+input RetrieveTenantDAPDFInputDataType {
+  contractId: String
+  partnerId: String
+  queueId: String
+}
+
+input AddFileAndUpdateContractInput {
+  contractId: ID
+  tenantId: ID
+  fileData: Object
+  fileKey: String
+}
+
+type DepositAccountData {
+  accountId: ID
+  partnerId: ID
+  tenantId: ID
+  tenants: Tenant
+  files: File
+  partner: Partner
+  account: Account
+  depositAmount: Float
+  kycForm: Object
+  user: User
+  attachmentFileId: String
+  attachmentFile: File
+  tenantLeaseSigningStatus: ObjectTenantLeaseSigningStatus
+  isDepositAccountExists: Boolean
+  signerInfo: Object
+  companyInfo: PartnerCompanyInfoSchema
+  xmlFile: File
+}
+
+input IsShowTestNotification {
+  contractId: String
+}
+
+type TestNotificationStatus {
+  accountCreated: Boolean
+  incomingPayment: Boolean
+}
+
+extend type Query {
+  depositAccounts(
+    queryData: DepositAccountQueryDataType
+    optionData: OptionDataType
+  ): QueryDepositAccount
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+  depositAccountsSummary(
+    queryData: DepositAccountQueryDataType
+  ): depositAccountsSummaryQueryType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+  fetchTenantDataForDepositAccountSubmit(
+    contractId: ID
+    tenantId: ID
+  ): DepositAccountData @auth(requires: ["lambda_manager"])
+  getTenantLeaseSigningUrlForLambda(
+    queryData: GetTenantLeaseSigningUrlQueryDataType
+  ): String @auth(requires: ["lambda_manager"])
+  getADepositAccountForLambda(
+    queryData: GetDepositAccountForLambdaQueryDataType
+  ): DepositAccount @auth(requires: ["lambda_manager"])
+  isShowTestNotificationForDepositAccount(
+    queryData: IsShowTestNotification
+  ): TestNotificationStatus @auth(requires: ["app_manager", "partner_admin"])
+}
+
+input DACreationInputDataType {
+  bankAccountNumber: Number
+  bankNotificationId: Number
+  bankNotificationType: Int
+  branchId: String
+  contractId: String
+  depositAmount: Number
+  partnerId: String
+  propertyId: String
+  referenceNumber: String
+  tenantId: String
+  #  To complete current queue
+  queueId: String
+}
+
+input DepositAccountPaymentsInputType {
+  id: String
+  currentBalance: Number
+  paymentAmount: Number
+  paymentDate: Date
+  paymentReference: String
+}
+
+input DepositAccountQueryAndUpdateDataType {
+  depositAccountId: String
+  payments: DepositAccountPaymentsInputType
+  queueId: String
+  totalPaymentAmount: Number
+}
+
+input UploadSignedFileToS3Input {
+  contractId: ID
+  documentId: ID
+  esignType: String
+  queueId: ID
+}
+
+input depositAccountsTestNotificationsCreatedInput {
+  contractId: String
+  type: String
+  amount: Number
+}
+
+input CreateLogForTestDepositAccountInputType {
+  partnerId: String
+  tenantId: String
+  contractId: String
+}
+
+extend type Mutation {
+  # Prepare tenant information for bank and create app queues for retrieving tenant deposit account PDF
+  createAppQueuesToRetrieveTenantDAPDF(
+    inputData: RetrieveTenantDAPDFInputDataType
+  ): ReturnIds @auth(requires: ["lambda_manager"])
+  submitKycForm(inputData: SubmitKycFormDataType): SubmitKycFormData
+    @auth(requires: ["public"])
+  createADepositAccount(inputData: DACreationInputDataType): DepositAccount
+    @auth(requires: ["lambda_manager"])
+  updateADepositAccountForLambda(
+    inputData: DepositAccountQueryAndUpdateDataType
+  ): DepositAccount @auth(requires: ["lambda_manager"])
+  addFileAndUpdateContractForDepositAccount(
+    input: AddFileAndUpdateContractInput
+  ): MsgWithCode @auth(requires: ["lambda_manager"])
+  uploadIdfySignedFileToS3(input: UploadSignedFileToS3Input): [String]
+    @auth(requires: ["lambda_manager"])
+  createDepositAccountForTest(
+    inputData: depositAccountsTestNotificationsCreatedInput
+  ): ReturnBoolean @auth(requires: ["app_manager", "partner_admin"])
+  createLogForTestDepositAccount(
+    inputData: CreateLogForTestDepositAccountInputType
+  ): ReturnBoolean
+    @auth(requires: ["app_manager", "partner_admin", "lambda_manager"])
+}

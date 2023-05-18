@@ -1,0 +1,288 @@
+type Partner {
+  _id: String
+  name: String
+  subDomain: String
+  ownerId: String
+  owner: UserQuerySchema
+  isActive: Boolean
+  accountType: String
+  country: String
+  isSelfService: Boolean
+  sms: Boolean
+  phoneNumber: String
+  logo: String
+  siteLogo: String
+  logoUrl: String
+  siteLogoUrl: String
+  serial: Number
+  enableTransactions: Boolean
+  enableFinn: Boolean
+  finnId: String
+  finnLogo: String
+  enableTransactionsApi: Boolean
+  enableTransactionsPeriod: Boolean
+  enableInvoiceStartNumber: Boolean
+  enableAnnualStatement: Boolean
+  enableSkatteetaten: Boolean
+  enableBrokerJournals: Boolean
+  isPowerOfficeProcessCompleted: Boolean
+  enableDepositAccount: Boolean
+  enableCreditRating: Boolean
+  enableRecurringDueDate: Boolean
+  createdAt: Date
+  createdBy: String
+  partnerSetting: PartnerSetting
+}
+
+type PartnerQuerySchema {
+  _id: String
+  name: String
+  subDomain: String
+  ownerId: String
+  owner: UserQuerySchema
+  isActive: Boolean
+  accountType: String
+  country: String
+  isSelfService: Boolean
+  sms: Boolean
+  phoneNumber: String
+  logo: String
+  serial: Number
+  enableTransactions: Boolean
+  enableFinn: Boolean
+  finnId: String
+  finnLogo: String
+  enableTransactionsApi: Boolean
+  enableTransactionsPeriod: Boolean
+  enableInvoiceStartNumber: Boolean
+  enableAnnualStatement: Boolean
+  isPowerOfficeProcessCompleted: Boolean
+  enableSkatteetaten: Boolean
+  enableBrokerJournals: Boolean
+  enableDepositAccount: Boolean
+  enableCreditRating: Boolean
+  enableRecurringDueDate: Boolean
+  createdAt: Date
+  createdBy: String
+  # For lambda accounting bridge pogo #10175
+  id: Number
+}
+
+type QueryPartner {
+  data: [PartnerQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type PartnerSubDomainType {
+  currencySettings: CurrencySettingsSchema
+  partnerId: String
+  logo: String
+  isSubDomainExists: Boolean
+  defaultFindHomeLocation: DefaultFindHomeLocationSchema
+  name: String
+  partnerSiteURL: String
+}
+
+input PartnersQueryDataType {
+  _id: String
+  name: String
+  subDomain: String
+  isActive: Boolean
+  accountType: String
+  country: String
+  isSelfService: Boolean
+  sms: Boolean
+  phoneNumber: String
+  serial: Number
+  enableTransactions: Boolean
+  enableFinn: Boolean
+  finnId: String
+  enableTransactionsApi: Boolean
+  enableAnnualStatement: Boolean
+  enableSkatteetaten: Boolean
+  enableBrokerJournals: Boolean
+  enableDepositAccount: Boolean
+  enableCreditRating: Boolean
+  defaultSearch: String
+  # For Admin partner Filters
+  partnerType: String
+  createdDateRange: CommonStartDateAndEndDateInputDataType
+  status: [FunctionalityEnableEnum]
+  statusNotEnabled: [FunctionalityDisableEnum]
+  #For Lambda accounting bridge pogo #10175
+  dataType: String
+  filter: String
+}
+
+enum FunctionalityEnableEnum {
+  finnActivated
+  transactionsApiEnabled
+  annualStatementEnabled
+  depositAccountEnabled
+  brokerJournalsEnabled
+  creditRatingsEnabled
+  transactionsEnabled
+  individualInvoicesSeriesEnabled
+  enableSkatteetaten
+}
+
+enum FunctionalityDisableEnum {
+  finnDeactivated
+  transactionsApiDisabled
+  annualStatementDisabled
+  depositAccountDisabled
+  brokerJournalsDisabled
+  creditRatingsDisabled
+  transactionsDisabled
+  individualInvoicesSeriesDisabled
+  disableSkatteetaten
+}
+enum PartnerTypeEnum {
+  broker
+  direct
+}
+
+input PartnersLambdaQueryDataType {
+  _id: String
+  isActive: Boolean
+  isTransaction: Boolean
+}
+
+enum CompanyInfoDataTypeEnum {
+  get_update_company
+}
+
+input PartnerAddType {
+  name: String
+  subDomain: String
+  ownerId: String
+  ownerName: String
+  ownerEmail: String
+  accountType: String
+  sms: Boolean
+  phoneNumber: String
+}
+
+input PartnerUserAddType {
+  name: String
+  email: String
+  requires: [PartnerUserRolesEnum]
+  branchId: String
+  partnerEmployeeId: Int
+}
+
+enum PartnerUserRolesEnum {
+  partner_accounting
+  partner_admin
+  partner_agent
+  partner_janitor
+}
+
+input PartnerUpdateDataType {
+  name: String
+  subDomain: String
+  sms: Boolean
+  phoneNumber: String
+  ownerId: String
+}
+
+input PartnerUpdateType {
+  partnerId: String
+  partnerData: PartnerUpdateDataType
+}
+
+input PartnerActivateType {
+  partnerId: String
+}
+
+input PartnerDeactivateType {
+  partnerId: String
+}
+
+input PartnerLogoUpdateType {
+  logo: String
+  siteLogo: String
+}
+
+input PartnerFinnIdUpdateType {
+  partnerId: String
+  finnId: String
+}
+
+input PartnerUserEmployeeIdUpdateType {
+  partnerId: String
+  partnerUserId: String
+  partnerEmployeeId: Number
+}
+
+input PartnerUserStatusUpdateType {
+  partnerUserId: String
+  status: String
+}
+
+input PartnerTransactionUpdateType {
+  partnerId: String
+}
+
+enum PartnerSiteTypeEnum {
+  admin
+  public
+}
+
+input PartnerSubDomainInput {
+  partnerSiteType: PartnerSiteTypeEnum
+  subDomain: String
+}
+
+input UpdatePartnerFunctionalityInputType {
+  partnerId: String
+  enableFinn: Boolean
+  enableTransactionsApi: Boolean
+  enableTransactionsPeriod: Boolean
+  enableInvoiceStartNumber: Boolean
+  enableAnnualStatement: Boolean
+  enableSkatteetaten: Boolean
+  enableBrokerJournals: Boolean
+  enableDepositAccount: Boolean
+  enableCreditRating: Boolean
+  enableRecurringDueDate: Boolean
+}
+
+extend type Query {
+  partners(
+    queryData: PartnersQueryDataType
+    optionData: OptionDataType
+  ): QueryPartner @auth(requires: ["app_admin"])
+  getPartnersForLambda(queryData: PartnersLambdaQueryDataType): [Partner]
+    @auth(requires: ["lambda_manager"])
+  partnersSubDomain(queryData: PartnerSubDomainInput): PartnerSubDomainType
+  partnerIds(limit: Int, skip: Int): [String]
+  getSelfServicePartner: Partner
+}
+
+extend type Mutation {
+  addPartner(inputData: PartnerAddType): [Partner]
+    @auth(requires: ["app_admin"])
+  addPartnerUser(inputData: PartnerUserAddType): User
+    @auth(requires: ["app_manager", "partner_admin"])
+  updatePartner(inputData: PartnerUpdateType): Partner
+    @auth(requires: ["app_admin"])
+  activatePartnerStatus(inputData: PartnerActivateType): Partner
+    @auth(requires: ["app_admin"])
+  deactivatePartnerStatus(inputData: PartnerDeactivateType): Partner
+    @auth(requires: ["app_admin"])
+  updatePartnerLogo(inputData: PartnerLogoUpdateType): Partner
+    @auth(requires: ["app_manager"])
+  updatePartnerFinnId(inputData: PartnerFinnIdUpdateType): Partner
+    @auth(requires: ["app_admin"])
+  updatePartnerUserEmployeeId(
+    inputData: PartnerUserEmployeeIdUpdateType
+  ): Partner @auth(requires: ["no_role"])
+  updatePartnerUserStatus(inputData: PartnerUserStatusUpdateType): User
+    @auth(requires: ["app_manager", "partner_admin"])
+  updatePartnerTransaction(inputData: PartnerTransactionUpdateType): Partner
+    @auth(requires: ["app_admin"])
+  updatePartnerFunctionality(
+    inputData: UpdatePartnerFunctionalityInputType
+  ): Partner @auth(requires: ["app_admin"])
+}

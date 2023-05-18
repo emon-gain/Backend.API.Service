@@ -1,0 +1,77 @@
+type Comment {
+  _id: String
+  content: String
+  context: String
+  partnerId: String
+  accountId: String
+  propertyId: String
+  tenantId: String
+  taskId: String
+  landlordPartnerId: String
+  tenantPartnerId: String
+  contractId: String
+  createdAt: Date
+  createdBy: String
+}
+
+type UserInfoTypeForComment {
+  _id: String
+  avatarKey: String
+  name: String
+}
+
+type CommentQuerySchema {
+  _id: String
+  content: String
+  createdAt: Date
+  userInfo: UserInfoTypeForComment
+}
+
+input CommentAddType {
+  accountId: String
+  content: String
+  contractId: String
+  landlordPartnerId: String
+  propertyId: String
+  taskId: String
+  tenantId: String
+  tenantPartnerId: String
+}
+
+type QueryComment {
+  data: [CommentQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+enum commentContextEnum {
+  """
+  Need to implement logic for landlordDashboard context
+  """
+  account
+  property
+  task
+  tenant
+}
+
+input CommentsQueryDataType {
+  """
+  Use contractId if context = property
+  """
+  accountId: String
+  context: commentContextEnum
+  contractId: String
+  propertyId: String
+  taskId: String
+  tenantId: String
+}
+
+extend type Query {
+  comments(
+    queryData: CommentsQueryDataType
+    optionData: OptionDataType
+  ): QueryComment @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent", "partner_janitor"])
+}
+
+extend type Mutation {
+  addComment(inputData: CommentAddType): CommentQuerySchema @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent", "partner_janitor", "partner_tenant", "partner_landlord"])
+}

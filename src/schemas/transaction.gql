@@ -1,0 +1,740 @@
+type Transaction {
+  _id: String
+  type: String
+  subType: String
+  partnerId: String
+  invoiceId: String
+  landlordInvoiceId: String
+  contractId: String
+  paymentId: String
+  payoutId: String
+  commissionId: String
+  agentId: String
+  tenantId: String
+  branchId: String
+  accountId: String
+  propertyId: String
+  amount: Number
+  debitAccountId: String
+  debitAccountCode: Number
+  creditAccountId: String
+  creditAccountCode: Number
+  debitTaxCodeId: String
+  debitTaxCode: Number
+  debitTaxPercentage: Number
+  creditTaxCodeId: String
+  creditTaxCode: Number
+  creditTaxPercentage: Number
+  addonId: String
+  correctionId: String
+  assignmentNumber: String
+  agentName: String
+  accountName: String
+  tenantName: String
+  locationName: String
+  branchSerialId: String
+  internalAssignmentId: String
+  internalLeaseId: String
+  employeeId: String
+  invoiceSerialId: String
+  landlordInvoiceSerialId: String
+  payoutSerialId: String
+  correctionSerialId: String
+  addonName: String
+  companyName: String
+  isCreditNoteAddon: Boolean
+  bankAccountNumber: String
+  period: String
+  status: String
+  serialId: Number
+  kidNumber: String
+  invoiceDueDate: Date
+  accountSerialId: String
+  tenantSerialId: String
+  propertySerialId: String
+  apartmentId: String
+  tenantAddress: String
+  tenantPhoneNumber: String
+  tenantEmailAddress: String
+  subName: String
+  bankRef: String
+  landlordPayment: Boolean
+  finalSettlementSerialId: String
+  accountAddress: String
+  accountZipCode: String
+  accountCity: String
+  accountCountry: String
+  tenantZipCode: String
+  tenantCity: String
+  tenantCountry: String
+  locationZipCode: String
+  locationCity: String
+  locationCountry: String
+  powerOffice: Object
+  externalEntityId: String
+  isUpdatedListingAddress: Boolean
+  backupTenantAddress: String
+  propertyGroupId: String
+  createdBy: String
+  createdAt: Date
+}
+
+input TransactionAddTypeForLoss {
+  invoiceId: String
+  contractId: String
+  partnerId: String
+  lostMeta: Object
+}
+
+input TransactionExcelCreatorQueryDataType {
+  queueId: String
+}
+
+input DetailedeBalnceReportExcelCreatorQueryDataType {
+  partnerId: String
+  period: CommonStartDateAndEndDateInputDataType
+  propertyId: String
+  tenantId: String
+  userLanguage: String
+}
+
+type TransactionExcelCreator {
+  id: Int
+  type: String
+  subType: String
+  subName: String
+  assignmentNumber: String
+  kidNumber: String
+  invoiceId: String
+  finalSettlementId: String
+  payoutId: String
+  correctionId: String
+  landlordInvoiceId: String
+  createdAt: Date
+  invoiceDueDate: Date
+  period: Date
+  createdBy: String
+  agent: String
+  account: String
+  accountId: String
+  accountAddress: String
+  accountZipCode: String
+  accountCity: String
+  accountCountry: String
+  tenant: String
+  tenantId: String
+  tenantAddress: String
+  tenantZipCode: String
+  tenantCity: String
+  tenantCountry: String
+  tenantPhoneNumber: String
+  tenantEmailAddress: String
+  property: String
+  propertyZipCode: String
+  propertyCity: String
+  propertyCountry: String
+  apartmentId: String
+  propertyId: String
+  amount: Number
+  debit: Number
+  debitTaxCode: Int
+  credit: Number
+  creditTaxCode: Int
+  branchId: String
+  internalAssignmentId: String
+  internalLeaseId: String
+  employeeId: String
+  bankAccountNumber: String
+  bankRef: String
+  externalEntityId: String
+  propertyGroupId: String
+  companyName: String
+  status: String
+}
+
+type QueryTransactionExcelCreator {
+  data: [TransactionExcelCreator]
+  total: Number
+}
+
+type QueryBalanceReportExcelCreator {
+  data: [DetailedBalanceReportExcelCreator]
+}
+
+type DetailedBalanceReportExcelCreator {
+  amount: Number
+  apartmentId: String
+  balance: Number
+  createdAt: Date
+  invoiceDueDate: Date
+  invoiceSerialId: String
+  propertyName: String
+  propertySerial: Number
+  subType: String
+  type: String
+  tenantName: String
+  tenantSerial: Number
+}
+
+input InvoiceLegacyTransactionAddType {
+  feesMeta: [InvoiceFeeMetaInputType]
+  invoiceIds: [String]
+  partnerId: String
+  transactionEvent: String # legacy or regular
+  startingSerial: String
+}
+
+input ReminderAndCollectionNoticeTransactionAddType {
+  invoiceIds: [String]
+  partnerId: String
+  metaType: String
+  accountingType: String
+  eventType: String
+}
+
+input RevertLostRecognitionTransactionAddType {
+  invoiceIds: [String]
+  partnerId: String
+  lostMeta: Object
+}
+
+input EvictionNoticeTransactionAddType {
+  invoiceIds: [String]
+  partnerId: String
+  accountingType: String
+  metaType: String
+  eventType: String
+}
+
+input RevertInvoiceFeesTransactionAddType {
+  invoiceIds: [String]
+  partnerId: String
+  removedFee: Object
+  subType: String
+}
+
+input CommissionLegacyTransactionAddType {
+  commissionIds: [String]
+  partnerId: String
+  transactionEvent: String
+}
+
+input CorrectionsLegacyTransactionAddType {
+  correctionIds: [String]
+  partnerId: String
+  transactionEvent: String
+}
+
+input PayoutsLegacyTransactionAddType {
+  payoutIds: [String]
+  partnerId: String
+  startingSerial: String
+  transactionEvent: String
+}
+
+input PaymentsLegacyTransactionAddType {
+  paymentIds: [String]
+  partnerId: String
+  transactionEvent: String
+  paymentAmount: Number
+  previousPaymentData: Object
+  removalPaymentData: Object
+  startingSerial: String
+}
+
+input TransactionsForPartnerAPIInputDataType {
+  apiKey: String
+  externalEntityId: String
+  serialId: Number
+  status: String
+}
+
+input TransactionSerialsUpdateType {
+  partnerId: String
+  queueId: String
+  startingSerialId: Int
+}
+
+type CompletedTransactions {
+  completedTransactions: [String]
+}
+
+#For lambda accounting bridge POGO #10175
+input TransactionUpdateWithValidVoucherNoInputDataType {
+  partnerId: String
+  transactionIds: [String]
+  voucherNo: String
+}
+
+input TransactionForPOGOQueryDataType {
+  partnerId: String
+  accountId: String
+  fromDate: Date
+}
+
+input TransactionForXledgerQueryDataType {
+  accountId: String
+  fromDate: Date
+  partnerId: String
+}
+
+type TenantPowerOffice {
+  id: String
+  code: String
+  hasError: Boolean
+  accountId: String
+  syncedAt: Date
+}
+
+type TenantInfoForTransactionPOGOQuerySchema {
+  _id: String
+  name: String
+  powerOffice: [TenantPowerOffice]
+}
+
+type AccountInfoForTransactionPOGOQuerySchema {
+  _id: String
+  name: String
+  powerOffice: AccountPowerOfficeObj
+}
+
+type TransactionForPOGOQuerySchema {
+  _id: String
+  id: Number
+  tenantId: String
+  accountId: String
+  branchSerialId: String
+  propertyGroupId: String
+  invoiceId: String
+  amount: Number
+  type: String
+  period: String
+  subType: String
+  addonName: String
+  creditAccountId: String
+  creditAccountCode: Number
+  creditTaxCodeId: String
+  creditTaxCode: Number
+  creditTaxPercentage: Number
+  debitAccountId: String
+  debitAccountCode: Number
+  debitTaxCodeId: String
+  debitTaxCode: Number
+  debitTaxPercentage: Number
+  assignmentNumber: Number
+  locationName: String
+  propertySerialId: String
+  invoiceSerialId: String
+  invoiceDueDate: Date
+  bankAccountNumber: String
+  bankRef: String
+  companyName: String
+  powerOffice: Object
+  createdAt: Date
+  createdDate: String
+  tenantInfo: TenantInfoForTransactionPOGOQuerySchema
+  accountInfo: AccountInfoForTransactionPOGOQuerySchema
+}
+
+type MetaDataQuerySchemaForPogo {
+  transactionDate: String
+  total: Number
+}
+
+type QueryTransactionForPOGO {
+  data: [TransactionForPOGOQuerySchema]
+  metaData: MetaDataQuerySchemaForPogo
+}
+
+type TransactionForXledgerQuerySchema {
+  _id: String
+  accountXledgerId: Number
+  amount: Number
+  creditAccountXledgerId: Int
+  creditXledgerTaxCodeId: Int
+  dueDate: String
+  debitAccountXledgerId: Int
+  debitXledgerTaxCodeId: Int
+  exIdentifier: Number
+  glObject1DbId: String
+  glObject2DbId: String
+  glObject3DbId: String
+  glObject4DbId: String
+  glObject5DbId: String
+  invoiceDate: String
+  invoiceAmount: Number
+  invoiceNumber: Number
+  invoiceFileUrl: String
+  postedDate: String
+  paymentReference: String
+  periodStart: Number
+  subType: String
+  tenantXledgerId: Number
+  trRegNumber: Number
+  text: String
+  type: String
+}
+
+input InvalidVoucherTransactionsQueryDataType {
+  partnerId: String
+  accountId: String
+}
+
+type TransactionForInvalidVoucherSchema {
+  partnerId: String
+  accountId: String
+  powerOfficeVoucherId: String
+  transactionIds: [String]
+}
+
+type QueryInvalidVoucherTransaction {
+  data: [TransactionForInvalidVoucherSchema]
+}
+
+input PowerOfficeForTransactionsUpdateDataType {
+  hasError: Boolean
+  id: String
+  code: String
+  powerOfficeLogId: String
+  syncedAt: Date
+}
+
+input TransactionsUpdateDataType {
+  partnerId: String
+  transactionIds: [String]
+  powerOffice: PowerOfficeForTransactionsUpdateDataType
+}
+
+input TransactionsForPartnerAPIQueryDataType {
+  apiKey: String
+  period: String
+}
+
+type TransactionsForPartnerAPI {
+  id: Number
+  type: String
+  subType: String
+  subName: String
+  assignmentNumber: String
+  kidNumber: String
+  invoiceId: String
+  finalSettlementId: String
+  payoutId: String
+  correctionId: String
+  landlordInvoiceId: String
+  createdAt: Date
+  invoiceDueDate: Date
+  period: String
+  createdBy: String
+  agent: String
+  account: String
+  accountId: String
+  accountAddress: String
+  accountZipCode: String
+  accountCity: String
+  accountCountry: String
+  tenantId: String
+  tenantAddress: String
+  tenantZipCode: String
+  tenantCity: String
+  tenantCountry: String
+  tenant: String
+  tenantPhoneNumber: String
+  tenantEmailAddress: String
+  property: String
+  propertyZipCode: String
+  propertyCity: String
+  propertyCountry: String
+  apartmentId: String
+  propertyId: String
+  amount: Number
+  debit: Number
+  debitTaxCode: Number
+  credit: Number
+  creditTaxCode: Number
+  branchId: String
+  internalAssignmentId: String
+  internalLeaseId: String
+  employeeId: String
+  bankAccountNumber: String
+  bankRef: String
+  externalEntityId: String
+  propertyGroupId: String
+  companyName: String
+  status: String
+}
+
+type TransactionsForPartnerAPIQueryType {
+  data: [TransactionsForPartnerAPI]
+  total: Int
+}
+
+type TransactionsForUpdateSerial {
+  isAllCompleted: Boolean
+  success: Boolean
+}
+
+input TransactionDownloadDataType {
+  accountId: String
+  dateRange: CommonStartDateAndEndDateInputDataType
+}
+
+type TransactionsUpdateSchema {
+  data: [TransactionForPOGOQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input DownloadLandlordReportDataType {
+  accountId: String
+  dateRange: CommonStartDateAndEndDateInputDataType
+}
+
+input DownloadTransactionInputDataType {
+  dateRange: CommonStartDateAndEndDateInputDataType
+}
+
+input DownloadBalanceReportInputDataType {
+  period: CommonStartDateAndEndDateInputDataType
+  propertyId: String
+  tenantId: String
+  sort: Object
+}
+
+input GetLedgerAccountInfoFromUnsyncTransactionsInput {
+  fromDate: Date
+  partnerId: String
+}
+
+type LedgerAccountInfoForPogoType {
+  accountNumber: Int
+  vatCode: Int
+}
+
+type GetLedgerAccountInfoFromUnsyncTransactionsType {
+  data: [LedgerAccountInfoForPogoType]
+}
+
+input DetailedBalanceReportQueryData {
+  period: CommonStartDateAndEndDateInputDataType
+  propertyId: String
+  tenantId: String
+}
+
+type BalanceReportTenantInfo {
+  _id: String
+  avatarKey: String
+  name: String
+  serial: Int
+}
+
+type BalanceReportPropertyInfo {
+  _id: String
+  apartmentId: String
+  location: ListingLocationObj
+  serial: Int
+}
+
+type BalanceReportTransactionType {
+  _id: String
+  amount: Number
+  balance: Number
+  correctionId: String
+  createdAt: Date
+  invoiceDueDate: Date
+  invoiceId: String
+  invoiceSerialId: Int
+  paymentId: String
+  propertyInfo: BalanceReportPropertyInfo
+  subType: String
+  type: String
+}
+
+type DetailedBalanceReportType {
+  _id: String
+  openingBalance: Number
+  closingBalance: Number
+  tenantInfo: BalanceReportTenantInfo
+  transactions: [BalanceReportTransactionType]
+}
+
+type QueryDetailedBalanceReport {
+  data: [DetailedBalanceReportType]
+  metaData: MetaDataQuerySchema
+}
+
+type LedgerAccountTypeForUnsyncTransactions {
+  _id: String
+  accountNumber: Int
+}
+
+type TaxCodeTypeForUnsyncTransactions {
+  _id: String
+  taxCode: Int
+}
+
+type GetLedgerAccountsFromUnsyncTransactionsType {
+  data: [LedgerAccountTypeForUnsyncTransactions]
+}
+
+type GetTaxCodesFromUnsyncTransactionsType {
+  data: [TaxCodeTypeForUnsyncTransactions]
+}
+
+input GetLedgerAccountsFromUnsyncTransactionsInput {
+  context: IntegrationContextEnum
+  fromDate: Date
+  partnerId: String
+}
+
+type QueryGetUniqueFieldValueFromTransactions {
+  data: [String]
+}
+
+enum TransactionFieldContextEnum {
+  internalAssignmentId
+  internalLeaseId
+  employeeId
+}
+
+enum TransactionFieldValueRequestForEnum {
+  others
+  xledger
+}
+
+input GetUniqueFieldValueFromTransactionsInput {
+  context: TransactionFieldContextEnum
+  requestFor: TransactionFieldValueRequestForEnum
+}
+
+extend type Query {
+  # For lambda accounting bridge pogo #10175
+  transactionsForPogo(
+    queryData: TransactionForPOGOQueryDataType
+  ): QueryTransactionForPOGO @auth(requires: ["lambda_manager"])
+  invalidVoucherTransactions(
+    queryData: InvalidVoucherTransactionsQueryDataType
+  ): QueryInvalidVoucherTransaction @auth(requires: ["lambda_manager"])
+  getTransactionsForPartnerAPI(
+    queryData: TransactionsForPartnerAPIQueryDataType
+    optionData: OptionDataType
+  ): TransactionsForPartnerAPIQueryType @auth(requires: ["lambda_manager"])
+  getTransactionForExcelCreator(
+    queryData: TransactionExcelCreatorQueryDataType
+    optionData: OptionDataType
+  ): QueryTransactionExcelCreator @auth(requires: ["lambda_manager"])
+  getDetailedBalanceReportForExcelCreator(
+    queryData: DetailedeBalnceReportExcelCreatorQueryDataType
+    optionData: OptionDataType
+  ): QueryBalanceReportExcelCreator @auth(requires: ["lambda_manager"])
+  getTransactionForXledger(
+    queryData: TransactionForXledgerQueryDataType
+    optionData: OptionDataType
+  ): [TransactionForXledgerQuerySchema] @auth(requires: ["lambda_manager"])
+  getLedgerAccountInfoFromUnsyncTransactions(
+    queryData: GetLedgerAccountInfoFromUnsyncTransactionsInput
+  ): GetLedgerAccountInfoFromUnsyncTransactionsType
+    @auth(requires: ["lambda_manager"])
+  getLedgerAccountsFromUnsyncTransactions(
+    queryData: GetLedgerAccountsFromUnsyncTransactionsInput
+  ): GetLedgerAccountsFromUnsyncTransactionsType
+    @auth(requires: ["lambda_manager"])
+  getTaxCodesFromUnsyncTransactions(
+    queryData: GetLedgerAccountsFromUnsyncTransactionsInput
+  ): GetTaxCodesFromUnsyncTransactionsType @auth(requires: ["lambda_manager"])
+  getDetailedBalanceReport(
+    queryData: DetailedBalanceReportQueryData
+    optionData: OptionDataType
+  ): QueryDetailedBalanceReport
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+  getUniqueFieldValueFromTransactions(
+    queryData: GetUniqueFieldValueFromTransactionsInput
+  ): QueryGetUniqueFieldValueFromTransactions
+    @auth(requires: ["app_manager", "partner_admin"])
+}
+
+extend type Mutation {
+  addTransactionForLostInvoice(inputData: CommonInputDataType): Transaction
+    @auth(requires: ["no_role"])
+  addTransactionForRemoveLossRecognition(
+    inputData: TransactionAddTypeForLoss
+  ): Transaction @auth(requires: ["no_role"])
+  #For lambda accounting bridge POGO #10175
+  updatePartnerTransactionsWithValidVoucherNo(
+    inputData: TransactionUpdateWithValidVoucherNoInputDataType
+  ): Number @auth(requires: ["lambda_manager"])
+  updateTransactionsForPogo(
+    inputData: TransactionsUpdateDataType
+  ): TransactionsUpdateSchema @auth(requires: ["lambda_manager"])
+  addRentInvoiceTransaction(
+    inputData: InvoiceLegacyTransactionAddType
+  ): CompletedTransactions @auth(requires: ["lambda_manager"])
+  addInvoiceMoveToFeesTransaction(
+    inputData: InvoiceLegacyTransactionAddType
+  ): CompletedTransactions @auth(requires: ["lambda_manager"])
+  addInvoiceLostTransaction(
+    inputData: InvoiceLegacyTransactionAddType
+  ): CompletedTransactions @auth(requires: ["lambda_manager"])
+  addLandlordInvoiceTransaction(
+    inputData: InvoiceLegacyTransactionAddType
+  ): CompletedTransactions @auth(requires: ["lambda_manager"])
+  addCommissionsTransaction(
+    inputData: CommissionLegacyTransactionAddType
+  ): CompletedTransactions @auth(requires: ["lambda_manager"])
+  addCorrectionsTransaction(
+    inputData: CorrectionsLegacyTransactionAddType
+  ): CompletedTransactions @auth(requires: ["lambda_manager"])
+  addPayoutsTransaction(
+    inputData: PayoutsLegacyTransactionAddType
+  ): CompletedTransactions @auth(requires: ["lambda_manager"])
+  addPaymentsTransactions(
+    inputData: PaymentsLegacyTransactionAddType
+  ): CompletedTransactions @auth(requires: ["lambda_manager"])
+  addReminderAndCollectionNoticeTransaction(
+    inputData: ReminderAndCollectionNoticeTransactionAddType
+  ): CompletedTransactions @auth(requires: ["lambda_manager"])
+  revertLostRecognitionTransactions(
+    inputData: RevertLostRecognitionTransactionAddType
+  ): CompletedTransactions @auth(requires: ["lambda_manager"])
+  addEvictionNoticeTransaction(
+    inputData: EvictionNoticeTransactionAddType
+  ): CompletedTransactions @auth(requires: ["lambda_manager"])
+  revertInvoiceFeesTransaction(
+    inputData: RevertInvoiceFeesTransactionAddType
+  ): CompletedTransactions @auth(requires: ["lambda_manager"])
+  updateTransactionForPartnerAPI(
+    inputData: TransactionsForPartnerAPIInputDataType
+  ): TransactionsForPartnerAPI @auth(requires: ["lambda_manager"])
+  updateTransactionSerials(
+    inputData: TransactionSerialsUpdateType
+  ): TransactionsForUpdateSerial @auth(requires: ["lambda_manager"])
+  downloadAccountTransactions(
+    inputData: TransactionDownloadDataType
+  ): CommonDownloadReturnType
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  downloadLandlordReport(
+    inputData: DownloadLandlordReportDataType
+  ): DownloadRentOrLandlordInvoiceType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+      ]
+    )
+  downloadTransactions(
+    inputData: DownloadTransactionInputDataType
+  ): CommonDownloadReturnType
+    @auth(requires: ["app_manager", "partner_admin", "partner_accounting"])
+  downloadDetailedBalanceReport(
+    inputData: DownloadBalanceReportInputDataType
+  ): CommonDownloadReturnType
+    @auth(requires: ["app_manager", "partner_admin", "partner_accounting"])
+}

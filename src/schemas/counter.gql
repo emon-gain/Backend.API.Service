@@ -1,0 +1,28 @@
+
+enum startNumberModuleEnum {
+    account
+    finalSettlementInvoice
+    invoice
+    invoiceStartNumber
+    property
+    tenant
+}
+
+input GetStartNumberInputType {
+    accountId: String
+    modules: [startNumberModuleEnum]
+}
+
+type StartNumberDatatype {
+    account: String
+    finalSettlementInvoice: String
+    invoice: String
+    invoiceStartNumber: String
+    property: String
+    tenant: String
+}
+
+extend type Query {
+    getStartNumber(queryData: GetStartNumberInputType): StartNumberDatatype
+        @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent"])
+}

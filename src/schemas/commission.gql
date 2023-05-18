@@ -1,0 +1,173 @@
+type CommissionQuerySchema {
+  _id: String
+  serialId: Int
+  type: String
+  addonName: String
+  amount: Number
+  createdAt: Date
+  invoiceInfo: CommissionInvoice
+  payoutsInfo: [CommissionPayout]
+  agentInfo: CommissionAgent
+  accountInfo: CommissionAccount
+  propertyInfo: CommissionProperty
+  branchInfo: CommissionBranch
+  tenantsInfo: [CommissionTenant]
+}
+
+type CommissionTenant {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type CommissionBranch {
+  _id: String
+  name: String
+}
+
+type CommissionInvoice {
+  _id: String
+  invoiceSerialId: Int
+  invoiceTotal: Number
+}
+
+type CommissionPayout {
+  _id: String
+  serialId: Int
+  amount: Number
+}
+
+type CommissionAgent {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type CommissionAccount {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type CommissionProperty {
+  _id: String
+  location: ListingLocationObj
+  listingTypeId: String
+  propertyTypeId: String
+  apartmentId: String
+  imageUrl: String
+}
+
+type CommissionMetaQuerySchema {
+  brokeringCommissionsData: CollectionMetaDataType
+  filteredDocuments: Int
+  otherCommissionsData: CollectionMetaDataType
+  rentalCommissionsData: CollectionMetaDataType
+  totalDocuments: Int
+  totalAmount: Number
+}
+
+type QueryLandlordCommission {
+  data: [CommissionQuerySchema]
+  metaData: CommissionMetaQuerySchema
+}
+
+input DateRangeType {
+  startDate: Date
+  endDate: Date
+}
+
+enum CommissionTypeEnum {
+  brokering_contract
+  rental_management_contract
+  other_commissions
+}
+
+input CommissionQueryDataType {
+  accountId: String
+  addonId: String
+  agentId: String
+  amount: Number
+  branchId: String
+  commissionId: String
+  contractId: String
+  dateRange: DateRangeType
+  invoiceId: String
+  landlordInvoiceId: String
+  leaseSerial: Int
+  payoutId: String
+  payoutStatus: [PayoutStatusEnum]
+  propertyId: String
+  refundCommissionId: String
+  requestFrom: RequestFromEnum
+  searchKeyword: String
+  serialId: Number
+  """ Use sort during download commission """
+  sort: Object
+  tenantId: String
+  type: CommissionTypeEnum
+}
+
+type CommissionExcelCreatorQuery {
+  invoiceId: Int
+  invoiceStatus: String
+  serialId: Int
+  date: Date
+  type: String
+  objectId: Int
+  property: String
+  apartmentId: String
+  amount: Number
+  payoutId: Number
+  accountId: Int
+  invoicePaidDate: String
+  agent: String
+  account: String
+}
+
+type QueryCommissionExcelCreator {
+  data: [CommissionExcelCreatorQuery]
+  total: Number
+}
+
+input CommissionExcelCreatorQueryDataType {
+  queueId: String
+}
+
+type CommissionSummaryType {
+  brokeringCommissionAmount: Number
+  managementCommissionAmount: Number
+  otherCommissionAmount: Number
+  totalCommissionAmount: Number
+}
+
+type downloadCommissionType {
+  message: String
+  status: Int
+}
+
+input AddInvoiceCommissionsInput {
+  adjustmentNotNeeded: Boolean
+  invoiceId: String
+}
+
+extend type Query {
+  commissions(
+    queryData: CommissionQueryDataType
+    optionData: OptionDataType
+  ): QueryLandlordCommission @auth(requires: ["app_manager", "partner_accounting", "partner_admin"])
+
+  commissionSummary(
+    queryData: CommissionQueryDataType
+  ): CommissionSummaryType @auth(requires: ["app_manager", "partner_accounting", "partner_admin"])
+
+  getCommissionInfoForExcelCreator(
+    queryData: CommissionExcelCreatorQueryDataType
+    optionData: OptionDataType
+  ): QueryCommissionExcelCreator @auth(requires: ["lambda_manager"])
+}
+
+extend type Mutation {
+  downloadCommission(inputData: CommissionQueryDataType): downloadCommissionType @auth(requires: ["app_manager", "partner_admin"])
+  addInvoiceCommissions(inputData: AddInvoiceCommissionsInput): ReturnBoolean @auth(requires: ["lambda_manager"])
+}

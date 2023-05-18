@@ -1,0 +1,253 @@
+input MatchPaymentsInputTypeForParams {
+  contractId: String
+  partnerId: String
+}
+
+enum MatchPaymentProcessType {
+  addLinkBetweenPaymentsAndInvoices
+  adjustCreditedOverPaidInvoices
+  forwardOverPaidAmountsToNonPaidInvoices
+  matchPaymentsWithInvoices
+}
+
+input MatchPaymentsWithInvoicesInputType {
+  action: String
+  event: String
+  params: MatchPaymentsInputTypeForParams
+  processType: MatchPaymentProcessType
+  queueId: String
+}
+
+input IdentifyBankPaymentInputTypeForParams {
+  netsReceivedFileId: String
+  paymentId: String
+}
+
+input IdentifyBankPaymentInputType {
+  action: String
+  event: String
+  params: IdentifyBankPaymentInputTypeForParams
+  queueId: String
+}
+
+type IdentifyBankPaymentReturnType {
+  appInvoiceId: String
+  invoiceId: String
+  status: String
+}
+
+enum PaymentForEnum {
+  appInvoice # Deposit_insurance
+  invoice # Rent or Non_rent
+}
+
+input ManualPaymentAddInputType {
+  amount: Number
+  #  appInvoiceId is for DI payment
+  appInvoiceId: String
+  invoiceId: String
+  partnerId: String
+  paymentDate: Date
+  paymentFor: PaymentForEnum
+  paymentReason: String
+  paymentToAccountNumber: String
+  #  userId is for meteor usage only
+  userId: String
+}
+
+input RemovePaymentInputType {
+  partnerId: String
+  paymentFor: PaymentForEnum
+  paymentId: String
+  #  userId is for meteor usage only
+  userId: String
+}
+
+input CancelRefundPaymentInputType {
+  partnerId: String
+  paymentId: String
+  refundType: EnumPaymentRefundType
+  #  userId is for meteor usage only
+  userId: String
+}
+
+enum EnumPaymentRefundType {
+  bank
+  manual
+}
+
+input CreateRefundPaymentDataInputType {
+  manualRefundReason: String
+  paymentDate: Date
+  paymentType: EnumPaymentRefundType
+  refundAmount: Number
+  refundToAccountName: String
+  refundToAccountNumber: String
+}
+
+input CreateRefundPaymentInputType {
+  partnerId: String
+  paymentId: String
+  paymentRefundData: CreateRefundPaymentDataInputType
+  #  userId is for meteor usage only
+  userId: String
+}
+
+input CreateInvoiceRefundPaymentDataInputType {
+  manualRefundReason: String
+  paymentDate: Date
+  paymentType: EnumPaymentRefundType
+  refundAmount: Number
+  refundToAccountName: String
+  refundToAccountNumber: String
+}
+
+input CreateInvoiceRefundPaymentInputType {
+  invoiceId: String
+  partnerId: String
+  paymentRefundData: CreateInvoiceRefundPaymentDataInputType
+  #  userId is for meteor usage only
+  userId: String
+}
+
+input DIPaymentUpdateInputType {
+  amount: Number
+  appInvoiceId: String
+  paymentId: String
+  paymentDate: Date
+  paymentReason: String
+  #  userId is for meteor usage only
+  userId: String
+}
+
+input BankRefundPaymentUpdateInputType {
+  partnerId: String
+  paymentId: String
+  refundToAccountName: String
+  refundToAccountNumber: String
+  #  userId is for meteor usage only
+  userId: String
+}
+
+input PaymentUpdateInputType {
+  amount: Number
+  invoiceId: String
+  partnerId: String
+  paymentId: String
+  paymentDate: Date
+  paymentReason: String
+  paymentToAccountNumber: String
+  #  userId is for meteor usage only
+  userId: String
+}
+
+input LinkUnspecifiedPaymentInputType {
+  invoiceId: String
+  partnerId: String
+  paymentId: String
+  #  userId is for meteor usage only
+  userId: String
+}
+
+input TestIncomingPaymentInputType {
+  isAppInvoice: Boolean
+  isInvoice: Boolean
+  limit: Int
+  partnerId: String
+  sort: Object
+}
+
+extend type Mutation {
+  matchPaymentsWithInvoices(
+    inputData: MatchPaymentsWithInvoicesInputType
+  ): Boolean @auth(requires: ["lambda_manager"])
+  identifyBankPayment(
+    inputData: IdentifyBankPaymentInputType
+  ): IdentifyBankPaymentReturnType @auth(requires: ["lambda_manager"])
+  addManualPayment(inputData: ManualPaymentAddInputType): InvoicePayment
+    @auth(
+      requires: [
+        "app_admin"
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "lambda_manager"
+      ]
+    )
+  removePayment(inputData: RemovePaymentInputType): InvoicePayment
+    @auth(
+      requires: [
+        "app_admin"
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "lambda_manager"
+      ]
+    )
+  cancelRefundPayment(inputData: CancelRefundPaymentInputType): InvoicePayment
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "lambda_manager"
+      ]
+    )
+  createRefundPayment(inputData: CreateRefundPaymentInputType): InvoicePayment
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "lambda_manager"
+      ]
+    )
+  createInvoiceRefundPayment(
+    inputData: CreateInvoiceRefundPaymentInputType
+  ): [InvoicePayment]
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "lambda_manager"
+      ]
+    )
+  #  DI means Deposit Insurance (For Admin site only, Will be update role later)
+  updateDIPayment(inputData: DIPaymentUpdateInputType): InvoicePayment
+    @auth(requires: ["app_admin", "lambda_manager"])
+  updateBankRefundPayment(
+    inputData: BankRefundPaymentUpdateInputType
+  ): InvoicePayment
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "lambda_manager"
+      ]
+    )
+  updatePayment(inputData: PaymentUpdateInputType): InvoicePayment
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "lambda_manager"
+      ]
+    )
+  linkUnspecifiedPayment(
+    inputData: LinkUnspecifiedPaymentInputType
+  ): InvoicePayment
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "lambda_manager"
+      ]
+    )
+  testIncomingPaymentsForAPartner(
+    inputData: TestIncomingPaymentInputType
+  ): AppQueue @auth(requires: ["app_admin"])
+}

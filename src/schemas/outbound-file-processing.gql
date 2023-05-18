@@ -1,0 +1,14 @@
+input ProcessSftpReceivedFileInS3DataType {
+    outboundXmlData: Object
+    xmlReceivedFileName: String
+    netsReceivedFileId: String
+}
+
+type ProcessSftpReceivedFileInS3Type {
+    success: Boolean
+    invalidFile: Boolean
+}
+
+extend type Mutation {
+    processSftpReceivedFileInS3(inputData: ProcessSftpReceivedFileInS3DataType): ProcessSftpReceivedFileInS3Type @auth(requires: ["lambda_manager"])
+}

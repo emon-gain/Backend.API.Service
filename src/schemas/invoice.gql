@@ -1,0 +1,1251 @@
+scalar Date
+scalar Array
+scalar Object
+scalar Number
+
+enum InvoiceStatusEnum {
+  new
+  created
+  overdue
+  paid
+  credited
+  lost
+  balanced
+  cancelled
+  sent
+  defaulted
+  partially_paid
+  overpaid
+  partially_credited
+  partially_balanced
+  fees_paid
+  fees_due
+  eviction_notice
+  eviction_notice_due
+}
+
+type Invoice {
+  _id: String
+  agentId: String
+  branchId: String
+  compelloEvents: Array
+  compelloStatus: String
+  partnerId: String
+  accountId: String
+  propertyId: String
+  tenantId: String
+  contractId: String
+  invoiceSerialId: Int
+  status: InvoiceStatusEnum
+  dueDate: Date
+  receiver: Object
+  sender: Object
+  invoiceSentAt: Date
+  dueReminderSentAt: Date
+  firstReminderSentAt: Date
+  secondReminderSentAt: Date
+  collectionNoticeSentAt: Date
+  collectionNoticeDueDate: Date
+  invoiceContent: Array
+  addonsMeta: Array
+  totalTAX: Number
+  invoiceTotal: Number
+  roundedAmount: Number
+  rentTotal: Number
+  payoutableAmount: Number
+  commissionableTotal: Number
+  totalPaid: Number
+  feesMeta: Array
+  lastPaymentDate: Date
+  kidNumber: String
+  invoiceAccountNumber: String
+  isOverPaid: Boolean
+  isPartiallyPaid: Boolean
+  isDefaulted: Boolean
+  pdf: Array
+  pdfMeta: Object
+  s3PdfFileName: String
+  invoiceMonth: Date
+  invoiceMonths: [Date]
+  invoiceFrequency: Number
+  invoiceStartOn: Date
+  invoiceEndOn: Date
+  isFirstInvoice: Boolean
+  isDemo: Boolean
+  invoiceType: String
+  invoiceId: String
+  creditNoteId: String
+  creditNoteIds: Array
+  correctionsIds: Array
+  fullyCredited: Boolean
+  isPartiallyCredited: Boolean
+  lostMeta: Object
+  creditedAmount: Number
+  isReadyCreditedContent: Boolean
+  isSentCredited: Boolean
+  creditReason: String
+  leaseCancelled: Boolean
+  delayDate: Date
+  enabledNotification: Boolean
+  invoiceSent: Boolean
+  feesPaid: Boolean
+  isCorrectionInvoice: Boolean
+  evictionNoticeSentOn: Date
+  evictionDueReminderNoticeSentOn: Date
+  tenants: Array
+  evictionNoticeSent: Boolean
+  evictionDueReminderSent: Boolean
+  vippsEvents: Array
+  vippsStatus: String
+  pdfStatus: String
+  pdfEvents: Array
+  newTenantId: String
+  commissionsMeta: Array
+  totalBalanced: Number
+  remainingBalance: Number
+  isPartiallyBalanced: Boolean
+  commissionsIds: Array
+  isPayable: Boolean
+  landlordInvoiceId: String
+  isFinalSettlement: Boolean
+  isPendingCorrection: Boolean
+  isCreditedForCancelledCorrection: Boolean
+  forCorrection: Boolean
+  isRegeneratePdf: Boolean
+  disabledPartnerNotification: Boolean
+  isNonRentInvoice: Boolean
+  createdBy: String
+  createdAt: Date
+  property: Listing
+  tenant: Tenant
+  account: Account
+}
+
+type FeesMetaInvoiceDetailsType {
+  invoiceId: String
+  invoiceSerialId: Int
+  total: Number
+  type: String
+}
+
+type PropertyInfoInvoiceDetailsType {
+  _id: String
+  apartmentId: String
+  floor: String
+  listingTypeId: String
+  location: ListingLocationObj
+  propertyTypeId: String
+}
+
+type PaymentsInvoiceDetailsType {
+  _id: String
+  amount: Number
+  paymentDate: Date
+  paymentInvoiceAmount: Number
+  status: String
+}
+
+type CreditNoteInfoInvoiceDetails {
+  _id: String
+  invoiceSerialId: Int
+}
+
+type InvoiceContentInvoiceDetails {
+  total: Number
+  type: String
+}
+
+type AddonsMetaInvoiceDetails {
+  addonId: String
+  correctionId: String
+  description: String
+  total: Number
+}
+
+type CommissionsMetaInvoiceDetails {
+  addonName: String
+  commissionId: String
+  total: Number
+  type: String
+}
+
+type PayoutsInfoInvoiceDetails {
+  _id: String
+  serialId: Int
+}
+
+type InvoiceDetailsType {
+  _id: String
+  accountInfo: CommonNameAvatarKeyType
+  addonsMeta: [AddonsMetaInvoiceDetails]
+  agentInfo: CommonNameAvatarKeyType
+  branchInfo: CommonNameType
+  commissionsMeta: [CommissionsMetaInvoiceDetails]
+  compelloStatus: String
+  contractId: String
+  createdAt: Date
+  creditedAmount: Number
+  creditNoteInvoiceInfo: CreditNoteInfoInvoiceDetails
+  creditNoteInvoicesInfo: [CreditNoteInfoInvoiceDetails]
+  delayDate: Date
+  dueDate: Date
+  enabledNotification: Boolean
+  evictionDueReminderSent: Boolean
+  evictionNoticeSent: Boolean
+  feesMeta: [FeesMetaInvoiceDetailsType]
+  firstReminderSentAt: Date
+  invoiceAccountNumber: String
+  invoiceContent: [InvoiceContentInvoiceDetails]
+  invoiceEndOn: Date
+  invoiceId: String
+  invoiceSent: Boolean
+  invoiceSerialId: Int
+  invoiceStartOn: Date
+  invoiceTotal: Number
+  invoiceType: String
+  isBranchAdminUser: Boolean
+  isCollectionNoticeSent: Boolean
+  isCorrectionInvoice: Boolean
+  isDefaulted: Boolean
+  isFinalSettlementDone: Boolean
+  isOverPaid: Boolean
+  isPartiallyBalanced: Boolean
+  isPartiallyCredited: Boolean
+  isPartiallyPaid: Boolean
+  isVisibleLostButton: Boolean
+  kidNumber: String
+  lastPaymentDate: Date
+  leaseSerial: Int
+  lostAmount: Number
+  otherTenantsInfo: [CommonNameAvatarKeyType]
+  paymentId: String
+  payments: [PaymentsInvoiceDetailsType]
+  payoutsInfo: [PayoutsInfoInvoiceDetails]
+  propertyInfo: PropertyInfoInvoiceDetailsType
+  S3PdfFileId: String
+  showRefundOption: Boolean
+  secondReminderSentAt: Date
+  status: String
+  tenantInfo: CommonNameAvatarKeyType
+  totalBalanced: Number
+  totalDue: Number
+  totalPaid: Number
+  vippsStatus: String
+}
+
+input InvoiceGetType {
+  contractId: String
+  partnerId: String
+  invoiceType: String
+  isCorrectionInvoice: Boolean
+  correctionId: String
+  today: Date
+  isDemo: Boolean
+  returnPreview: Boolean
+}
+
+input ManualInvoiceGetType {
+  contractId: String
+  enabledNotification: Boolean
+  partnerId: String
+  invoiceType: String
+  propertyId: String
+  filteredInvoice: Array
+}
+
+input InvoiceAddType {
+  contractId: String
+  partnerId: String
+  invoiceType: String
+  isCorrectionInvoice: Boolean
+  isNonRentInvoice: Boolean
+  correctionId: String
+  today: Date
+  isDemo: Boolean
+  enabledNotification: Boolean
+
+  # Extra for creditnote
+  invoiceId: String
+  creditReason: String
+  terminationDate: String
+
+  # Extra for landlord invoice
+  propertyId: String
+  landlordInvoiceFor: String
+}
+
+enum DownloadTypeEnum {
+  landlord_invoice
+  rent_invoice
+}
+
+enum RequestFromEnum {
+  account
+  property
+  tenant
+}
+
+input InvoiceQueryDataType {
+  _id: String
+  accountId: String
+  agentId: String
+  amount: Int
+  branchId: String
+  compelloStatus: [CompelloStatusEnum]
+  contractId: String
+  createdDateRange: CommonStartDateAndEndDateInputDataType
+  downloadType: DownloadTypeEnum
+  dueDateRange: CommonStartDateAndEndDateInputDataType
+  invoicePeriod: CommonStartDateAndEndDateInputDataType
+  invoiceSerialId: Int
+  invoiceType: InvoiceTypeEnum
+  kidNumber: String
+  leaseSerial: Int
+  payoutStatus: [PayoutStatusEnum]
+  propertyId: String
+  requestFrom: RequestFromEnum
+  searchKeyword: String
+  sort: Object
+  status: [InvoiceStatusEnum]
+  tenantId: String
+  """
+  invoiceType is required for invoice summary
+  Download type is required for download invoices
+  Use sort during download invoice
+  """
+  vippsStatus: [VippsStatusEnum]
+}
+
+input PartnerDashboardFilterQueryDataType{
+  accountId: String,
+  agentId: String,
+  branchId: String,
+  propertyId: String
+}
+
+enum CompelloStatusEnum {
+  approved
+  created
+  failed
+  pending
+  sent
+}
+
+input InvoiceQueryDataInputForLambda {
+  compelloStatus: [CompelloStatusEnum],
+  invoiceTypes: [String]
+  statusWith: [InvoiceStatusEnum]
+  statusWithout: [InvoiceStatusEnum]
+  vippsStatus: [VippsStatusEnum]
+}
+
+input InvoiceDetailsQueryType {
+  invoiceId: String
+}
+
+type RentInvoicePropertySchema {
+  _id: String
+  imageUrl: String
+  location: ListingLocationObj
+  listingTypeId: String
+  propertyTypeId: String
+  apartmentId: String
+}
+
+type RentInvoiceQuerySchema {
+  _id: String
+  compelloStatus: String
+  createdAt: Date
+  delayDate: Date
+  dueDate: Date
+  enabledNotification: Boolean
+  evictionDueReminderSent: Boolean
+  evictionNoticeSent: Boolean
+  firstReminderSentAt: Date
+  invoiceSent: Boolean
+  invoiceSerialId: Int
+  invoiceTotal: Number
+  invoiceType: String
+  isBranchAdminUser: Boolean
+  isCollectionNoticeSent: Boolean
+  isDefaulted: Boolean
+  isFinalSettlementDone: Boolean
+  isNonRentInvoice: Boolean
+  isOverPaid: Boolean
+  isPartiallyBalanced: Boolean
+  isPartiallyCredited: Boolean
+  isPartiallyPaid: Boolean
+  kidNumber: String
+  paymentId: String
+  propertyInfo: RentInvoicePropertySchema
+  secondReminderSentAt: Date
+  showRefundOption: Boolean
+  status: String
+  tenantInfo: CommonNameAvatarKeyType
+  totalDue: Number
+  totalPaid: Number
+  vippsStatus: String
+}
+
+type LandlordInvoiceQuerySchema {
+  _id: String
+  invoiceSerialId: Int
+  kidNumber: String
+  dueDate: Date
+  invoiceTotal: Number
+  totalPaid: Number
+  totalDue: Number
+  accountInfo: CommonNameAvatarKeyType
+  propertyInfo: RentInvoicePropertySchema
+  totalBalanced: Number
+  createdAt: Date
+  status: String
+  invoiceType: String
+  invoiceSent: Boolean
+  isPartiallyPaid: Boolean
+  isDefaulted: Boolean
+  secondReminderSentAt: Date
+  firstReminderSentAt: Date
+  isOverPaid: Boolean
+  isPartiallyCredited: Boolean
+  isPartiallyBalanced: Boolean
+  delayDate: Date
+  evictionNoticeSent: Boolean
+  evictionDueReminderSent: Boolean
+  vippsStatus: String
+  enabledNotification: Boolean
+  isCollectionNoticeSent: Boolean
+}
+
+type QueryLandlordInvoice {
+  data: [LandlordInvoiceQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type QueryRentInvoice {
+  data: [RentInvoiceQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input InvoiceExcelCreatorQueryDataType {
+  queueId: String
+}
+
+type InvoiceExcelCreator {
+  invoiceId: Int
+  kidNumber: String
+  dueDate: Date
+  accountId: Int
+  account: String
+  tenantId: Int
+  tenant: String
+  objectId: Int
+  property: String
+  apartmentId: String
+  status: String
+  createdAt: Date
+  invoiceTotal: Number
+  roundedAmount: Number
+  totalPaid: Number
+  totalLost: Number
+  totalDue: Number
+}
+
+type QueryInvoiceExcelCreator {
+  data: [InvoiceExcelCreator]
+  total: Number
+}
+
+enum InvoiceTypeEnum {
+  invoice
+  landlord_invoice
+}
+
+type GetInvoiceSummaryType {
+  totalDue: Number
+  invoiceTotal: Number
+  totalPaidAmount: Number
+  totalLostAmount: Number
+  totalBalancedAmount: Number
+}
+
+type QeuryInvoiceSummaryForPartnerDashboard {
+    invoiceTotalAmount: Number
+    overPaidInvoicesCount: Int
+    totalDue: Number
+    totalOverDue: Number
+    totalUnspecifiedPayment: Int
+    totalOverDuePercentage: Number
+    totalDuePercentage: Number
+}
+
+enum CollectionNameStrEnumForSerialIds {
+  commissions
+  invoices
+  payouts
+}
+
+input SerialIdsParamsInputType {
+  accountId: String
+  isAccountWiseSerialId: Boolean
+  isFinalSettlementInvoice: Boolean
+  partnerId: String
+  collectionNameStr: CollectionNameStrEnumForSerialIds
+}
+
+input SerialIdAddType {
+  limit: Int
+  params: SerialIdsParamsInputType
+  queueId: String
+}
+
+type SerialIdResponse {
+  status: Int
+  isCompleted: Boolean
+  addDelaySeconds: Boolean
+}
+
+type DownloadRentOrLandlordInvoiceType {
+  status: Int
+  message: String
+}
+
+enum InvoiceStatusTypeEnum {
+  new
+  created
+  overdue
+  paid
+  credited
+  lost
+  balanced
+  cancelled
+}
+
+enum PdfTypeEnum {
+  collection_notice_attachment_pdf
+  collection_notice_pdf
+  credit_note_attachment_pdf
+  credit_note_pdf
+  email_attachment_pdf
+  eviction_due_reminder_notice_attachment_pdf
+  eviction_notice_attachment_pdf
+  first_reminder_attachment_pdf
+  first_reminder_pdf
+  invoice_attachment_pdf
+  invoice_pdf
+  landlord_collection_notice_attachment_pdf
+  landlord_credit_note_attachment_pdf
+  landlord_credit_note_pdf
+  landlord_first_reminder_attachment_pdf
+  landlord_invoice_attachment_pdf
+  landlord_invoice_pdf
+  landlord_pre_reminder_attachment_pdf
+  landlord_second_reminder_attachment_pdf
+  pre_reminder_attachment_pdf
+  pre_reminder_pdf
+  second_reminder_attachment_pdf
+  second_reminder_pdf
+  app_invoice_pdf
+}
+
+input PdfInputType {
+  type: PdfTypeEnum
+  fileId: String
+}
+
+enum PdfEventStatusEnum {
+  created
+  processed
+  failed
+}
+
+input PdfEventsType {
+  createdAt: Date
+  status: PdfEventStatusEnum
+  note: String
+}
+
+enum PdfStatusEnum {
+  created
+  processed
+  failed
+}
+
+input InvoiceFeeMetaInputType {
+  amount: Number
+  invoiceId: String
+  isPaid: Boolean
+  original: Boolean
+  qty: Int
+  tax: Int
+  total: Number
+  type: String
+}
+
+input UpdateAnInvoiceForLambdaDataType {
+  collectionNoticeDueDate: Date
+  collectionNoticeSentAt: Date
+  dueReminderSentAt: Date
+  evictionDueReminderNoticeSentOn: Date
+  evictionDueReminderSent: Boolean
+  evictionNoticeSentOn: Date
+  evictionNoticeSent: Boolean
+  feesMeta: [InvoiceFeeMetaInputType]
+  firstReminderSentAt: Date
+  # InvoiceId is query data for updating invoice
+  invoiceId: String
+  invoiceTotal: Number
+  invoiceTotalTax: Number
+  isDefaulted: Boolean
+  needToUpdateKidNumber: Boolean
+  needToUpdateInvoiceSummary: Boolean
+  needToCreateInvoiceLog: Boolean
+  pdf: PdfInputType
+  pdfEvent: PdfEventsType
+  pdfStatus: PdfStatusEnum
+  secondReminderSentAt: Date
+  status: InvoiceStatusTypeEnum
+}
+
+type UpdateInvoiceAccountType {
+  person: User
+}
+
+type UpdateInvoiceTenantType {
+  user: User
+}
+
+type InvoiceFeeMetaType {
+  amount: Number
+  qty: Int
+  tax: Int
+  total: Number
+  type: String
+}
+
+type InvoiceDataForLambda {
+  _id: String
+  accountId: String
+  account: UpdateInvoiceAccountType
+  administrationEvictionFeeAmount: Number
+  administrationEvictionFeeTax: Int
+  agentId: String
+  contract: Contract
+  contractId: String
+  collectionNoticeDueDate: Date
+  collectionNoticeSentAt: Date
+  dueReminderSentAt: Date
+  eInvoiceType: String
+  enabledNotification: Boolean
+  evictionDueReminderNoticeSentOn: Date
+  evictionDueReminderSent: Boolean
+  evictionFeeAmount: Number
+  evictionNoticeSentOn: Date
+  evictionNoticeSent: Boolean
+  evictionReminderDueDays: Int
+  firstReminderSentAt: Date
+  feesMeta: [InvoiceFeeMetaType]
+  invoiceCollectionNoticeFeeAmount: Number
+  invoiceCollectionNoticeFeeTax: Number
+  invoiceReminderFeeAmount: Number
+  invoiceReminderFeeTax: Number
+  invoiceSerialId: Int
+  invoiceTotal: Number
+  invoiceType: String
+  isAdministrationEvictionFeeEnabled: Boolean
+  isCreateEvictionPackage: Boolean
+  isDefaulted: Boolean
+  isEvictionFeeEnabled: Boolean
+  isFinalSettlement: Boolean
+  isInvoiceCollectionNoticeFeeEnabled: Boolean
+  isInvoiceReminderNoticeFeeEnabled: Boolean
+  isLandlordCollectionNoticeFeeEnabled: Boolean
+  isLandlordReminderNoticeFeeEnabled: Boolean
+  landlordCollectionNoticeFeeAmount: Number
+  landlordCollectionNoticeFeeTax: Number
+  landlordReminderFeeAmount: Number
+  landlordReminderFeeTax: Number
+  notificationSendingDate: Date
+  partnerId: String
+  partner: Partner
+  propertyId: String
+  secondReminderSentAt: Date
+  status: String
+  tenantId: String
+  tenant: UpdateInvoiceTenantType
+  totalTAX: Number
+}
+
+type VippsInvoiceId {
+  msg: String,
+  code: String,
+  vippsInvoiceId: String,
+  vippsStatus: String,
+}
+
+type InvoiceDataForSendingVipps {
+  _id: String,
+  accountId: String,
+  agentId: String,
+  amount: Float,
+  branchId: String,
+  code: String
+  commercialInvoice: Object
+  contractId: String,
+  due: Date,
+  dueDateWillBe: Date,
+  files: File,
+  invoicePdfFileId: String,
+  invoiceSerialId: Int,
+  invoiceType: String,
+  issuerName: String,
+  metadata: Object
+  vippsStatus: String
+  msg: String,
+  MSISDN: String,
+  nin_no: String,
+  organizationId: String
+  partnerId: String,
+  subject: String,
+  paymentInformation: Object,
+  propertyId: String,
+  sender: Object,
+  tenants: Tenant,
+  users: User,
+  vippsInvoiceId: String,
+}
+
+input InvoiceDataForSendingVippsInput {
+  _id: String,
+  accountId: String,
+  agentId: String,
+  tenantId: String,
+  amount: Float,
+  branchId: String,
+  code: String
+  commercialInvoice: Object
+  contractId: String,
+  due: Date,
+  dueDateWillBe: Date,
+  invoiceAccountNumber: String
+  invoicePdfFileId: String,
+  invoiceSerialId: Int,
+  invoiceType: String,
+  issuerName: String,
+  metadata: Object
+  msg: String,
+  MSISDN: String,
+  nin_no: String,
+  organizationId: String
+  partnerId: String,
+  paymentInformation: Object,
+  propertyId: String,
+  sender: Object,
+  vippsInvoiceId: String,
+  errorTextKey: String
+}
+
+input InvoiceDataForVippsInput {
+  invoiceId: String,
+  partnerId: String
+}
+
+type msgWithCode {
+  code: String
+  msg: String
+}
+
+input InvoiceUpdateAndAddLogInput{
+  invoiceId: String,
+  invoiceSendToVippsData: InvoiceDataForSendingVippsInput
+  partnerId: String,
+  tenantId: ID,
+  action: String,
+  vippsEventStatus: String,
+  vippsEventNote: String,
+  vippsStatus: String,
+}
+
+type InvoicesForUpdatingInvoiceStatus {
+  contractId: String
+  partnerId: String
+  willBeOverdueInvoiceIds: [String]
+  willBePaidInvoiceIds: [String]
+  willBeOverPaidInvoiceIds: [String]
+}
+
+input InvoiceStatusUpdatingInputType {
+  contractId: String
+  partnerId: String
+  willBeOverdueInvoiceIds: [String]
+  willBePaidInvoiceIds: [String]
+  willBeOverPaidInvoiceIds: [String]
+}
+
+input InvoiceStatusToLostType {
+  invoiceId: String
+}
+
+input RemoveLossInvoiceRecognitionDataType {
+  invoiceId: String
+}
+
+input CorrectionInvoiceAddType {
+  correctionId: String
+  dueDate: Date
+  enabledNotification: Boolean,
+  partnerId: String #Only for lambda
+  userId: String #Only for lambda
+}
+
+input InvoiceContentInput {
+  creditedAmount: Number
+}
+
+input CreditInvoiceOptionsInput {
+  addonsMeta: [InvoiceContentInput]
+  invoiceContent: [InvoiceContentInput]
+  remainingAmount: Number
+  returnPreview: Boolean
+}
+
+input CreditInvoiceInputDataType {
+  creditReason: String
+  enabledNotification: Boolean
+  invoiceId: String
+  isPartlyCredited: Boolean
+  options: CreditInvoiceOptionsInput
+  partnerId: String
+  totalCreditAmount: Number
+  userId: String
+  voidPayment: Boolean
+}
+
+input LandlordCreditNoteInput {
+  creditNoteId: String
+}
+
+enum openFromEnum {
+  property
+}
+
+input DropdownInvoicesQueryDataType {
+  contractId: String
+  isPayable: Boolean
+  openFrom: openFromEnum
+  propertyId: String
+  searchKeyword: Int
+  serialId: Number
+  tenantId: String
+}
+
+type LostMetaType {
+  amount: Number
+}
+
+type InvoiceDropDownSchema {
+  _id: String
+  creditedAmount: Number
+  dueDate: Date
+  invoiceMonth: Date
+  invoiceSerialId: Int
+  invoiceTotal: Number
+  invoiceType: String
+  isPartnerInvoice: Boolean
+  isPayable: Boolean
+  lostMeta: LostMetaType
+  propertyId: String
+  status: String
+  tenantId: String
+  totalBalanced: Number
+  totalPaid: Number
+}
+
+type QueryDropdownInvoices {
+  data: [InvoiceDropDownSchema]
+  metaData: MetaDataQuerySchema
+}
+
+input InvoiceDueDelayInputDataType {
+  delayDate: Date
+  invoiceId: String
+}
+
+input InvoiceDateRangeType {
+  invoiceEndOn: Date
+  invoiceStartOn: Date
+}
+
+input CreateManualInvoicesInputType {
+  contractId: String
+  enabledNotification: Boolean
+  partnerId: String #Onle for lambda
+  preferredRanges: [InvoiceDateRangeType]
+  propertyId: String
+  returnPreview: Boolean
+  userId: String #Only for lambda
+}
+
+input CreateRentInvoicesInputType {
+  contractId: String
+  enabledNotification: Boolean
+  today: Date
+  userId: String
+}
+
+enum CreditNoteRequestFrom {
+  cancelCorrection
+}
+
+input CreateCreditNoteInputType {
+  enabledNotification: Boolean
+  invoiceId: String
+  notUpdateDefaultedContract: Boolean
+  partnerId: String
+  terminationDate: Date
+  userId: String
+  requestFrom: CreditNoteRequestFrom
+}
+
+type RemoveInvoiceLossRecognitionType {
+  _id: String
+  compelloStatus: String
+  delayDate: Date
+  enabledNotification: Boolean
+  evictionDueReminderSent: Boolean
+  evictionNoticeSent: Boolean
+  firstReminderSentAt: Date
+  invoiceSent: Boolean
+  invoiceType: String
+  isCollectionNoticeSent: Boolean
+  isDefaulted: Boolean
+  isFinalSettlementDone: Boolean
+  isOverPaid: Boolean
+  isPartiallyBalanced: Boolean
+  isPartiallyCredited: Boolean
+  isPartiallyPaid: Boolean
+  secondReminderSentAt: Date
+  status: String
+  vippsStatus: String
+}
+
+input CreateLandlordInvoiceForExtraPayoutInputType {
+  contractId: String
+  partnerId: String
+  propertyId: String
+  userId: String
+}
+
+input CreateLandlordInvoiceOrCreditNoteInputType {
+  correctionId: String
+  invoiceId: String
+  partnerId: String
+}
+
+input RemoveInvoiceFeesDataType {
+  invoiceId: String
+  removeType: RemoveInvoiceFeesTypeEnum
+}
+
+enum RemoveInvoiceFeesTypeEnum {
+  administration_eviction_notice
+  eviction_notice
+  collection_notice
+  reminder
+}
+
+input InvoiceDataForCompelloInput {
+  invoiceId: String
+  partnerId: String
+  sendToCompello: Boolean
+}
+
+type InvoicerDataForCompello {
+  address1: String
+  city: String
+  companyRegNo: String
+  countryCode: String
+  name: String
+  postCode: String
+}
+
+type InvoiceDataForCompello {
+  address1: String
+  email: String
+  city: String
+  countryCode: String
+  customerNo: String
+  name: String
+  nationalId: String
+  mobile: String
+  postCode: String
+}
+
+type InvoicePaymentAccountInfoSchema {
+  accountNumber: String
+}
+
+type InvoicePaymentAmountSchema {
+  amount: Number
+  currencyId: String
+}
+
+type InvoicePaymentDataSchema {
+  KID: String
+  paymentAccountInfo: InvoicePaymentAccountInfoSchema
+  paymentAmount: InvoicePaymentAmountSchema
+}
+
+type InvoiceLineDetailsSchema {
+  currencyId: String
+  supplierProductCode: String
+  supplierProductText: String
+}
+
+type InvoiceDataForSendingCompello {
+  _id: String
+  accountId: String
+  agentId: String
+  branchId: String
+  channel: String
+  compelloStatus: String
+  contractId: String
+  documentCode: String
+  dueDate: Date
+  identifier: String
+  invoiceDate: Date
+  invoiceNo: Number
+  invoicePdfFileId: String
+  invoicePdfFileKey: String
+  invoiceType: String
+  invoicee: InvoiceDataForCompello # Compello body data
+  invoicer: InvoicerDataForCompello # Compello body data
+  languageID: String
+  lineDetails: [InvoiceLineDetailsSchema]
+  messageType: String,
+  orderDescription: String
+  organizationId: String
+  partnerId: String
+  paymentInfo: InvoicePaymentDataSchema
+  propertyId: String
+  summary: Object
+}
+
+input CompelloInvoiceUpdateInput {
+  action: String
+  compelloEventNote: String
+  compelloEventStatus: String
+  compelloStatus: String
+  errorTextKey: String
+  hasCreatableLog: Boolean
+  invoiceId: String
+  partnerId: String
+}
+
+type OrderReference {
+  ID: String
+}
+
+type LegalMonetaryTotal {
+  allowanceTotalAmount: Number
+  chargeTotalAmount: Number
+  prepaidAmount: Number
+  payableRoundingAmount: Number
+  payableAmount: Number
+  taxExclusiveAmount: Number
+  taxInclusiveAmount: Number
+}
+
+type InvoicePeriod {
+  startDate: Date
+  endDate: Date
+}
+
+type InvoiceLinesPrice {
+  priceAmount: Number
+  baseQuantity: Number
+}
+
+type InvoiceOrderLineReference {
+  lineID: String
+}
+
+type TaxScheme {
+ ID: String
+}
+
+type ClassifiedTaxCategory {
+  ID: String
+  percent: Number
+  taxScheme: TaxScheme
+}
+
+type InvoiceLinesItem {
+  name: String
+  classifiedTaxCategory: ClassifiedTaxCategory
+}
+
+type InvoiceLines {
+  ID: String
+  quantity: String
+  invoicePeriod: InvoicePeriod
+  price: InvoiceLinesPrice
+  orderLineReference: InvoiceOrderLineReference
+  item: InvoiceLinesItem
+}
+
+type InvoiceDataForSendingB2BCompello {
+  _id: String
+  accountId: String
+  accountingCustomerParty: Object
+  accountingSupplierParty: Object
+  agentId: String
+  branchId: String
+  buyerReference: String
+  creditNoteLines: Array
+  compelloStatus: String
+  contractId: String
+  createdAt: Date
+  documentCurrencyCode: String
+  dueDate: Date
+  fileName: String
+  fileUrl: String
+  id: String
+  identifier: String
+  invoiceDate: Date
+  invoiceLines: [InvoiceLines]
+  invoiceType: String
+  invoicePdfFileId: String
+  issueDate: Date
+  languageID: String
+  legalMonetaryTotal: LegalMonetaryTotal
+  note: String
+  orderReference: OrderReference
+  partnerId: String
+  paymentMeans: Array
+  propertyId: String
+  taxTotal: Object
+}
+
+# Do not remove. this is root Query. every other query will extend it.
+type Query {
+  previewInvoices(queryData: InvoiceGetType): [Invoice]
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  # Rent Invoice
+  getMissingInvoicesForManualInvoice(
+    queryData: ManualInvoiceGetType
+  ): [Invoice] @auth(requires: ["no_role"])
+  invoices(
+    queryData: InvoiceQueryDataType
+    """
+    sort have property [createdAt, dueDate, invoiceTotal]
+    """
+    optionData: OptionDataType
+  ): QueryRentInvoice @auth(requires: ["app_manager", "partner_admin", "partner_agent", "partner_accounting"])
+  landlordInvoices(
+    queryData: InvoiceQueryDataType
+    optionData: OptionDataType
+  ): QueryLandlordInvoice @auth(requires: ["app_manager", "partner_admin", "partner_agent", "partner_accounting"])
+  getInvoiceSummary(
+    queryData: InvoiceQueryDataType
+  ): GetInvoiceSummaryType @auth(requires: ["app_manager", "partner_admin", "partner_agent", "partner_accounting"])
+  getInvoiceSummaryForPartnerDashboard(
+    queryData: PartnerDashboardFilterQueryDataType
+  ): QeuryInvoiceSummaryForPartnerDashboard @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent"])
+  getInvoiceDetails(queryData: InvoiceDetailsQueryType): InvoiceDetailsType @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent"])
+  getInvoiceForLambda(queryData: InvoiceQueryDataInputForLambda, optionData: OptionDataType): [Invoice] @auth(requires: ["lambda_manager"])
+  getInvoiceForExcelCreator(
+    queryData: InvoiceExcelCreatorQueryDataType
+    optionData: OptionDataType
+  ): QueryInvoiceExcelCreator @auth(requires: ["lambda_manager"])
+  getInvoiceDataForVipps(queryData: InvoiceDataForVippsInput, option: Object): InvoiceDataForSendingVipps @auth(requires: ["lambda_manager"])
+  fetchVippsInvoiceId(queryData: InvoiceDataForVippsInput): VippsInvoiceId @auth(requires: ["lambda_manager"])
+  getInvoiceWithFileForVipps(queryData: InvoiceDataForVippsInput) : InvoiceDataForSendingVipps @auth(requires: ["lambda_manager"])
+  getInvoicesForDuePreReminderNotice(
+    queryData: CommonInputDataType,
+    optionData: OptionDataType
+  ) : [InvoiceDataForLambda] @auth(requires: ["lambda_manager"])
+  getInvoicesForFirstReminderNotice(
+    queryData: CommonInputDataType,
+    optionData: OptionDataType
+  ) : [InvoiceDataForLambda] @auth(requires: ["lambda_manager"])
+  getInvoicesForSecondReminderNotice(
+    queryData: CommonInputDataType,
+    optionData: OptionDataType
+  ) : [InvoiceDataForLambda] @auth(requires: ["lambda_manager"])
+  getInvoicesForCollectionNotice(
+    queryData: CommonInputDataType,
+    optionData: OptionDataType
+  ) : [InvoiceDataForLambda] @auth(requires: ["lambda_manager"])
+  getInvoicesForEvictionNotice(
+    queryData: CommonInputDataType,
+    optionData: OptionDataType
+  ) : [InvoiceDataForLambda] @auth(requires: ["lambda_manager"])
+  getInvoicesForEvictionReminderNotice(
+    queryData: CommonInputDataType,
+    optionData: OptionDataType
+  ) : [InvoiceDataForLambda] @auth(requires: ["lambda_manager"])
+  getInvoicesForEvictionDueReminderNotice(
+    queryData: CommonInputDataType,
+    optionData: OptionDataType
+  ) : [InvoiceDataForLambda] @auth(requires: ["lambda_manager"])
+  checkForInvoiceErrorAppHealth(contractId: ID): contractForInvoiceError @auth(requires: ["lambda_manager"])
+  getInvoiceForAppHealthNotification(contractId: ID, partnerId: ID): [Invoice] @auth(requires: ["lambda_manager"])
+  getInvoicesForUpdatingInvoiceStatus(optionData: OptionDataType): [InvoicesForUpdatingInvoiceStatus] @auth(requires: ["lambda_manager"])
+  invoicesDropdown(
+    queryData: DropdownInvoicesQueryDataType
+    optionData: OptionDataType
+  ): QueryDropdownInvoices @auth(requires: ["app_manager", "partner_admin", "partner_agent", "partner_accounting"])
+  getInvoiceDataForCompelloEInvoice(
+    queryData: InvoiceDataForCompelloInput
+  ): InvoiceDataForSendingCompello @auth(requires: ["lambda_manager"])
+  getInvoiceDataForB2BCompelloEInvoice(
+    queryData: InvoiceDataForCompelloInput
+  ): InvoiceDataForSendingB2BCompello @auth(requires: ["lambda_manager"])
+}
+
+# Do not remove. this is root Mutation. every other mutation will extend it.
+type Mutation {
+  addInvoices(inputData: InvoiceAddType): [Invoice]
+    @auth(requires: ["app_manager", "partner_admin"])
+  addVippsStatusToNew(inputData: CommonInputDataType): Invoice
+    @auth(requires: ["no_role"])
+  sendInvoiceToVipps(inputData: CommonInputDataType): Invoice
+    @auth(requires: ["no_role"])
+  sendInvoiceOrDisableNotification(inputData: CommonInputDataType): Invoice
+    @auth(requires: ["lambda_manager"])
+  downloadRentOrLandlordInvoice(
+    inputData: InvoiceQueryDataType
+  ): DownloadRentOrLandlordInvoiceType
+    @auth(requires: ["app_manager", "partner_admin", "partner_accounting", "partner_agent"])
+  addSerialIds(inputData: SerialIdAddType): SerialIdResponse
+    @auth(requires: ["lambda_manager"])
+  updateAnInvoiceForLambda(
+    inputData: UpdateAnInvoiceForLambdaDataType
+  ): InvoiceDataForLambda @auth(requires: ["lambda_manager"])
+  updateAnAppInvoiceForLambda(
+    inputData: UpdateAnInvoiceForLambdaDataType
+  ): InvoiceDataForLambda @auth(requires: ["lambda_manager"])
+  updateInvoiceAndAddLogsForVipps(inputData: InvoiceUpdateAndAddLogInput): msgWithCode @auth(requires: ["lambda_manager"])
+  updateInvoiceStatusOrInvoiceTag(inputData: InvoiceStatusUpdatingInputType): Boolean @auth(requires: ["lambda_manager"])
+  updateInvoiceStatusToLost(inputData: InvoiceStatusToLostType): Invoice @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent"])
+  removeInvoiceLossRecognition(inputData: RemoveLossInvoiceRecognitionDataType): RemoveInvoiceLossRecognitionType
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  creditInvoice(inputData: CreditInvoiceInputDataType): ReturnBoolean
+    @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent", "lambda_manager"])
+  addCorrectionInvoice(inputData: CorrectionInvoiceAddType): Invoice @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent", "lambda_manager"])
+  updateInvoiceDueDelayDate(inputData: InvoiceDueDelayInputDataType): Invoice @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent"])
+  createLandlordCreditNote(inputData: LandlordCreditNoteInput): ReturnBoolean @auth(requires: ["lambda_manager"])
+  createManualInvoices(inputData: CreateManualInvoicesInputType): [Invoice] @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent", "lambda_manager"])
+  createRentInvoices(inputData: CreateRentInvoicesInputType): [Invoice] @auth(requires: ["lambda_manager"])
+  createCreditNote(inputData: CreateCreditNoteInputType): ReturnBoolean @auth(requires: ["lambda_manager"])
+  createLandlordInvoiceForExtraPayout(inputData: CreateLandlordInvoiceForExtraPayoutInputType): MsgWithCode @auth(requires: ["lambda_manager"])
+  createLandlordInvoiceOrCreditNote(inputData: CreateLandlordInvoiceOrCreditNoteInputType): MsgWithCode @auth(requires: ["lambda_manager"])
+  removeInvoiceFees(inputData: RemoveInvoiceFeesDataType): Invoice @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  createQForAddingMissingInvoiceSerialIds(
+    queryData: CommonInputDataType, optionData: OptionDataType # Expecting partnerId in query and limit in option
+  ): Int @auth(requires: ["lambda_manager"])
+  updateInvoiceForCompelloEInvoice(
+    inputData: CompelloInvoiceUpdateInput
+  ): msgWithCode @auth(requires: ["lambda_manager"])
+}

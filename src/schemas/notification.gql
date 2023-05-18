@@ -1,0 +1,101 @@
+type Notification {
+  _id: String
+  owner: String
+  type: String
+  appliedTo: String
+  isRead: Boolean
+  event: String
+  onlyForAdmin: Boolean
+  tenantId: String
+  partnerId: String
+  propertyId: String
+}
+
+input NotificationUpdateType {
+  _id: String
+  data: Object
+}
+
+type NotificationListTenantInfo {
+  avatarKey: String
+  name: String
+  status: Object
+  userId: String
+}
+
+type NotificationLocationData {
+  city: String
+  country: String
+  name: String
+  zipCode: String
+}
+
+type NotificationListPropertyInfo {
+  apartmentId: String
+  location: NotificationLocationData
+}
+
+type LastMessageInfo {
+  _id: String
+  avatarUrl: String
+  name: String
+  lastMessage: String
+  lastMessageAt: Date
+}
+
+type NotificationList {
+  _id: String
+  createdAt: Date
+  isRead: Boolean
+  partnerId: String
+  propertyId: String
+  propertyInfo: NotificationListPropertyInfo
+  tenantId: String
+  tenantInfo: NotificationListTenantInfo
+  type: String
+  updatedAt: Date
+
+  # Conversation list data
+  accountId: String
+  contractId: String
+  identity: Array
+  lastMessage: String
+  lastMessageAt: Date
+  listingId: String
+  listingInfo: ListingInfoSchema
+  published: Boolean
+  uniqueInteraction: Boolean
+  uniqueInteractionAt: Date
+  unreadBy: Array
+  lastMessageInfo: LastMessageInfo
+  usersInfo: [ParticipantUserInfoSchema]
+}
+
+input NotificationQueryDataType {
+  isRead: Boolean
+}
+
+type NotificationListMetaData {
+  totalNotifications: Int
+  totalUnReadNotifications: Int
+}
+
+type QueryNotificationList {
+  data: [NotificationList]
+  metaData: NotificationListMetaData
+}
+
+extend type Mutation {
+  updateNotification(
+    inputData: NotificationUpdateType
+  ): Notification
+    @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent"])
+}
+
+extend type Query {
+  notificationList(
+    queryData: NotificationQueryDataType
+    optionData: OptionDataType
+  ): QueryNotificationList
+    @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent", "partner_janitor"])
+}

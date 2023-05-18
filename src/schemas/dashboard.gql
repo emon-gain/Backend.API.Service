@@ -1,0 +1,265 @@
+type UpaForPartner {
+  countedAgents: Int
+  countedProperties: Int
+  partnerName: String
+  partnersSubDomain: String
+  upa: Number
+}
+
+type UpaGraphData {
+  date: String
+  upa: Number
+}
+
+type UnitPerAgentInfo {
+  countedTotalAgents: Int
+  countedTotalProperties: Int
+  countedTotalPartners: Int
+  totalUpaOfPartners: Number
+  upaForPartners: [UpaForPartner]
+}
+
+type RetentionRate {
+  month: String
+  rate: Number
+  npp: Int
+  pep: Int
+  psp: Int
+}
+
+type AppHealthInfo {
+  totalTransactions: Int
+  totalTransactionErrors: Int
+  totalSQSs: Int
+  totalSQSErrors: Int
+  totalNotifications: Int
+  totalNotificationErrors: Int
+  totalInvoicesAndPayouts: Int
+  totalInvoiceAndPayoutErrors: Int
+}
+
+type ListingInfo {
+  countedTotalListings: Int
+  countedFinnListings: Int
+  countedUniteListings: Int
+}
+
+type UserInfo {
+  countedUsers: Int
+}
+
+type FailedPayoutInfo {
+  countedFailedPayouts: Int
+}
+
+type ActivePartnerGraphData {
+  date: String
+  countedTotal: Int
+  countedBroker: Int
+  countedDirect: Int
+}
+
+type ActivePartnerInfo {
+  countedTotalPartners: Int
+  countedBrokerPartners: Int
+  countedDirectPartners: Int
+  activePartnerGraphData: [ActivePartnerGraphData]
+}
+
+type GraphData {
+  date: String
+  countedTotal: Int
+}
+
+type ActivePropertyInfo {
+  countedProperties: Int
+  activePropertyGraphData: [GraphData]
+}
+
+type PartnerUsageInfo {
+  countedActiveAgents: Int
+  countedCompello: Int
+  countedEsigns: Int
+  countedSms: Int
+  countedVipps: Int
+  countedDeposits: Int
+  countedFinns: Int
+  countedCreditRatings: Int
+  countedPogo: Int
+}
+
+type AwaitingAssginmentAndLeaseSigning {
+  totalAgentAssignmentSigning: Number
+  totalLandlordAssignmentSigning: Number
+  totalLandlordLeaseSigning: Number
+  totalTenantLeaseSigning: Number
+}
+
+type MovingStatus {
+  moveInNotCreated: Number
+  moveOutNotCreated: Number
+  totalLandlordOrAgentMovingInSigning: Number
+  totalLandlordOrAgentMovingOutSigning: Number
+  totalTenantMovingInSigning: Number
+  totalTenantMovingOutSigning: Number
+}
+
+type QueryAwaitingStatusType {
+  approvalPendingPayments: Number
+  approvalPendingPayouts: Number
+  awaitingAssignmentAndLeaseSigning: AwaitingAssginmentAndLeaseSigning
+  awaitingDepositAmount: Number
+  depositStatus: depositStatusDataType
+  movingStatus: MovingStatus
+  payments: paymentStatusDataType
+}
+
+type paymentStatusDataType {
+  pausedPayoutsCount: Number
+  paymentAwaitingSignatureCount: Number
+  pendingPaymentApprovalCount: Number
+  pendingPayoutCount: Number
+  waitingForSignaturePayoutCount: Number
+}
+
+type depositStatusDataType {
+  awaitingDepositAccountCount: Number
+  awaitingDepositInsuranceCount: Number
+  partiallyPaidDepositAccountCount: Number
+  partiallyPaidDepositInsuranceCount: Number
+}
+
+type QueryFailedStatusForPartnerDashboard {
+  totalFailedEmails: Int
+  totalFailedPayouts: Int
+  totalFailedRefunds: Int
+  totalFailedSms: Int
+}
+
+type QueryPartnerDashboardInvoiceAndPaymentChartInfo {
+  invoiceDueChartData: [Number]
+  invoiceLostChartData: [Number]
+  invoicePaidChartData: [Number]
+  labels: [String]
+  totalDue: Number
+  totalInvoiced: Number
+  totalLandlordInvoices: Number
+  totalOverDue: Number
+}
+
+input PartnerDashboardChartQueryDataType {
+  accountId: String
+  agentId: String
+  branchId: String
+  filterByDateOption: FilterByDateOptionEnum
+  propertyId: String
+  periodName: DashboardDateRangeEnum
+}
+
+input DashboardActivePartnerInput {
+  dateRange: DashboardDateRangeEnum
+  partnerType: DashboardPartnerTypeEnum
+}
+
+input DashboardActivePropertyInput {
+  dateRange: String
+  partnerType: String
+}
+
+enum DashboardDateRangeEnum {
+  total
+  thisMonth
+  lastMonth
+  thisYear
+  lastYear
+}
+
+enum DashboardPartnerTypeEnum {
+  all
+  broker
+  direct
+}
+
+enum DashboardPartnerUsageTypeEnum {
+  active_agents
+  credit_rating
+  compello_invoice
+  deposit_account
+  esign
+  finn
+  outgoing_sms
+  vipps_invoice
+  pogo
+}
+
+enum DashboardUPAOrderInput {
+  highToLow
+  lowToHigh
+}
+
+enum FilterByDateOptionEnum {
+  createdAt
+  dueDate
+}
+
+input DashboardCommonInput {
+  createdAtDateRange: CommonStartDateAndEndDateInputDataType
+  partnerType: DashboardPartnerTypeEnum
+}
+
+input DashboardPartnerUsageInfoInput {
+  dateRange: DashboardDateRangeEnum
+  partnerType: DashboardPartnerTypeEnum
+}
+
+input DashboardPartnerUsageGraphDataInput {
+  dateRange: DashboardDateRangeEnum
+  partnerType: DashboardPartnerTypeEnum
+  partnerUsageType: DashboardPartnerUsageTypeEnum
+}
+
+input DashboardUpaInput {
+  dateRange: DashboardDateRangeEnum
+  limit: Int
+  order: DashboardUPAOrderInput
+  partnerType: DashboardPartnerTypeEnum
+}
+
+input DashboardUpaGraphDataInput {
+  dateRange: DashboardDateRangeEnum
+  partnerType: DashboardPartnerTypeEnum
+}
+
+extend type Query {
+  dashboardActivePartners(queryData: DashboardActivePartnerInput): ActivePartnerInfo @auth(requires: ["app_admin"])
+  dashboardActiveProperties(queryData: DashboardActivePropertyInput): ActivePropertyInfo @auth(requires: ["app_admin"])
+  dashboardAppHealthInfo(queryData: DashboardCommonInput): AppHealthInfo @auth(requires: ["app_admin"])
+  dashboardFailedPayouts(queryData: DashboardCommonInput): FailedPayoutInfo @auth(requires: ["app_admin"])
+  dashboardListings(queryData: DashboardCommonInput): ListingInfo @auth(requires: ["app_admin"])
+  dashboardPartnerUsageInfo(queryData: DashboardPartnerUsageInfoInput): PartnerUsageInfo @auth(requires: ["app_admin"])
+  dashboardPartnerUsageGraphData(queryData: DashboardPartnerUsageGraphDataInput): [GraphData] @auth(requires: ["app_admin"])
+  dashboardRetentionRate(queryData: DashboardCommonInput): [RetentionRate] @auth(requires: ["app_admin"])
+  dashboardUnitPerAgents(queryData: DashboardUpaInput): UnitPerAgentInfo @auth(requires: ["app_admin"])
+  dashboardUPAGraphData(queryData: DashboardUpaGraphDataInput): [UpaGraphData] @auth(requires: ["app_admin"])
+  dashboardUsers: UserInfo @auth(requires: ["app_admin"])
+
+  # Partner admin dashboard
+  awaitingStatusForPartnerDashboard(
+    queryData: PartnerDashboardFilterQueryDataType
+  ): QueryAwaitingStatusType
+    @auth(
+        requires: ["app_manager", "partner_admin", "partner_accounting", "partner_agent", "partner_janitor"]
+    )
+  failedStatusForPartnerDashboard(
+    queryData: PartnerDashboardFilterQueryDataType
+  ): QueryFailedStatusForPartnerDashboard
+    @auth(requires: ["app_manager", "partner_admin", "partner_accounting", "partner_agent"])
+  getPartnerDashboardInvoiceAndPaymentChartInfo(
+    queryData: PartnerDashboardChartQueryDataType
+  ): QueryPartnerDashboardInvoiceAndPaymentChartInfo
+    @auth(requires: ["app_manager", "partner_admin", "partner_accounting", "partner_agent"])
+
+  # getInvoiceSummaryForPartnerDashboard - implemented at invoice.gql
+  # getPropertyInfoForPartnerAdminDashboard - implemented at property.gql
+  # getLeaseStatusForPartnerDashboard - implemented at contract.gql
+}

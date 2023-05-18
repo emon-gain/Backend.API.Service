@@ -1,0 +1,186 @@
+input XledgerLogCreateData {
+  accountId: String
+  status: String
+  tenantId: String
+  transactionDate: Date
+  transactionIds: [String]
+  type: String
+}
+
+input XledgerLogCreateInputDataType {
+  data: XledgerLogCreateData
+  partnerId: String
+}
+
+input XledgerLogUpdateInputType {
+  data: XledgerLogUpdateInputData
+  partnerId: String
+  xledgerLogId: String
+}
+
+enum UpdateXledgerContextEnum {
+  account
+  tenant
+  transaction
+}
+
+input UpdateXledgerInfoQueryInputType {
+  accountId: String
+  context: UpdateXledgerContextEnum
+  partnerId: String
+  tenantId: String
+  xledgerDbId: String
+}
+input UpdateXledgerTransactionInputType {
+  creditTrDbId: String
+  debitTrDbId: String
+  hasError: Boolean
+  syncedAt: Date
+  transactionId: String
+}
+input UpdateXledgerInfoUpdateDataInputType {
+  accountId: String
+  code: String
+  hasError: Boolean
+  hasUpdateError: Boolean
+  id: String
+  syncedAt: Date
+  transactions: [UpdateXledgerTransactionInputType]
+  xledgerLogId: String
+}
+
+input XledgerEventDataType {
+  createdAt: Date
+  note: String
+  status: String
+}
+input XledgerErrorDataType {
+  errorText: String
+  reason: String
+  transactionIds: [String]
+  type: String
+}
+
+input XledgerLogUpdateInputData {
+  accountId: String
+  errors: [XledgerErrorDataType]
+  hasError: Boolean
+  lastUpdatedAt: Date
+  status: String
+  transactionIds: [String]
+  type: String
+  xledgerEvent: XledgerEventDataType
+  xledgerVoucherId: String
+}
+
+input XledgerLogResetDataType {
+  partnerId: String
+}
+input XledgerStatusCountQueryType {
+  accountId: String
+}
+
+enum IntegrationLogDetailsStatusTypeEnum {
+  error
+  success
+}
+enum IntegrationLogDetailsTypeEnum {
+  account
+  tenant
+  transaction
+  update_account
+  update_tenant
+}
+enum LogDetailsContextEnum {
+  xledger
+}
+input IntegrationLogDetailsQueryType {
+  accountId: String
+  context: LogDetailsContextEnum
+  status: IntegrationLogDetailsStatusTypeEnum
+  type: IntegrationLogDetailsTypeEnum
+}
+type IntegrationDetailsErrorSchema {
+  errorText: String
+  reason: String
+  transactionIds: [String]
+  type: String
+}
+type IntegrationLogDetailsData {
+  _id: String
+  createdAt: Date
+  errorsMeta: [IntegrationDetailsErrorSchema]
+  serial: [Number]
+  status: String
+  type: String
+}
+type IntegrationLogDetailsReturnType {
+  data: [IntegrationLogDetailsData]
+  metaData: MetaDataQuerySchema
+}
+
+type XledgerStatusCountReturnType {
+  totalAccounts: Int
+  totalErrorAccount: Int
+  totalErrorTenant: Int
+  totalErrorTransaction: Int
+  totalModifiedAccounts: Int
+  totalModifiedTenants: Int
+  totalSyncedAccount: Int
+  totalSyncedModifiedAccount: Int
+  totalSyncedModifiedTenant: Int
+  totalSyncedTenant: Int
+  totalSyncedTransaction: Int
+  totalTenants: Int
+  totalTransactions: Int
+  totalUpdateErrorAccount: Int
+  totalUpdateErrorTenant: Int
+}
+
+type XledgerErrorSchema {
+  errorText: String
+  reason: String
+  transactionIds: [String]
+  type: String
+}
+type XledgerEventSchema {
+  createdAt: Date
+  note: String
+  status: String
+}
+type XledgerLogApiSchemaType {
+  _id: String
+  accountId: String
+  partnerId: String
+  status: String
+  tenantId: String
+  transactionIds: [String]
+  type: String
+}
+
+extend type Query {
+  queryXledgerIntegrationStatus(
+    queryData: XledgerStatusCountQueryType
+  ): XledgerStatusCountReturnType
+    @auth(requires: ["app_manager", "partner_admin"])
+  integrationLogDetailsForPartnerApp(
+    queryData: IntegrationLogDetailsQueryType
+    optionData: OptionDataType
+  ): IntegrationLogDetailsReturnType
+    @auth(requires: ["app_manager", "partner_admin"])
+}
+
+extend type Mutation {
+  createXledgerLog(
+    inputData: XledgerLogCreateInputDataType
+  ): XledgerLogApiSchemaType @auth(requires: ["lambda_manager"])
+  updateXledgerLog(
+    inputData: XledgerLogUpdateInputType
+  ): XledgerLogApiSchemaType @auth(requires: ["lambda_manager"])
+  updateXledgerInfo(
+    queryData: UpdateXledgerInfoQueryInputType
+    updateData: UpdateXledgerInfoUpdateDataInputType
+  ): ReturnBoolean @auth(requires: ["lambda_manager"])
+  resetXledgerLog(inputData: XledgerLogResetDataType): ReturnBoolean
+    @auth(requires: ["lambda_manager"])
+}

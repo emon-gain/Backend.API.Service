@@ -1,0 +1,358 @@
+type Correction {
+  _id: String
+  agentId: String
+  branchId: String
+  partnerId: String
+  accountId: String
+  propertyId: String
+  tenantId: String
+  contractId: String
+  amount: Number
+  expenseDate: Date
+  note: String
+  files: Array
+  status: String
+  invoiceSummaryId: String
+  payoutId: String
+  addons: Array
+  addTo: String
+  isNonRent: Boolean
+  correctionSerialId: Int
+  invoiceId: String
+  tenants: Array
+  landlordInvoiceId: String
+  correctionStatus: String
+  cancelledAt: Date
+  isMissingTransactionForLandlordCreditNote: Boolean
+  isVisibleToTenant: Boolean
+  isVisibleToLandlord: Boolean
+  createdAt: Date
+  createdBy: String
+}
+
+type CorrectionFileUrls {
+  _id: String
+  name: String
+  title: String
+  fileUrl: String
+}
+
+type CorrectionQuerySchema {
+  _id: String
+  correctionSerialId: Int
+  invoiceSerialId: Int
+  invoiceId: String
+  addTo: String
+  correctionStatus: String
+  amount: Number
+  propertyInfo: CorrectionPropertySchema
+  filesInfo: [CorrectionFileUrls]
+  createdByInfo: correctionCreatedByInfo
+  createdAt: Date
+  isNonRent: Boolean
+  payoutId: String
+  isFinalSettlementDone: Boolean
+  payoutStatus: String
+}
+
+type correctionCreatedByInfo {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type CorrectionPropertySchema {
+  _id: String
+  imageUrl: String
+  location: ListingLocationObj
+}
+
+type DocumentType {
+  amount: Number
+  count: Int
+}
+
+type QueryCorrection {
+  data: [CorrectionQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input CorrectionAddonAddType {
+  addonId: String
+  creditAccountId: String
+  creditTaxCode: Number
+  creditTaxCodeId: String
+  debitAccountId: String
+  description: String
+  hasCommission: Boolean
+  id: String
+  isNonRent: Boolean
+  price: Number
+  tax: Number
+  taxPercentage: Number
+  total: Number
+}
+input CorrectionFileAddType {
+  name: String
+  size: Number
+  title: String
+}
+enum AddToEnum {
+  payout # landlord
+  rent_invoice # tenant
+}
+input CorrectionAddType {
+  addTo: AddToEnum
+  addons: [CorrectionAddonAddType]
+  contractId: String
+  createInvoice: Boolean
+  files: [CorrectionFileAddType]
+  isNonRent: Boolean
+  isVisible: Boolean
+  partnerId: String #Only for lambda
+  propertyId: String
+  userId: String #Only for lambda
+}
+
+type InvoicePreviewInfo {
+  dueDate: Date
+  invoiceStartOn: Date
+  invoiceTotal: Number
+}
+
+type CorrectionSchema {
+  _id: String
+  addTo: String
+  amount: Number
+  correctionSerialId: Int
+  correctionStatus: String
+  createdAt: Date
+  createdByInfo: correctionCreatedByInfo
+  filesInfo: [CorrectionFileUrls]
+  invoiceId: String
+  invoicePreviewInfo: InvoicePreviewInfo
+  invoiceSerialId: Int
+  isNonRent: Boolean
+  propertyInfo: CorrectionPropertySchema
+}
+
+input CorrectionUpdateType {
+  addons: [CorrectionAddonAddType]
+  correctionId: String
+  createInvoice: Boolean
+  files: [CorrectionFileAddType]
+  partnerId: String #Only for lambda
+  removeFileIds: Array
+  userId: String #Only for lambda
+  isVisible: Boolean
+}
+
+input CorrectionFilesRemoveType {
+  correctionId: String
+  correctionData: Object
+}
+
+input CorrectionCancelType {
+  correctionId: String
+  partnerId: String #Only for lambda
+  userId: String #Only for lambda
+}
+
+enum CorrectionAddToEnum {
+  payout
+  rent_invoice
+}
+
+enum CorrectionStatusEnum {
+  active
+  cancelled
+}
+
+input CorrectionQueryDataType {
+  _id: String
+  accountId: String
+  addTo: CorrectionAddToEnum
+  agentId: String
+  amount: Number
+  branchId: String
+  contractId: String
+  correctionSerialId: Int
+  correctionStatus: CorrectionStatusEnum
+  createdAtDateRange: CommonStartDateAndEndDateInputDataType
+  createdBy: String
+  invoiceSerialId: Int
+  leaseSerial: Int
+  periodDateRange: CommonStartDateAndEndDateInputDataType
+  propertyId: String
+  requestFrom: RequestFromEnum
+  searchKeyword: String
+  """
+  Use sor during download correction
+  """
+  sort: Object
+  tenantId: String
+}
+
+type CorrectionExcelCreatorQuery {
+  correctionId: Int
+  date: Date
+  objectId: Int
+  property: String
+  apartmentId: String
+  createdBy: String
+  addTo: String
+  amount: Number
+  subType: String
+  description: String
+}
+
+type QueryCorrectionExcelCreator {
+  data: [CorrectionExcelCreatorQuery]
+  total: Number
+}
+
+input CorrectionExcelCreatorQueryDataType {
+  queueId: String
+}
+
+type CorrectionStatusSummary {
+  _id: String
+  amount: Number
+}
+
+type CorrectionsSummaryType {
+  totalAmount: Number
+  statusSummary: [CorrectionStatusSummary]
+  addonsSummary: [CorrectionStatusSummary]
+}
+
+input CorrectionDetailsQueryDataType {
+  correctionId: String
+}
+
+type CorrectionDetailsType {
+  _id: String
+  addTo: String
+  correctionStatus: String
+  amount: Number
+  addonsInfo: [AddonForCorrectionType]
+  agentInfo: AgentForCorrectionType
+  branchInfo: BranchForCorrectionType
+  correctionSerialId: Int
+  createdAt: Date
+  filesInfo: [FileForCorrectionType]
+  invoicesInfo: [InvoiceForCorrectionType]
+  isNonRent: Boolean
+  isFinalSettlementDone: Boolean
+  propertyInfo: PropertyForCorrectionType
+  payoutStatus: String
+  status: String
+  tenantsInfo: [TenantForCorrectionType]
+}
+
+type FileForCorrectionType {
+  _id: String
+  name: String
+  title: String
+  createdAt: Date
+  isVisibleToLandlord: Boolean
+  isVisibleToTenant: Boolean
+  fileUrl: String
+  createdUserName: String
+  createdUserAvatarKey: String
+}
+
+type AddonForCorrectionType {
+  addonId: String
+  name: String
+  description: String
+  taxPercentage: Number
+  total: Number
+}
+
+type PropertyForCorrectionType {
+  _id: String
+  location: ListingLocationObj
+}
+
+type TenantForCorrectionType {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type InvoiceForCorrectionType {
+  _id: String
+  invoiceSerialId: Int
+  invoiceTotal: Number
+}
+
+type AgentForCorrectionType {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type BranchForCorrectionType {
+  _id: String
+  name: String
+}
+
+type DownloadCorrectionType {
+  message: String
+  status: Int
+}
+
+input ActiveCorrectionQueryDataType {
+  contractId: String
+}
+
+type ActiveCorrectionSchema {
+  amount: Number
+  correctionId: String
+  correctionSerialId: Number
+  correctionStatus: String
+  createdAt: Date
+  payoutId: String
+  payoutSerialId: String
+  tenantId: String
+  tenantName: String
+  tenantUserAvatar: String
+}
+
+type QueryActiveCorrection {
+  data: [ActiveCorrectionSchema]
+  metaData: MetaDataQuerySchema
+}
+
+extend type Query {
+  corrections(
+    queryData: CorrectionQueryDataType
+    optionData: OptionDataType
+  ): QueryCorrection @auth(requires: ["app_manager", "partner_admin", "partner_agent", "partner_accounting"])
+  correctionsSummary(queryData: CorrectionQueryDataType): CorrectionsSummaryType
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent", "partner_accounting"])
+  correctionDetails(queryData: CorrectionDetailsQueryDataType): CorrectionDetailsType
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent", "partner_accounting"])
+  getCorrectionForExcelCreator(
+    queryData: CorrectionExcelCreatorQueryDataType
+    optionData: OptionDataType
+  ): QueryCorrectionExcelCreator @auth(requires: ["lambda_manager"])
+  getActiveCorrection(
+    queryData: ActiveCorrectionQueryDataType
+    optionData: OptionDataType
+  ): QueryActiveCorrection @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent"])
+}
+
+extend type Mutation {
+  addCorrection(inputData: CorrectionAddType): CorrectionSchema
+    @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent", "lambda_manager"])
+  updateCorrection(inputData: CorrectionUpdateType): CorrectionSchema
+    @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent", "lambda_manager"])
+  removeCorrectionFiles(inputData: CorrectionFilesRemoveType): Correction
+    @auth(requires: ["no_role"])
+  cancelCorrection(inputData: CorrectionCancelType): Correction
+    @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent", "lambda_manager"])
+  downloadCorrection(inputData: CorrectionQueryDataType): DownloadCorrectionType
+    @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent"])
+}

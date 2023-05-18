@@ -1,36 +1,124 @@
 "use strict";
 
-var _user = require("../../models/user");
-async function users(source, args, context) {
-  // console.log(context);
-  try {
-    const users = await _user.User.find().session(context.session);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _helpers = require("../helpers");
+var _default = {
+  async users(parent, args, context) {
+    const {
+      req
+    } = context;
+    const {
+      queryData = {},
+      optionData = {}
+    } = args;
+    const {
+      limit = 50,
+      skip = 0,
+      sort = {
+        createdAt: 1
+      }
+    } = optionData;
+    req.body = {
+      query: queryData,
+      options: {
+        limit,
+        skip,
+        sort
+      }
+    };
+    const users = await _helpers.userHelper.queryUsers(req);
     return users;
-  } catch (error) {
-    console.error(error);
-    throw new Error('Failed to fetch users');
-  }
-}
-async function user(parent, {
-  id
-}, {
-  session
-}) {
-  try {
-    const user = await _user.User.findOne({
-      _id: id
-    }).session(session);
-    console.log(session.transaction.state);
-    if (!user) {
-      throw new Error('User not found');
-    }
+  },
+  async myProfile(parent, args, context) {
+    const {
+      req
+    } = context;
+    const {
+      user = {}
+    } = req;
+    _helpers.appHelper.checkUserId(user.userId);
+    const profileData = await _helpers.userHelper.queryMyProfile(user.userId);
+    return profileData;
+  },
+  async getASingleUser(parent, args, context) {
+    const {
+      req
+    } = context;
+    const {
+      queryData = {}
+    } = args;
+    req.body = {
+      query: queryData
+    };
+    const user = await _helpers.userHelper.getSingleUserData(req);
     return user;
-  } catch (error) {
-    console.error(error);
-    throw new Error(`Failed to fetch user with id: ${id}`);
+  },
+  async usersDropDown(parent, args, context) {
+    const {
+      req
+    } = context;
+    const {
+      queryData = {},
+      optionData = {}
+    } = args;
+    const {
+      limit = 50,
+      skip = 0
+    } = optionData;
+    req.body = {
+      query: queryData,
+      options: {
+        limit,
+        skip
+      }
+    };
+    const users = await _helpers.userHelper.queryUsersDropDown(req);
+    return users;
+  },
+  async checkUserNID(parent, args, context) {
+    const {
+      req
+    } = context;
+    const {
+      queryData = {}
+    } = args;
+    req.body = JSON.parse(JSON.stringify(queryData));
+    const result = await _helpers.userHelper.checkForUserExistingNID(req);
+    return result;
+  },
+  async usersDropdownForPartnerApp(parent, args, context) {
+    const {
+      req
+    } = context;
+    const {
+      queryData = {},
+      optionData = {}
+    } = args;
+    const {
+      limit = 50,
+      skip = 0
+    } = optionData;
+    req.body = {
+      query: JSON.parse(JSON.stringify(queryData)),
+      options: {
+        limit,
+        skip
+      }
+    };
+    return await _helpers.userHelper.queryPartnerAppUsersDropdown(req);
+  },
+  async validateUserToken(parent, args, context) {
+    const {
+      req
+    } = context;
+    const {
+      queryData = {}
+    } = args;
+    req.body = JSON.parse(JSON.stringify(queryData));
+    return await _helpers.userHelper.validateUserTokenHelper(req);
   }
-}
-module.exports = {
-  users,
-  user
 };
+exports.default = _default;

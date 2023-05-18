@@ -1,0 +1,6 @@
+extend type Query {
+    getUpgradeScriptList: [String] @auth(requires: ["lambda_manager"])
+}
+extend type Mutation {
+    executeUpgradeScript(methodName: String): MsgWithCode @auth(requires: ["lambda_manager"])
+}

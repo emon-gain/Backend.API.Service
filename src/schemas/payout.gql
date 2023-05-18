@@ -1,0 +1,637 @@
+type Payout {
+  _id: String
+  agentId: String
+  branchId: String
+  partnerId: String
+  accountId: String
+  propertyId: String
+  tenantId: String
+  contractId: String
+  invoiceId: String
+  invoicePaid: Boolean
+  invoicePaidOn: Date
+  commissionsIds: Array
+  correctionsIds: Array
+  expensesIds: Array
+  estimatedAmount: Number
+  amount: Number
+  sentToNETS: Boolean
+  sentToNETSOn: Date
+  status: PayoutStatusEnum
+  meta: Array
+  payoutDate: Date
+  advancedPayout: Boolean
+  note: String
+  serialId: Int
+  lastMonthDueMeta: Object
+  invoicePaidAfterPayoutDate: Boolean
+  bankReferenceId: String
+  bookingDate: Date
+  paymentStatus: String
+  feedbackStatusLog: Array
+  addonsIds: Array
+  numberOfFails: Int
+  invoiceCredited: Boolean
+  tenants: Array
+  isFinalSettlement: Boolean
+  newPayoutDate: Date
+  bankRef: String
+  invoiceLost: Boolean
+  invoiceLostOn: Date
+  holdPayout: Boolean
+  createdBy: String
+  createdAt: Date
+}
+
+input PayoutAddType {
+  invoiceId: String
+  isFinalSettlement: Boolean
+}
+
+input PayoutUpdateType { # Don't add any new fields to this type
+  partnerId: String
+  payoutId: String
+  payoutDate: Date
+  holdPayout: Boolean
+}
+
+input ApprovePendingPayoutsDataType {
+  pendingPayoutIds: [String]
+}
+
+input ReadyEsigningDocDataType {
+  partnerId: String
+  partnerPayoutId: String
+  pendingPayoutIds: [String]
+  pendingPaymentIds: [String]
+  userId: String
+}
+
+type PauoutInvoiceType {
+  _id: String
+  invoiceSerialId: Int
+}
+
+type PauoutPropertyType {
+  _id: String
+  imageUrl: String
+  location: ListingLocationObj
+  apartmentId: String
+  listingTypeId: String
+  propertyTypeId: String
+}
+
+type PayoutQuerySchema {
+  _id: String
+  serialId: Int
+  invoiceInfo: PauoutInvoiceType
+  status: String
+  numberOfFails: Int
+  paymentStatus: String
+  holdPayout: Boolean
+  accountInfo: CommonNameAvatarKeyType
+  propertyInfo: PauoutPropertyType
+  tenantInfo: CommonNameAvatarKeyType
+  sentToNETSOn: Date
+  bookingDate: Date
+  payoutDate: Date
+  amount: Number
+  bankReferenceId: String
+  createdAt: Date
+}
+
+type EsignInfoType {
+  payoutsApprovalEsigningUrl: String
+  createdAt: Date
+  amount: Number
+}
+
+type PayoutActionType {
+  esignInfo: [EsignInfoType]
+}
+
+type PayoutList {
+  data: [PayoutQuerySchema]
+  metaData: MetaDataQuerySchema
+  actions: PayoutActionType
+}
+
+enum PayoutStatusEnum {
+  estimated
+  pending_for_approval
+  waiting_for_signature
+  approved
+  in_progress
+  completed
+  failed
+}
+
+enum PaymentStatusEnum {
+  balanced
+  pending
+  paid
+}
+
+input QueryPayoutType {
+  accountId: String
+  agentId: String
+  amount: Number
+  bankReferenceId: String
+  bookingDateRange: CommonStartDateAndEndDateInputDataType
+  branchId: String
+  contractId: String
+  createdAtDateRange: CommonStartDateAndEndDateInputDataType
+  hasPaused: YesNoAllEnum
+  leaseSerial: Int
+  paymentStatus: PaymentStatusEnum
+  payoutDateRange: CommonStartDateAndEndDateInputDataType
+  propertyId: String
+  requestFrom: RequestFromEnum
+  searchKeyword: String
+  sentToNETSOnDateRange: CommonStartDateAndEndDateInputDataType
+  serialId: Number
+  """
+  Use sort to download payouts
+  Sort will be using fields ['amount', 'createdAt']
+  """
+  sort: Object
+  status: [PayoutStatusEnum]
+  tenantId: String
+}
+
+type StatusSummarySchemaForPayout {
+  _id: String
+  amount: Number
+}
+
+type PayoutsSummaryType {
+  totalAmount: Number
+  totalPaused: Number
+  statusSummary: [StatusSummarySchemaForPayout]
+}
+
+input PayoutExcelCreatorQueryDataType {
+  queueId: String
+}
+
+input LandlordReportExcelCreatorQueryDataType {
+  queueId: String
+}
+
+type PayoutExcelCreatorQuery {
+  payoutId: Number
+  invoiceId: Number
+  objectId: Number
+  property: String
+  apartmentId: String
+  tenantId: Number
+  tenant: String
+  status: String
+  paidDate: Date
+  amount: Number
+  estimated: Date
+  account: String
+  sentToNETSOn: String
+}
+
+type QueryPayoutExcelCreator {
+  data: [PayoutExcelCreatorQuery]
+  total: Number
+}
+type LandlordReportExcelCreatorQuery {
+  propertyAddress: String
+  propertyApartmentId: String
+  tenantName: String
+  periodOfPayout: Date
+  payments: Number
+  totalPayout: Number
+  monthlyRentAmount: Number
+  invoicedExclVat: Number
+  invoicedVat: Number
+  totalInvoiced: Number
+  outstanding: Number
+  assignmentAddonExclVat: Number
+  assignmentAddonVat: Number
+  totalAssignmentAddon: Number
+  managementExclVat: Number
+  managementVat: Number
+  totalManagement: Number
+  unpaidCorrectionsAndCommissions: Number
+  unpaidEarlierPayout: Number
+  movedToNextPayout: Number
+}
+type QueryLandlordReportExcelCreator {
+  data: [LandlordReportExcelCreatorQuery]
+  total: Number
+}
+
+input AppQueueForPayoutEsigningDataType {
+  fileId: String
+}
+
+type DownloadPayoutType {
+  status: Int
+  message: String
+}
+
+input PayoutDetailsInputType {
+  payoutId: String
+  requestFromPartnerPublic: Boolean
+}
+
+type PayoutDetailsType {
+  _id: String
+  amount: Number
+  accountInfo: PayoutAccountSchema
+  agentInfo: PayoutAgentSchema
+  branchInfo: PayoutBranchSchema
+  bankRef: String
+  events: [PayoutEventSchema]
+  holdPayout: Boolean
+  metaInfo: [PayoutMetaSchema]
+  numberOfFails: Int
+  paymentStatus: String
+  propertyInfo: PayoutPropertySchema
+  serialId: Int
+  status: String
+  tenantsInfo: [PayoutTenantSchema]
+}
+
+type PayoutInvoiceSchema {
+  _id: String
+  invoiceSerialId: Int
+}
+
+type PayoutCreatorSchema {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type PayoutPropertyLogSchema {
+  _id: String
+  title: String
+  name: String
+}
+
+type PayoutCommonIdNameSchema {
+  _id: String
+  name: String
+}
+
+type PayoutMetaSchema {
+  type: String
+  amount: Number
+  serialId: Int
+  correctionsInfo: [PayoutCorrectionSchema]
+  invoiceId: String
+  landlordInvoiceId: String
+  payoutId: String
+  commissionId: String
+  addonsInfo: [PayoutAddonSchema]
+}
+
+type PayoutAddonSchema {
+  _id: String
+  name: String
+  total: Number
+}
+
+type PayoutCorrectionSchema {
+  _id: String
+  createdAt: Date
+  amount: Number
+}
+
+type PayoutEventSchema {
+  event: String
+  date: Date
+}
+
+type PayoutTenantSchema {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type PayoutBranchSchema {
+  _id: String
+  name: String
+}
+
+type PayoutAgentSchema {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type PayoutAccountSchema {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type PayoutPropertySchema {
+  _id: String
+  location: ListingLocationObj
+  listingTypeId: String
+  propertyTypeId: String
+  apartmentId: String
+  imageUrl: String
+}
+
+enum PayoutStatusToMakeEstimatedEnum {
+  pending_for_approval
+  waiting_for_signature
+}
+
+input UpdatePayoutStatusAsEstimatedType {
+  payoutId: String
+  status: PayoutStatusToMakeEstimatedEnum
+}
+
+enum BankReferenceForFeatureEnum {
+  payout
+  payment
+}
+
+input QueryBankReferencesDropdownType {
+  feature: BankReferenceForFeatureEnum
+  searchString: String
+}
+
+type BankReferencesDropdownType {
+  data: [String]
+  metaData: MetaDataQuerySchema
+}
+
+input PayoutUpdateData {
+  updateType: String
+  payoutUpdateData: [InvoicePayoutsUpdateDataType]
+}
+
+input InvoicePayoutsUpdateDataType {
+  payoutId: String
+  feedbackInfo: Object
+  status: String
+  paymentStatus: String
+  bookingDate: Date
+  bankRef: String
+}
+
+input IdfyQueryDataType {
+  fileId: String
+}
+
+type QueryIdfyData {
+  partnerId: String
+  processType: String
+  dataForIdfy: Object
+  eSignType: String
+  fileType: String
+  docId: String
+  fileKey: String
+}
+
+type ContractInvoicesRent {
+  _id: String
+  expectedPayout: Float
+  feesMetaTotal: Float
+  finalTotal: Float
+  total: Float
+  roundedtotal: Float
+}
+
+type ContractInvoicesLandlord {
+  _id: String
+  expectedPayout: Float
+  feesMetaTotal: Float
+  finalTotal: Float
+  total: Float
+}
+
+type Meta {
+  amount: Float
+  invoiceId: String
+  type: String
+}
+
+type PayoutDetailsForAppHealth {
+  invoiceLinked: Boolean
+  payoutId: String
+  invoiceId: String
+  invoiceTotal: Float
+  feesMetaTotal: Float
+  remainingBalance: Float
+  finalTotal: Float
+  difference: Float
+  message: [String]
+  meta: Meta
+}
+
+type PayoutInfo {
+  _id: String
+  amount: Float
+  contractId: String
+  invoiceTotalLandlord: Float
+  landlordMetaTotalAmount: Float
+  meta: [Meta]
+  metaTotal: Float
+  payoutDetails: [PayoutDetailsForAppHealth]
+  rentMetaTotalAmount: Float
+}
+
+type InvoicesForPayoutError {
+  _id: String
+  total: Float
+  roundedtotal: Float
+  rentInvoiceTotal: Float
+  landlordInvoiceTotal: Float
+  propertyId: String
+  balanceLeftInvoicesSerialIds: [String]
+  totalFees: Float
+  balanceLeft: Float
+  rentInvoiceTotalWithoutFees: Float
+  expectedPayoutTotal: Float
+  invoiceSerialIds: [Int]
+  totals: [Float]
+}
+
+type LandlordInvoiceAmountMisMatch {
+  _id: String
+  invoiceType: String
+  invoiceTotal: Float
+  invoiceSerialId: Int
+  metaTotal: Float
+  metaTotalDiff: Float
+}
+
+type WrongPayoutMeta {
+  payoutMetaAmount: Float
+  amount: Float
+  payoutSerialId: Int
+  payoutId: String
+}
+
+type MetaInvoices {
+  _id: String
+  invoiceType: String
+  invoiceTotal: Float
+  invoiceSerialId: Int
+  totalFees: Float
+  invoiceWithoutTotalFees: Float
+  metaTotal: Float
+  metaTotalRent: Float
+  metaTotalDiff: Float
+  metaTotalRentDiff: Float
+}
+
+type PayoutDataForLambda {
+  _id: String
+  metaAmount: Float
+  actualPayoutTotal: Float
+  rentInvoiceMetaTotal: Float
+  payoutDiff: Float
+  missingSerialIds: [String]
+  metaInvoices: [MetaInvoices]
+  metaInvoicesRent: [MetaInvoices]
+  metaInvoicesLandlord: [MetaInvoices]
+  invoices: InvoicesForPayoutError
+  landlordInvoiceAmountMisMatch: Float
+  rentInvoiceAmountMisMatch: [Object]
+  wrongPayoutMeta: [WrongPayoutMeta]
+}
+
+input UpdatePayoutPauseStatusInputType {
+  holdPayout: Boolean
+  payoutId: String
+}
+
+input PayoutMetaInput {
+  amount: Float
+  invoiceId: String
+  type: String
+}
+
+input CreateEstimatedPayoutInput {
+  invoiceId: String
+  isFinalSettlement: Boolean
+  meta: [PayoutMetaInput]
+}
+
+input PayoutDateUpdateInput {
+  payoutId: String
+  payoutDate: Date
+}
+
+type PayoutDateUpdateReturnDataType {
+  _id: ID
+  payoutDate: Date
+}
+
+input AddBankReferencesInputType {
+  limit: Int
+  partnerId: String
+}
+
+type AddBankReferencesType {
+  isCompleted: Boolean
+}
+
+extend type Query {
+  getPayoutForExcelCreator(
+    queryData: PayoutExcelCreatorQueryDataType
+    optionData: OptionDataType
+  ): QueryPayoutExcelCreator @auth(requires: ["lambda_manager"])
+  getDataForIdfy(
+    queryData: IdfyQueryDataType
+  ): QueryIdfyData @auth(requires: ["lambda_manager"])
+  getLandlordReportForExcelCreator(
+    queryData: LandlordReportExcelCreatorQueryDataType
+    optionData: OptionDataType
+  ): QueryLandlordReportExcelCreator @auth(requires: ["lambda_manager"]) #need to set more role partner_admin || app_admin || partner_agent
+  getPayouts(
+    queryData: QueryPayoutType
+    optionData: OptionDataType
+  ): PayoutList
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+      ]
+    )
+  payoutDetails(queryData: PayoutDetailsInputType): PayoutDetailsType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting",
+        "partner_landlord"
+      ]
+    )
+  payoutsSummary(queryData: QueryPayoutType): PayoutsSummaryType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+      ]
+    )
+  bankReferencesDropdown(
+    queryData: QueryBankReferencesDropdownType
+    optionData: OptionDataType
+  ): BankReferencesDropdownType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+      ]
+    )
+  getPayoutsForApphealth(contractId: ID): PayoutDataForLambda @auth(requires: ["lambda_manager"])
+  getPendingPayoutsList(
+    queryData: QueryPayoutType
+    optionData: OptionDataType
+  ): PayoutList
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+}
+
+extend type Mutation {
+  addPayout(inputData: PayoutAddType): [Payout] @auth(requires: ["no_role"])
+  #For Payments Lambda #10482
+  approvePendingPayouts(inputData: ApprovePendingPayoutsDataType): String
+    @auth(requires: ["partner_accounting"])
+  getEsigningDoc(inputData: ReadyEsigningDocDataType): Object
+    @auth(requires: ["lambda_manager"])
+  updatePayout(inputData: PayoutUpdateType): Payout
+    @auth(requires: ["lambda_manager"])
+  addInvoiceLostInfo(inputData: CommonInputDataType): Payout
+    @auth(requires: ["no_role"])
+  addAppQueueForPayoutAndPaymentEsigning(
+    inputData: AppQueueForPayoutEsigningDataType
+  ): AppQueue @auth(requires: ["lambda_manager"])
+  downloadPayout(inputData: QueryPayoutType): DownloadPayoutType
+    @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent"])
+  updatePayoutStatusAsEstimated(
+    inputData: UpdatePayoutStatusAsEstimatedType
+  ): Payout @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent"])
+  updatePayoutsForLambda(inputData: PayoutUpdateData): Boolean
+    @auth(requires: ["lambda_manager"])
+  updatePayoutPauseStatus(inputData: UpdatePayoutPauseStatusInputType):Payout @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent"])
+  createEstimatedPayout(inputData: CreateEstimatedPayoutInput): ReturnBoolean @auth(requires: ["lambda_manager"])
+  addBankReferences(inputData: AddBankReferencesInputType): AddBankReferencesType @auth(requires: ["lambda_manager"])
+  createOrAdjustEstimatedPayout(inputData: CreateEstimatedPayoutInput): ReturnBoolean @auth(requires: ["lambda_manager"])
+  updatePayoutDate(inputData: PayoutDateUpdateInput): PayoutDateUpdateReturnDataType @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+}

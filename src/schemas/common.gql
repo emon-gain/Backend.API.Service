@@ -1,0 +1,159 @@
+directive @auth(requires: [String]) on OBJECT | FIELD_DEFINITION
+
+enum Role {
+  ADMIN
+  REVIEWER
+  USER
+  UNKNOWN
+}
+
+scalar Date
+scalar Array
+scalar Object
+scalar Number
+
+
+input OptionDataType {
+  limit: Int
+  skip: Int
+  sort: Object
+}
+
+input CommonInputDataType {
+  invoiceId: String
+  contractId: String
+  partnerId: String
+}
+
+type ContractIdAndPartnerIdType {
+  contractId: String
+  partnerId: String
+}
+
+input CommonMinMaxInputDataType {
+  minimum: Int!
+  maximum: Int!
+}
+
+input CommonNameAndValueInputDataType {
+  name: String!
+  value: String!
+}
+
+type MetaDataQuerySchema {
+  filteredDocuments: Int
+  totalDocuments: Int
+}
+
+type MetaDataQuerySchemaForListing {
+  filteredDocuments: Int
+  totalDocuments: Int
+  totalFavourites: Int
+}
+
+input CommonStartDateAndEndDateInputDataType {
+  startDate: Date!
+  endDate: Date!
+}
+
+# AddonsSchemas is a common schema used in contracts and listings collection as a addons fields
+input AddonsSchemasInput {
+  isRecurring: Boolean
+  hasCommission: Boolean
+  type: String
+  addonId: String
+  tax: Number
+  taxPercentage: Number
+  price: Number
+  total: Number
+  productServiceId: String
+}
+
+type AddonsSchemas {
+  isRecurring: Boolean
+  hasCommission: Boolean
+  type: String
+  addonId: String
+  tax: Number
+  taxPercentage: Number
+  price: Number
+  total: Number
+  productServiceId: String
+}
+
+type NumberOfUpdate {
+  numberOfUpdate: Number
+}
+
+type ReturnBoolean {
+  result: Boolean
+}
+
+type ReturnArray {
+  result: Array
+}
+
+type ReturnIds {
+  ids: [String]
+}
+
+type CollectionMetaDataType {
+  amount: Number
+  count: Int
+}
+
+enum YesNoAllEnum {
+  all
+  no
+  yes
+}
+
+type NumberOfDelete {
+  numberOfDelete: Number
+}
+
+type NumberOfUpdated {
+  numberOfUpdated: Number
+}
+
+type AppQueueIdType {
+  queueId: String
+}
+
+type CommonNameAvatarKeyType {
+  _id: String
+  avatarKey: String
+  name: String
+}
+
+type CommonNameType {
+  _id: String
+  name: String
+}
+
+type CommonDownloadReturnType {
+  message: String
+  status: Int
+}
+
+enum CallBackPriorityEnum {
+  immediate
+  regular
+}
+
+input CallBackParamsInputData {
+  callBackAction: String
+  callBackDestination: String
+  callBackEvent: String
+  callBackIsSequential: Boolean
+  callBackSequentialCategory: String
+  callBackPriority: CallBackPriorityEnum
+}
+
+type AppQueueIdsType {
+  queueIds: [String]
+}
+
+type NumberOfRemove {
+  numberOfRemove: Number
+}

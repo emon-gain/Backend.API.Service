@@ -1,0 +1,33 @@
+input TenantCreditInfoUpdateType {
+  creditRatingInfo: Object
+  createdBy: String
+  partnerId: String
+  propertyId: String
+  tenantId: String
+}
+
+input RemoveExpiredCreditRatingsType {
+  partnerId: String
+}
+
+input CreditRatingEnabledPartnersQueryDataType {
+  creditRating: Boolean
+  serial: Int
+}
+
+extend type Query {
+  getCreditRatingEnabledPartners(
+    queryData: CreditRatingEnabledPartnersQueryDataType
+    optionData: OptionDataType
+  ): [Partner] @auth(requires: ["lambda_manager"])
+  getPartnerIdsToRemoveCreditRating: [String]
+    @auth(requires: ["lambda_manager"])
+}
+
+extend type Mutation {
+  setTenantCreditInfo(inputData: TenantCreditInfoUpdateType): Tenant
+    @auth(requires: ["lambda_manager"])
+  removeExpiredCreditRatings(
+    inputData: RemoveExpiredCreditRatingsType
+  ): NumberOfRemove @auth(requires: ["lambda_manager"])
+}

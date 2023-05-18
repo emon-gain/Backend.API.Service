@@ -1,0 +1,589 @@
+type PropertyItem {
+  _id: String
+  propertyId: String
+  partnerId: String
+  tenantId: String
+  agentId: String
+  contractId: String
+  type: String
+  keys: Object
+  meterReading: Object
+  inventory: Object
+  createdAt: Date
+  createdBy: String
+  movingInPdfGenerated: Boolean
+  landlordSigningStatus: LandlordSigningStatusObject
+  tenantSigningStatus: [TenantSigningStatusObject]
+  agentSigningStatus: AgentSigningStatusObject
+  idfyMovingInDocId: String
+  movingSigningMeta: SigningMetaObject
+  movingOutPdfGenerated: Boolean
+  draftMovingInDoc: Boolean
+  draftMovingOutDoc: Boolean
+  isEsigningInitiate: Boolean
+  esigningInitiatedAt: Date
+  movingInSigningComplete: Boolean
+  moveInCompleted: Boolean
+  moveOutCompleted: Boolean
+  signatureMechanism: String
+  movingOutSigningComplete: Boolean
+  fileIdForIcsFile: String
+  isEsignReminderSentToAgentForMoveIn: Boolean
+  isEsignReminderSentToTenantForMoveIn: Boolean
+  isEsignReminderSentToAgentForMoveOut: Boolean
+  isEsignReminderSentToTenantForMoveOut: Boolean
+  isEsignReminderSentToLandlordForMoveIn: Boolean
+  isEsignReminderSentToLandlordForMoveOut: Boolean
+  idfyErrorEvents: Array
+}
+
+type PropertyItemsQuerySchema {
+  _id: String
+  propertyId: String
+  property: Listing
+  partnerId: String
+  partner: Partner
+  tenantId: String
+  tenant: Tenant
+  agentId: String
+  agent: User
+  contractId: String
+  contract: Contract
+  type: String
+  keys: KeyObject
+  meterReading: MeterReadingObject
+  inventory: InventoryObject
+  movingInPdfGenerated: Boolean
+  landlordSigningStatus: LandlordSigningStatusObject
+  tenantSigningStatus: [TenantSigningStatusObject]
+  agentSigningStatus: AgentSigningStatusObject
+  idfyMovingInDocId: String
+  movingSigningMeta: SigningMetaObject
+  movingOutPdfGenerated: Boolean
+  draftMovingInDoc: Boolean
+  draftMovingOutDoc: Boolean
+  isEsigningInitiate: Boolean
+  esigningInitiatedAt: Date
+  movingInSigningComplete: Boolean
+  moveInCompleted: Boolean
+  moveOutCompleted: Boolean
+  signatureMechanism: String
+  movingOutSigningComplete: Boolean
+  fileIdForIcsFile: String
+  isEsignReminderSentToAgentForMoveIn: Boolean
+  isEsignReminderSentToTenantForMoveIn: Boolean
+  isEsignReminderSentToAgentForMoveOut: Boolean
+  isEsignReminderSentToTenantForMoveOut: Boolean
+  isEsignReminderSentToLandlordForMoveIn: Boolean
+  isEsignReminderSentToLandlordForMoveOut: Boolean
+  idfyErrorEvents: [Object]
+  createdAt: Date
+  createdBy: String
+}
+
+type AgentSigningStatusObject {
+  idfySignerId: String
+  agentId: String
+  internalUrl: String
+  signingUrl: String
+  signed: Boolean
+  signedAt: Date
+}
+
+type InventoryObject {
+  furniture: InventoryFurnitureObject
+  isFurnished: Boolean
+  isPartiallyFurnished: Boolean
+  files: String
+}
+
+type InventoryFurnitureObject {
+  id: String
+  name: String
+  quantity: Number
+  status: String
+  description: String
+  responsibleForFixing: String
+}
+
+type KeyObject {
+  keysList: KeyListObject
+  files: [String]
+}
+
+type KeyListObject {
+  id: String
+  kindOfKey: String
+  numberOfKey: Number
+  numberOfKeysReturned: Number
+}
+
+type LandlordSigningStatusObject {
+  idfySignerId: String
+  landlordId: String
+  internalUrl: String
+  signingUrl: String
+  signed: Boolean
+  signedAt: Date
+}
+
+type MeterReadingObject {
+  meters: MetersObject
+  files: [String]
+}
+
+type MetersObject {
+  id: String
+  numberOfMeter: String
+  typeOfMeter: String
+  measureOfMeter: Number
+  date: Date
+}
+
+type SigningMetaObject {
+  signedTime: String
+  signers: [Object]
+  documentId: String
+  externalDocumentId: String
+  signer: Object
+}
+
+type TenantSigningStatusObject {
+  idfySignerId: String
+  tenantId: String
+  internalUrl: String
+  signingUrl: String
+  signed: Boolean
+  signedAt: Date
+}
+
+type QueryPropertyItems {
+  data: [PropertyItemsQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input PropertyItemUpdateType {
+  _id: String
+  protocolData: Object
+}
+
+input TenantSigningStatusInputType {
+  idfySignerId: String
+  tenantId: String
+  internalUrl: String
+  signingUrl: String
+  signed: Boolean
+  signedAt: Date
+}
+
+input AgentSigningStatusInputType {
+  idfySignerId: String
+  agentId: String
+  internalUrl: String
+  signingUrl: String
+  signed: Boolean
+  signedAt: Date
+}
+
+input LandlordSigningStatusInputType {
+  idfySignerId: String
+  landlordId: String
+  internalUrl: String
+  signingUrl: String
+  signed: Boolean
+  signedAt: Date
+}
+
+input SigningMetaInputType {
+  documentId: String
+  externalDocumentId: String
+  signedTime: String
+  signer: Object
+  signers: [Object]
+}
+
+input PropertyItemUpdatingInputDataTypeForLambda {
+  movingInPdfGenerated: Boolean
+  movingOutPdfGenerated: Boolean
+  draftMovingInDoc: Boolean
+  draftMovingOutDoc: Boolean
+  #  For propertyItemForLambda
+  idfyMovingInDocId: String
+  tenantSigningStatus: [TenantSigningStatusInputType]
+  agentSigningStatus: AgentSigningStatusInputType
+  landlordSigningStatus: LandlordSigningStatusInputType
+  movingSigningMeta: SigningMetaInputType
+  moveInCompleted: Boolean
+  movingInSigningComplete: Boolean
+  moveOutCompleted: Boolean
+  movingOutSigningComplete: Boolean
+}
+
+input PropertyItemUpdateAndESigningProcessInputDataForLambda {
+  contractId: String
+  data: PropertyItemUpdatingInputDataTypeForLambda # Data means updating Data
+  propertyItemId: String
+  partnerId: String
+  #  To create a new queue at the end of the process
+  callBackParams: CallBackParamsInputData
+}
+
+input PropertyItemQueryDataType {
+  _id: String
+  propertyId: String
+  partnerId: String
+  tenantId: String
+  agentId: String
+  contractId: String
+  type: String
+  movingInPdfGenerated: Boolean
+  idfyMovingInDocId: String
+  movingOutPdfGenerated: Boolean
+  draftMovingInDoc: Boolean
+  draftMovingOutDoc: Boolean
+  isEsigningInitiate: Boolean
+  esigningInitiatedAt: Date
+  movingInSigningComplete: Boolean
+  moveInCompleted: Boolean
+  moveOutCompleted: Boolean
+  signatureMechanism: String
+  movingOutSigningComplete: Boolean
+  fileIdForIcsFile: String
+  isEsignReminderSentToAgentForMoveIn: Boolean
+  isEsignReminderSentToTenantForMoveIn: Boolean
+  isEsignReminderSentToAgentForMoveOut: Boolean
+  isEsignReminderSentToTenantForMoveOut: Boolean
+  isEsignReminderSentToLandlordForMoveIn: Boolean
+  isEsignReminderSentToLandlordForMoveOut: Boolean
+}
+
+input PropertyItemForLambdaQueryDataType {
+  propertyItemId: String
+  type: String
+}
+
+enum PropertyUtilityContextEnumType {
+  inventories
+  keys
+  meter_reading
+}
+
+input PropertyUtilityDetailsQueryType {
+  context: PropertyUtilityContextEnumType
+  isFurnished: Boolean
+  propertyId: String
+  propertyItemId: String
+}
+
+type MovingInFurnitureType {
+  id: String
+  description: String
+  name: String
+  quantity: Int
+  responsibleForFixing: String
+  status: String
+  title: String
+}
+
+type MovingInKeyType {
+  id: String
+  kindOfKey: String
+  numberOfKey: Int
+  numberOfKeysReturned: Int
+}
+
+type MovingInMeterReadingType {
+  id: String
+  numberOfMeter: String
+  typeOfMeter: String
+  measureOfMeter: Number
+  date: Date
+}
+
+type PropertyUtilityDetailsType {
+  _id: String
+  date: Date
+  description: String
+  dueDate: Date
+  furnitureId: String
+  hasChange: Boolean
+  hasMovingInOutProtocolInfo: Boolean
+  isFurnished: Boolean
+  kindOfKey: String
+  keysId: String
+  meterId: String
+  measureOfMeter: Number
+  movingInFurniture: MovingInFurnitureType
+  movingInKey: MovingInKeyType
+  movingInMeterReading: MovingInMeterReadingType
+  numberOfMeter: String
+  numberOfKey: Number
+  numberOfKeysReturned: Number
+  name: String
+  quantity: Number
+  responsibleForFixing: String
+  status: String
+  title: String
+  typeOfMeter: String
+}
+
+type QueryPropertyUtilityDetails {
+  data: [PropertyUtilityDetailsType]
+  metaData: MetaDataSchemaForPropertyItem
+}
+
+type MetaDataSchemaForPropertyItem {
+  filteredDocuments: Int
+  isFurnished: Boolean
+  totalDocuments: Int
+  type: String
+}
+
+enum PropertyItemElementType {
+  inventory
+  keys
+  meterReading
+}
+
+input PropertyItemInventory {
+  name: String
+  quantity: Int
+  status: String
+  title: String
+  responsibleForFixing: String
+  taskId: String
+  dueDate: Date
+  description: String
+}
+
+input PropertyItemKey {
+  kindOfKey: String
+  numberOfKey: Int
+}
+
+input PropertyItemMeterReading {
+  date: Date
+  measureOfMeter: Int
+  numberOfMeter: String
+  typeOfMeter: String
+}
+
+input AddPropertyItemDataType {
+  from: UpdateFromEnum
+  inventory: PropertyItemInventory
+  isFurnished: Boolean
+  key: PropertyItemKey
+  meterReading: PropertyItemMeterReading
+  propertyId: String
+  propertyItemElement: PropertyItemElementType
+  propertyItemId: String
+}
+
+enum InventoryStatusEnum {
+  issues
+  notApplicable
+  ok
+}
+
+enum ResponsibleForFixingPropertyItemEnum {
+  agent
+  landlord
+  noActionRequired
+  tenant
+}
+
+input InventoryUpdateDataType {
+  contractId: String
+  description: String
+  dueDate: Date
+  furnitureId: String
+  name: String
+  quantity: Int
+  responsibleForFixing: ResponsibleForFixingPropertyItemEnum
+  status: InventoryStatusEnum
+  title: String
+}
+
+input KeyUpdateDataType {
+  keysId: String
+  kindOfKey: String
+  numberOfKey: Int
+  numberOfKeysReturned: Int
+}
+
+input MeterReadingUpdateDataType {
+  date: Date
+  measureOfMeter: Int
+  meterId: String
+  numberOfMeter: String
+  typeOfMeter: String
+}
+
+input UpdatePropertyItemFromPartnerAppDataType {
+  from: UpdateFromEnum
+  inventory: InventoryUpdateDataType
+  key: KeyUpdateDataType
+  meterReading: MeterReadingUpdateDataType
+  propertyId: String
+  propertyItemElement: PropertyItemElementType
+  propertyItemId: String
+}
+
+input MovingProtocolDataType {
+  contractId: String
+  propertyId: String
+  type: MovingProtocolEnumType
+}
+
+enum MovingProtocolEnumType {
+  in
+  out
+}
+
+type MovingProtocol {
+  movingProtocolId: String
+  completedMovingInId: String
+}
+
+input RemovePropertyItemDataType {
+  from: UpdateFromEnum
+  itemId: String
+  propertyId: String
+  propertyItemElement: PropertyItemElementType
+  propertyItemId: String
+}
+
+input PropertyItemQueryAndUpdateDataType {
+  propertyItemId: String
+  data: PropertyItemUpdatingInputDataTypeForLambda
+}
+
+input ResetProtocolInputDataType {
+  propertyId: String
+}
+
+enum InitiateMovingSignatureMechanismEnum {
+  bankId
+  handWritten
+}
+
+enum InitiateMovingTypeEnum {
+  in
+  out
+}
+
+input InitiateMovingProtocolInputDataType {
+  contractId: String
+  eSigningPdfContent: String
+  movingId: String
+  movingType: InitiateMovingTypeEnum
+  propertyId: String
+  signatureMechanism: InitiateMovingSignatureMechanismEnum
+}
+
+input CancelMovingInOutProtocolInputType {
+  contractId: String
+  type: MovingProtocolEnumType
+}
+
+type MovingInOutDataForESigningCleaner {
+  contractId: String
+  movingId: String
+  partnerId: String
+}
+
+extend type Query {
+  propertyItems(
+    queryData: PropertyItemQueryDataType
+    optionData: OptionDataType
+  ): QueryPropertyItems @auth(requires: ["no_role"])
+  propertyUtilityDetails(
+    queryData: PropertyUtilityDetailsQueryType
+    optionData: OptionDataType
+  ): QueryPropertyUtilityDetails
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  propertyItemForLambda(
+    queryData: PropertyItemForLambdaQueryDataType
+  ): PropertyItem @auth(requires: ["lambda_manager"])
+  getMovingInOutDataForESigningCleaner(
+    queryData: CommonInputDataType
+  ): [MovingInOutDataForESigningCleaner] @auth(requires: ["lambda_manager"])
+}
+
+extend type Mutation {
+  updatePropertyItem(inputData: PropertyItemUpdateType): PropertyItem
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  addPropertyItem(
+    inputData: AddPropertyItemDataType
+  ): [PropertyUtilityDetailsType]
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+        "partner_landlord"
+        "partner_tenant"
+      ]
+    )
+  updatePropertyItemFromPartnerApp(
+    inputData: UpdatePropertyItemFromPartnerAppDataType
+  ): PropertyUtilityDetailsType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  removePropertyItem(inputData: RemovePropertyItemDataType): ReturnBoolean
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  updatePropertyItemAndProcessESigning(
+    inputData: PropertyItemUpdateAndESigningProcessInputDataForLambda
+  ): AppQueueIdType @auth(requires: ["lambda_manager"])
+  updateAPropertyItemForLambda(
+    inputData: PropertyItemQueryAndUpdateDataType
+  ): PropertyItem @auth(requires: ["lambda_manager"])
+  goToMovingProtocol(inputData: MovingProtocolDataType): MovingProtocol
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "partner_agent"
+        "partner_landlord"
+        "partner_tenant"
+        "user"
+      ]
+    )
+  resetMovingProtocol(inputData: ResetProtocolInputDataType): ReturnBoolean
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  initiateMovingInOutProtocol(
+    inputData: InitiateMovingProtocolInputDataType
+  ): ReturnBoolean
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent", "partner_janitor"])
+  cancelMovingInOutProtocol(inputData: CancelMovingInOutProtocolInputType): ReturnBoolean
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent", "partner_janitor"])
+}

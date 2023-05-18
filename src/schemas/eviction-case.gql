@@ -1,0 +1,24 @@
+type ContractWithInvoices {
+  contract: Contract
+  invoices: [Invoice]
+}
+
+input ContractWithInvoicesQueryType {
+  contractId: String
+  partnerId: String
+}
+
+input EvictionCaseCreateOrUpdateOrRemoveInputType {
+  contractId: String
+  invoiceId: String
+  partnerId: String
+}
+
+extend type Query {
+  getContractWithInvoices(queryData: ContractWithInvoicesQueryType): ContractWithInvoices @auth(requires: ["lambda_manager"])
+}
+
+extend type Mutation {
+  createOrUpdateEvictionCase(inputData: EvictionCaseCreateOrUpdateOrRemoveInputType): Boolean @auth(requires: ["lambda_manager"])
+  updateOrRemoveEvictionCase(inputData: EvictionCaseCreateOrUpdateOrRemoveInputType): Boolean @auth(requires: ["lambda_manager"])
+}

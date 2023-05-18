@@ -2,7 +2,7 @@ import { mergeResolvers } from '@graphql-tools/merge';
 import { loadFilesSync } from '@graphql-tools/load-files';
 import path from 'path';
 
-console.log(loadFilesSync(path.join(__dirname, './*/index.js')));
+// console.log(loadFilesSync(path.join(__dirname, './resolver.helper.js')));
 export const createMergedResolvers = mergeResolvers(
-  loadFilesSync(path.join(__dirname, './*/index.js'))
+  loadFilesSync(path.join(__dirname, './resolver.helper.js'))
 );

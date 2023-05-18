@@ -1,0 +1,554 @@
+type PartnerSetting {
+  _id: String
+  partnerId: String
+  companyInfo: PartnerCompanyInfoSchema
+  bankAccounts: [PartnerBankInfoSchema]
+  currencySettings: CurrencySettingsSchema
+  smsSettings: SmsSettingsSchema
+  dateTimeSettings: DatetimeSettingsSchema
+  propertySettings: PropertySettingsSchema
+  assignmentSettings: AssignmentSettingsSchema
+  leaseSetting: LeaseSettingsSchema
+  depositInsuranceSetting: DepositInsuranceSettingSchema
+  bankPayment: PartnerBankPaymentTypes
+  invoiceFee: PartnerInvoiceFeeTypes
+  reminderFee: PartnerInvoiceFeeTypes
+  evictionFee: PartnerInvoiceFeeTypes
+  administrationEvictionFee: PartnerInvoiceFeeTypes
+  collectionNoticeFee: PartnerInvoiceFeeTypes
+  postalFee: PartnerInvoiceFeeTypes
+  enableDepositInsurance: Boolean
+  invoiceCalculation: String
+  invoiceDueDays: Number
+  duePreReminder: PartnerInvoiceReminderTypes
+  invoiceFirstReminder: PartnerInvoiceReminderTypes
+  evictionNotice: EvictionNoticeSettingSchema
+  evictionDueReminderNotice: EvictionNoticeSettingSchema
+  tenantPaysAllDueDuringEviction: TenantPaysAllDueDuringEvictionSchema
+  invoiceSecondReminder: PartnerInvoiceReminderTypes
+  invoiceCollectionNotice: PartnerInvoiceReminderTypes
+  standardPayoutDate: Number
+  customPayoutDays: PartnerPayoutTerm
+  payout: PartnerPayoutTerm
+  country: String
+  lastBankReference: String
+  sameKIDNumber: Boolean
+  notifications: PartnerNotifications
+  retryFailedPayouts: PartnerPayoutTerm
+  CPISettlement: EnabledAndMonthsSchema
+  invoiceSettings: PartnerInvoiceSettingsSchema
+  listingSetting: ListingSettingsSchema
+  tenantSetting: TenantSettingSchema
+  landlordBankPayment: PartnerBankPaymentTypes
+  landlordInvoiceFee: PartnerInvoiceFeeTypes
+  landlordReminderFee: PartnerInvoiceFeeTypes
+  landlordCollectionNoticeFee: PartnerInvoiceFeeTypes
+  landlordPostalFee: PartnerInvoiceFeeTypes
+  landlordInvoiceDueDays: Number
+  landlordDuePreReminder: PartnerInvoiceReminderTypes
+  landlordInvoiceFirstReminder: PartnerInvoiceReminderTypes
+  landlordInvoiceSecondReminder: PartnerInvoiceReminderTypes
+  landlordInvoiceCollectionNotice: PartnerInvoiceReminderTypes
+  enabledPowerOfficeIntegration: Boolean
+  defaultFindHomeLocation: DefaultFindHomeLocationSchema
+  isAllAccountSynced: Boolean
+  isAllTenantSynced: Boolean
+  isUpdatedAddress: Boolean
+  allowedDomains: [String]
+  stopCPIRegulation: Boolean
+  directRemittanceApproval: DirectRemittanceApprovalSchema
+  createdBy: String
+  createdAt: Date
+}
+
+type TenantPaysAllDueDuringEvictionSchema {
+  enabled: Boolean
+}
+
+type DirectRemittanceUserProfileType {
+  name: String
+}
+
+type DirectRemittanceUserInfo {
+  _id: String
+  profile: DirectRemittanceUserProfileType
+}
+
+type DirectRemittanceApprovalSchema {
+  enabled: Boolean
+  categoryPurposeCode: String
+  persons: [String]
+  isEnableMultipleSigning: Boolean
+}
+
+type DefaultFindHomeLocationSchema {
+  defaultMapLocation: String
+  defaultMapZoom: Number
+  lat: Number
+  lng: Number
+  cityPlaceId: String
+}
+
+type EnabledAndMonthsSchema {
+  enabled: Boolean
+  months: Number
+}
+
+type AutomaticCreditRatingSchema {
+  enabled: Boolean
+}
+
+type TenantSettingSchema {
+  removeProspects: EnabledAndMonthsSchema
+  deleteInterestForm: EnabledAndMonthsSchema
+  removeCreditRating: EnabledAndMonthsSchema
+  automaticCreditRating: AutomaticCreditRatingSchema
+}
+
+type DisabledListingSchema {
+  enabled: Boolean
+  days: Number
+}
+
+type ListingSettingsSchema {
+  disabledListing: DisabledListingSchema
+}
+
+type PartnerInvoiceSettingsSchema {
+  enabledCompelloRegninger: Boolean
+  enabledVippsRegninger: Boolean
+  numberOfDecimalInInvoice: Number
+}
+
+type PartnerNotifications {
+  leaseTerminated: Boolean
+  creditNote: Boolean
+  sentAssignment: Boolean
+  sentWelcomeLease: Boolean
+  leaseTerminatedByTenant: Boolean
+  leaseTerminatedByLandlord: Boolean
+  leaseScheduleTerminatedByTenant: Boolean
+  leaseScheduleTerminatedByLandlord: Boolean
+  soonEndingLease: Boolean
+  naturalLeaseTermination: Boolean
+  nextScheduledPayouts: Boolean
+  landlordCreditNote: Boolean
+  finalSettlementInvoice: Boolean
+  annualStatement: Boolean
+  interestForm: Boolean
+  depositAccount: Boolean
+  depositIncomingPayment: Boolean
+  taskNotification: Boolean
+  appHealthNotification: Boolean
+  wrongSSNNotification: Boolean
+  depositInsurance: Boolean
+}
+
+type PartnerPayoutTerm {
+  enabled: Boolean
+  payBeforeMonth: Number
+  days: Number
+}
+
+type EvictionNoticeSettingSchema {
+  enabled: Boolean
+  days: Number
+  isCreateEvictionPackage: Boolean
+  requiredTotalOverDue: Number
+}
+
+type PartnerInvoiceReminderTypes {
+  enabled: Boolean
+  days: Number
+  newDueDays: Number
+}
+
+type PartnerInvoiceFeeTypes {
+  enabled: Boolean
+  amount: Number
+  tax: Number
+}
+
+type PartnerBankPaymentTypes {
+  enabled: Boolean
+  firstMonthACNo: String
+  afterFirstMonthACNo: String
+}
+
+type NaturalLeaseTerminationSchema {
+  enabled: Boolean
+  days: Number
+}
+
+type LeaseSettingsSchema {
+  internalLeaseId: Boolean
+  enableEsignLease: Boolean
+  naturalLeaseTermination: NaturalLeaseTerminationSchema
+  esignReminderNoticeDays: Number
+  enabledLeaseESigningReminder: Boolean
+  enabledShowLeaseFilesToTenant: Boolean
+  depositType: String
+}
+
+type DepositInsurancePaymentReminderType {
+  enabled: Boolean
+  days: Int
+}
+
+type DepositInsuranceSettingSchema {
+  paymentReminder: DepositInsurancePaymentReminderType
+}
+
+type AssignmentSettingsSchema {
+  internalAssignmentId: Boolean
+  enableEsignAssignment: Boolean
+  enabledAssignmentEsignReminder: Boolean
+  esignReminderNoticeDays: Number
+  enabledShowAssignmentFilesToLandlord: Boolean
+}
+
+type PropertySettingsSchema {
+  soonEndingMonths: Number
+  movingInOutProtocol: Boolean
+  enabledMoveInEsignReminder: Boolean
+  esignReminderNoticeDaysForMoveIn: Number
+  enabledMoveOutEsignReminder: Boolean
+  esignReminderNoticeDaysForMoveOut: Number
+  enabledGroupId: Boolean
+}
+
+type SmsSettingsSchema {
+  smsSenderName: String
+}
+
+type DatetimeSettingsSchema {
+  dateFormat: String
+  timeFormat: String
+  timezone: String
+}
+
+type CurrencySettingsSchema {
+  currencyPosition: String
+  currencySymbol: String
+  decimalSeparator: String
+  thousandSeparator: String
+  numberOfDecimal: Number
+}
+
+type PartnerBankInfoSchema {
+  id: String
+  accountNumber: String
+  bic: String
+  vatRegistered: Boolean
+  orgName: String
+  orgId: String
+  orgAddress: String
+  orgZipCode: String
+  orgCity: String
+  orgCountry: String
+  ledgerAccountId: String
+  backupOrgAddress: String
+}
+
+type PartnerCompanyInfoSchema {
+  companyName: String
+  organizationId: String
+  officeAddress: String
+  officeZipCode: String
+  officeCity: String
+  officeCountry: String
+  postalAddress: String
+  postalZipCode: String
+  postalCity: String
+  postalCountry: String
+  phoneNumber: String
+  email: String
+  website: String
+  isLogoLinkedToWebsite: Boolean
+  backupOfficeAddress: String
+  backupPostalAddress: String
+}
+
+input PartnerSettingUpdateData {
+  country: String
+  invoiceCalculation: String
+  sameKIDNumber: Boolean
+  bankAccounts: Array
+}
+
+input PartnerSettingUpdateType {
+  bankId: String
+  data: PartnerSettingUpdateData
+}
+
+input NotificationsSettingUpdateData {
+  name: String!
+  value: Boolean!
+}
+
+input NotificationsSettingUpdateType {
+  data: NotificationsSettingUpdateData
+}
+
+input GeneralSettingInputDataType {
+  name: String
+  valueString: String
+  valueBoolean: Boolean
+  valueInt: Number
+}
+
+input LandlordInvoiceSettingInputDataType {
+  name: String
+  valueBoolean: Boolean
+  valueInt: Number
+  valueString: String
+}
+
+input PayoutSettingInputDataType {
+  name: String
+  valueString: String
+  valueBoolean: Boolean
+  valueInt: Number
+}
+
+input RentInvoiceSettingInputDataType {
+  name: String
+  valueString: String
+  valueBoolean: Boolean
+  valueInt: Number
+}
+
+input GeneralSettingUpdateType {
+  partnerId: String
+  data: GeneralSettingInputDataType
+}
+
+input LandlordInvoiceSettingUpdateType {
+  data: LandlordInvoiceSettingInputDataType
+}
+
+input RentInvoiceSettingUpdateType {
+  data: RentInvoiceSettingInputDataType
+}
+
+input PayoutSettingUpdateType {
+  data: PayoutSettingInputDataType
+}
+
+input PartnerSettingsQueryDataType {
+  _id: String
+  partnerId: String
+  # For Admin PartnerSettings list and filters
+  appAdmin: Boolean
+}
+
+type PartnerSettingQuerySchema {
+  _id: String
+  partnerId: String
+  partner: Partner
+  companyInfo: PartnerCompanyInfoSchema
+  bankAccounts: [PartnerBankInfoSchema]
+  currencySettings: CurrencySettingsSchema
+  smsSettings: SmsSettingsSchema
+  dateTimeSettings: DatetimeSettingsSchema
+  propertySettings: PropertySettingsSchema
+  assignmentSettings: AssignmentSettingsSchema
+  leaseSetting: LeaseSettingsSchema
+  depositInsuranceSetting: DepositInsuranceSettingSchema
+  bankPayment: PartnerBankPaymentTypes
+  invoiceFee: PartnerInvoiceFeeTypes
+  reminderFee: PartnerInvoiceFeeTypes
+  evictionFee: PartnerInvoiceFeeTypes
+  administrationEvictionFee: PartnerInvoiceFeeTypes
+  collectionNoticeFee: PartnerInvoiceFeeTypes
+  postalFee: PartnerInvoiceFeeTypes
+  enableDepositInsurance: Boolean
+  invoiceCalculation: String
+  invoiceDueDays: Number
+  duePreReminder: PartnerInvoiceReminderTypes
+  invoiceFirstReminder: PartnerInvoiceReminderTypes
+  evictionNotice: EvictionNoticeSettingSchema
+  evictionDueReminderNotice: EvictionNoticeSettingSchema
+  tenantPaysAllDueDuringEviction: TenantPaysAllDueDuringEvictionSchema
+  invoiceSecondReminder: PartnerInvoiceReminderTypes
+  invoiceCollectionNotice: PartnerInvoiceReminderTypes
+  standardPayoutDate: Number
+  customPayoutDays: PartnerPayoutTerm
+  payout: PartnerPayoutTerm
+  country: String
+  lastBankReference: String
+  sameKIDNumber: Boolean
+  notifications: PartnerNotifications
+  retryFailedPayouts: PartnerPayoutTerm
+  CPISettlement: EnabledAndMonthsSchema
+  invoiceSettings: PartnerInvoiceSettingsSchema
+  listingSetting: ListingSettingsSchema
+  tenantSetting: TenantSettingSchema
+  landlordBankPayment: PartnerBankPaymentTypes
+  landlordInvoiceFee: PartnerInvoiceFeeTypes
+  landlordReminderFee: PartnerInvoiceFeeTypes
+  landlordCollectionNoticeFee: PartnerInvoiceFeeTypes
+  landlordPostalFee: PartnerInvoiceFeeTypes
+  landlordInvoiceDueDays: Number
+  landlordDuePreReminder: PartnerInvoiceReminderTypes
+  landlordInvoiceFirstReminder: PartnerInvoiceReminderTypes
+  landlordInvoiceSecondReminder: PartnerInvoiceReminderTypes
+  landlordInvoiceCollectionNotice: PartnerInvoiceReminderTypes
+  enabledPowerOfficeIntegration: Boolean
+  defaultFindHomeLocation: DefaultFindHomeLocationSchema
+  isAllAccountSynced: Boolean
+  isAllTenantSynced: Boolean
+  isUpdatedAddress: Boolean
+  allowedDomains: [String]
+  stopCPIRegulation: Boolean
+  directRemittanceApproval: DirectRemittanceApprovalSchema
+  directRemittanceApprovalUsers: [DirectRemittanceUserInfo]
+  createdBy: String
+  createdAt: Date
+}
+
+type PartnerSettingForPublicAppQuerySchema {
+  _id: String
+  partnerId: String
+  currencySettings: CurrencySettingsSchema
+  createdBy: String
+  createdAt: Date
+}
+
+type QueryPartnerSetting {
+  data: [PartnerSettingQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type DeletedBankAccountInfo {
+  bankAccountId: String
+  partnerId: String
+}
+
+type BankAccountNumbersQueryDataTypeQuerySchema {
+  id: String
+  text: String
+}
+
+input BankAccountDataInputType {
+  accountNumber: String
+  bic: String
+  vatRegistered: Boolean
+  orgName: String
+  orgId: String
+  orgAddress: String
+  orgZipCode: String
+  orgCity: String
+  orgCountry: String
+  ledgerAccountId: String
+  backupOrgAddress: String
+}
+
+input BankAccountAddInputType {
+  partnerId: String
+  bankAccountData: BankAccountDataInputType
+}
+
+input BankAccountDeleteInputType {
+  accountNumber: String
+  bankAccountId: String
+  partnerId: String
+}
+
+input BankAccountUpdateInputType {
+  partnerId: String
+  bankAccountId: String
+  bankAccountData: BankAccountDataInputType
+}
+
+input DomainSettingInputDataType {
+  name: String!
+  value: Array!
+}
+
+input DomainSettingUpdateType {
+  data: DomainSettingInputDataType
+}
+
+input CompanyInfoSettingInputDataType {
+  name: String
+  value: String
+  valueBoolean: Boolean
+}
+
+input CompanyInfoSettingUpdateType {
+  data: CompanyInfoSettingInputDataType
+}
+
+input PartnerSettingQueryDataType {
+  partnerId: String
+}
+
+enum InvoiceAccountNumberContextEnum {
+  onlyInvoiceAccNumber
+}
+
+input BankAccountNumbersQueryDataType {
+  contractId: String
+  invoiceId: String
+  context: InvoiceAccountNumberContextEnum
+}
+
+extend type Query {
+  partnerSettings(
+    queryData: PartnerSettingsQueryDataType
+    optionData: OptionDataType
+  ): QueryPartnerSetting
+    @auth(requires: ["app_admin", "app_manager", "partner_accounting", "partner_admin", "partner_agent", "partner_janitor"])
+  getPartnerSettingForPartnerApp: PartnerSettingQuerySchema
+  @auth(requires: [ "app_manager", "partner_accounting", "partner_admin", "partner_agent"])
+  getAPartnerSetting(
+    queryData: PartnerSettingQueryDataType
+  ): PartnerSettingQuerySchema @auth(requires: ["lambda_manager"])
+  getBankAccountNumbers(
+    queryData: BankAccountNumbersQueryDataType
+  ): [BankAccountNumbersQueryDataTypeQuerySchema] @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+  getPartnerSettingForPublicApp(
+  queryData: PartnerSettingsQueryDataType
+  optionData: OptionDataType
+  ): PartnerSettingForPublicAppQuerySchema @auth(requires: ["partner_tenant"])
+}
+
+extend type Mutation {
+  addNewBankAccount(inputData: BankAccountAddInputType): PartnerBankInfoSchema
+    @auth(requires: ["app_admin", "partner_admin", "app_manager"])
+
+  deleteBankAccount(
+    inputData: BankAccountDeleteInputType
+  ): DeletedBankAccountInfo
+    @auth(requires: ["app_admin", "partner_admin", "app_manager"])
+
+  updateBankAccount(
+    inputData: BankAccountUpdateInputType
+  ): PartnerBankInfoSchema
+    @auth(requires: ["app_admin", "partner_admin", "app_manager"])
+
+  updatePartnerSetting(inputData: PartnerSettingUpdateType): PartnerSetting
+    @auth(requires: ["app_admin"])
+  updateDomainSetting(inputData: DomainSettingUpdateType): PartnerSetting
+    @auth(requires: ["app_admin"])
+  updateNotificationsSetting(
+    inputData: NotificationsSettingUpdateType
+  ): PartnerSetting
+    @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+  updateGeneralSetting(inputData: GeneralSettingUpdateType): PartnerSetting
+    @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+  updateRentInvoiceSetting(
+    inputData: RentInvoiceSettingUpdateType
+  ): PartnerSetting
+    @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+  updateLandlordInvoiceSetting(
+    inputData: LandlordInvoiceSettingUpdateType
+  ): PartnerSetting
+    @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+  updatePayoutSetting(inputData: PayoutSettingUpdateType): PartnerSetting
+    @auth(requires: ["app_manager", "partner_admin"])
+  updateCompanyInfoSetting(
+    inputData: CompanyInfoSettingUpdateType
+  ): PartnerSetting @auth(requires: ["app_manager", "partner_admin"])
+}

@@ -3,8 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getUser = exports.authDirective = void 0;
+exports.getUserFromJWT = exports.getUser = exports.authDirective = void 0;
 var _utils = require("@graphql-tools/utils");
+var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
+var _lodash = require("lodash");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 const authDirective = (directiveName, getUserFn) => {
   const typeDirectiveArgumentMaps = {};
   return {
@@ -24,13 +27,14 @@ const authDirective = (directiveName, getUserFn) => {
           } = authDirective;
           if (requires) {
             const {
-              resolve = defaultFieldResolver
+              resolve
             } = fieldConfig;
             fieldConfig.resolve = function (source, args, context, info) {
-              const user = getUserFn(context.authToken);
-              if (!user.hasRole(requires)) {
+              const user = getUserFn(context.authToken, requires);
+              if (!user) {
                 throw new Error('not authorized');
               }
+              console.log(user);
               return resolve(source, args, context, info);
             };
             return fieldConfig;
@@ -41,14 +45,18 @@ const authDirective = (directiveName, getUserFn) => {
   };
 };
 exports.authDirective = authDirective;
-const getUser = token => {
-  const roles = ['UNKNOWN', 'USER', 'REVIEWER', 'ADMIN'];
-  return {
-    hasRole: role => {
-      const tokenIndex = roles.indexOf(token);
-      const roleIndex = roles.indexOf(role);
-      return roleIndex >= 0 && tokenIndex >= roleIndex;
-    }
-  };
+const getUser = (token, requiredRoles) => {
+  const [bearer, jwtToken] = token.split(' ');
+  console.log(jwtToken, requiredRoles);
+  const jwtData = _jsonwebtoken.default.verify(jwtToken, process.env.JWT_SECRET);
+  if (jwtData) {
+    return !!(0, _lodash.intersection)(jwtData.roles, requiredRoles);
+  }
 };
 exports.getUser = getUser;
+const getUserFromJWT = token => {
+  const [bearer, jwtToken] = token.split(' ');
+  const jwtData = _jsonwebtoken.default.verify(jwtToken, process.env.JWT_SECRET);
+  return jwtData;
+};
+exports.getUserFromJWT = getUserFromJWT;

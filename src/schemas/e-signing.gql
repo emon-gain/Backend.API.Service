@@ -1,0 +1,70 @@
+input HandleESigningQueryType {
+  collectionId: String
+  key: String
+  type: String
+  version: String
+}
+
+input ESigningDocumentInputType {
+  idfyResData: Object
+  queueId: String
+}
+
+enum EnumSignerType {
+  account
+  tenant
+}
+
+input VerifySignerSSNQueryDataType {
+  collectionId: String
+  signerSSN: String
+  signerType: EnumSignerType
+}
+
+input LeaseStatusUpdatingInputType {
+  contractId: String
+  queueId: String
+}
+
+input DIAttachmentCreationInputType {
+  contractId: String
+  fileId: String
+  fileKey: String
+  fileType: String
+  idfyDocId: String
+  partnerId: String
+  queueId: String
+}
+
+input UploadDISignedFileFromIDFYInputType {
+  callBackParams: CallBackParamsInputData
+  contractId: String
+  documentId: String
+  partnerId: String
+  queueId: String
+}
+
+extend type Query {
+  handleESigning(queryData: HandleESigningQueryType): String
+    @auth(requires: ["lambda_manager"])
+  handleMovingInOutESigning(queryData: HandleESigningQueryType): String
+    @auth(requires: ["lambda_manager"])
+  verifySignerSSN(queryData: VerifySignerSSNQueryDataType): ReturnBoolean
+    @auth(requires: ["lambda_manager"])
+}
+
+extend type Mutation {
+  addESigningDocument(inputData: ESigningDocumentInputType): ReturnBoolean
+    @auth(requires: ["lambda_manager"])
+  updateESigningDocument(inputData: ESigningDocumentInputType): ReturnBoolean
+    @auth(requires: ["lambda_manager"])
+  updateLeaseStatusAndCreateInvoice(
+    inputData: LeaseStatusUpdatingInputType
+  ): ReturnBoolean @auth(requires: ["lambda_manager"])
+  addDIAttachmentIdAndIDFYCreationProcess(
+    inputData: DIAttachmentCreationInputType
+  ): AppQueueIdType @auth(requires: ["lambda_manager"])
+  createQueuesToUploadDISignedFileFromIDFY(
+    inputData: UploadDISignedFileFromIDFYInputType
+  ): AppQueueIdsType @auth(requires: ["lambda_manager"])
+}

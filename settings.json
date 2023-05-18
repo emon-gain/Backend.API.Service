@@ -1,0 +1,136 @@
+{
+  "S3": {
+    "Directives": {
+      "Conversations": {
+        "folder": "conversations",
+        "allowedFileTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/gif",
+          "text/plain",
+          "application/rtf",
+          "application/vnd.ms-excel",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "application/vnd.ms-powerpoint",
+          "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+          "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
+          "application/msword",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "application/pdf",
+          "image/vnd.adobe.photoshop",
+          "application/x-iwork-numbers-sffnumbers",
+          "application/x-iwork-pages-sffpages",
+          "application/x-iwork-keynote-sffkey",
+          "application/vnd.apple.numbers",
+          "application/vnd.apple.pages",
+          "application/vnd.ms-outlook"
+        ],
+        "maxSize": 25,
+        "timeOut": 300,
+        "acl": "private"
+      },
+      "CoverImage": {
+        "folder": "cover_images",
+        "allowedFileTypes": ["image/png", "image/jpeg", "image/gif"],
+        "maxSize": 25,
+        "timeOut": 300,
+        "acl": "private"
+      },
+      "ExcelExport": {
+        "folder": "downloads",
+        "allowedFileTypes": [
+          "application/vnd.ms-excel",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ],
+        "maxSize": 25,
+        "timeOut": 300,
+        "acl": "private"
+      },
+      "ExcelImport": {
+        "folder": "imports",
+        "allowedFileTypes": [
+          "application/vnd.ms-excel",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ],
+        "maxSize": 25,
+        "timeOut": 300,
+        "acl": "private"
+      },
+      "Files": {
+        "folder": "files",
+        "allowedFileTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/gif",
+          "text/plain",
+          "application/rtf",
+          "application/vnd.ms-excel",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "application/vnd.ms-powerpoint",
+          "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+          "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
+          "application/msword",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "application/pdf",
+          "image/vnd.adobe.photoshop",
+          "application/x-iwork-numbers-sffnumbers",
+          "application/x-iwork-pages-sffpages",
+          "application/x-iwork-keynote-sffkey",
+          "application/vnd.apple.numbers",
+          "application/vnd.apple.pages",
+          "application/xml",
+          "application/vnd.ms-outlook"
+        ],
+        "maxSize": 25,
+        "timeOut": 300,
+        "acl": "private"
+      },
+      "FINN": {
+        "folder": "finnNoBridge",
+        "allowedFileTypes": ["application/json"],
+        "maxSize": 25,
+        "timeOut": 300,
+        "acl": "private"
+      },
+      "Listings": {
+        "folder": "listings",
+        "allowedFileTypes": ["image/png", "image/jpeg", "image/gif"],
+        "maxSize": 25,
+        "timeOut": 300,
+        "acl": "private"
+      },
+      "NETS": {
+        "folder": "NETS",
+        "allowedFileTypes": [
+          "text/xml",
+          "application/xml",
+          "application/x-xml"
+        ],
+        "maxSize": 25,
+        "timeOut": 300,
+        "acl": "private"
+      },
+      "PDF": {
+        "folder": "HTML2PDF",
+        "allowedFileTypes": ["application/pdf", "application/json"],
+        "maxSize": 25,
+        "timeOut": 300,
+        "acl": "private"
+      },
+      "PartnerLogo": {
+        "folder": "partner_logo",
+        "allowedFileTypes": ["image/png", "image/jpeg", "image/gif"],
+        "maxSize": 25,
+        "timeOut": 300,
+        "acl": "private"
+      },
+      "ProfileImage": {
+        "folder": "profile_images",
+        "allowedFileTypes": ["image/png", "image/jpeg", "image/gif"],
+        "maxSize": 25,
+        "timeOut": 300,
+        "acl": "private"
+      }
+    }
+  }
+}

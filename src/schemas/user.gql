@@ -1,0 +1,523 @@
+type User {
+  _id: String
+  emails: [UserEmailsObj]
+  verifiedEmail: String
+  services: Object
+  customerId: String
+  status: Object
+  profile: UserProfileObj
+  identity: Object
+  requires: Array
+  favorite: Array
+  registeredAt: Date
+  partners: [UserPartnersObj]
+  interestFormMeta: UserInterestFormMetaObj
+  createdAt: Date
+}
+
+type UserEmailsObj {
+  address: String
+  verified: Boolean
+  token: String
+  expires: Date
+}
+
+type UserProfileObj {
+  avatar: String
+  name: String
+  nameUpdatedAt: Date
+  gender: String
+  birthday: Date
+  partying: String
+  keepingSpace: String
+  phoneNumber: String
+  norwegianNationalIdentification: String
+  hometown: String
+  hometownPlaceId: String
+  occupation: String
+  language: String
+  nationality: String
+  targetCity: String
+  movingIn: Date
+  targetCityPlaceId: String
+  picture: Object
+  aboutMe: String
+  active: Boolean
+  maxRent: Number
+  currency: String
+  maxRentCalculated: Number
+  maxRoommates: Number
+  roomForRent: Boolean
+  roommatesGender: String
+  streetAddress: String
+  personalities: [String]
+  interests: [String]
+  hasMatchableFields: Boolean
+  hasListing: Boolean
+  onlyLandlord: Boolean
+  lookingForRoommate: Boolean
+  reMatching: Boolean
+  reRanking: Boolean
+  avatarKey: String
+  cover: String
+  coverKey: String
+  settings: Object
+  roommateGroupId: String
+  images: [String]
+  regCompleted: Boolean
+  userTypeIsUndefined: Boolean
+  hotJarIds: [String]
+  isDemoUser: Boolean
+  termsAcceptedOn: Date
+  city: String
+  country: String
+  zipCode: String
+  backupAddress: String
+  organizationNumber: String # For Compello
+}
+
+type UserPartnersObj {
+  partnerId: String
+  type: String
+  status: String
+  token: String
+  expires: Date
+  employeeId: Number
+}
+type ProfileUpdateForLambdaType {
+  statusCode: Int
+  message: String
+}
+
+type UserEmployerMetaObj {
+  employerName: String
+  employerPhoneNumber: String
+  workingPeriod: String
+}
+
+type UserPreEmployerMetaObj {
+  reference: String
+  previousLandlordName: String
+  previousLandlordPhoneNumber: String
+  previousLandlordEmail: String
+}
+
+type UserInterestFormMetaObj {
+  movingFrom: String
+  employerMeta: UserEmployerMetaObj
+  previousEmployerMeta: UserPreEmployerMetaObj
+  fileIds: [String]
+}
+
+type UserReportObj {
+  reporter: String
+  reportedUser: String
+  reportedByAdmin: Boolean
+}
+
+type UserQuerySchema {
+  _id: String
+  emails: [UserEmailsObj]
+  services: Object
+  customerId: String
+  status: Object
+  profile: UserProfileObj
+  identity: Object
+  requires: Array
+  favorite: Array
+  registeredAt: Date
+  partners: [UserPartnersObj]
+  partnersInfo: [Partner]
+  interestFormMeta: UserInterestFormMetaObj
+  createdAt: Date
+  imgUrl: String
+  tenantId: String
+  userReport: UserReportObj
+}
+
+type UserSchemaPartners {
+  partnerId: String
+  type: String
+  status: String
+  name: String
+  subDomain: String
+  employeeId: Number
+}
+
+type UserSchemaUserReport {
+  _id: String
+  reportedByAdmin: Boolean
+  reportedUser: String
+  reporter: String
+  reporterEmail: String
+}
+
+type UserSchema {
+  _id: String
+  createdAt: Date
+  customerId: String
+  email: String
+  isFacebookUser: Boolean
+  profile: UserProfileObj
+  partners: [UserSchemaPartners]
+  status: Object
+  userReport: [UserSchemaUserReport]
+}
+
+type QueryAgentUser {
+  data: [UserQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type QueryUser {
+  data: [UserSchema]
+  metaData: MetaDataQuerySchema
+}
+
+type QuerySingleUser {
+  data: UserQuerySchema
+}
+
+type CoverImage {
+  name: String
+  url: String
+}
+
+type QueryMyProfile {
+  name: String
+  email: String
+  gender: String
+  birthday: Date
+  phoneNumber: String
+  norwegianNationalIdentification: String
+  occupation: String
+  active: Boolean
+  hometown: String
+  aboutMe: String
+  avatar: String
+  coverImages: [CoverImage]
+  hasActiveLease: Boolean
+  isFacebookUser: Boolean
+  termsAcceptedOn: Date
+  language: String
+  pressEnterToSendMessage: Boolean
+  disableMessageNotification: Boolean
+  verifiedEmails: [String]
+  nonVerifiedEmails: [String]
+  isUserDeletable: Boolean
+}
+
+type MyProfileGeneralInfo {
+  gender: String
+  occupation: String
+  phoneNumber: String
+  birthday: Date
+  norwegianNationalIdentification: String
+  active: Boolean
+}
+
+type AgentsDropdownQuerySchema {
+  _id: String
+  avatarKey: String
+  name: String
+}
+
+type QueryAgentsDropdown {
+  data: [AgentsDropdownQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type ProfileActiveStatus {
+  active: Boolean
+}
+
+input PartnerAppUsersDropdownDataType {
+  assigneeIds: [String]
+  searchString: String
+  status: partnerUserStatusEnum
+  type: String
+}
+
+input MyProfileGeneralInfoUpdateType {
+  gender: String
+  occupation: String
+  phoneNumber: String
+  birthday: Date
+  norwegianNationalIdentification: String
+  active: Boolean
+}
+
+enum UserGenderEnum {
+  male
+  female
+  others
+}
+
+input ProfileUpdatePublicSiteType {
+  name: String
+  gender: UserGenderEnum
+  phoneNumber: String
+  birthday: Date
+  norwegianNationalIdentification: String
+  disableMessageNotification: Boolean
+}
+
+input UsersHomeAndListingDataType {
+  hasHome: YesNoAllEnum
+  hasListing: YesNoAllEnum
+}
+
+enum PartnerUserTypeEnum {
+  account
+  tenant
+  user
+}
+
+enum partnerUserStatusEnum {
+  active
+  inactive
+  invited
+}
+
+input UsersQueryDataType {
+  _id: String
+  name: String
+  email: String
+  phoneNumber: String
+  defaultSearch: String
+
+  # For Admin users Filters
+  gender: String
+  status: String
+  age: CommonMinMaxInputDataType
+  activity: String
+  createdDateRange: CommonStartDateAndEndDateInputDataType
+  reported: Boolean
+  homeAndListing: UsersHomeAndListingDataType
+  norwegianNationalIdentification: String
+  hasProfilePicture: YesNoAllEnum
+  hasAboutMe: YesNoAllEnum
+  hasCoverPhoto: YesNoAllEnum
+  partnerId: String
+
+  """
+  Filter to show app role user
+  """
+  partnerUserType: PartnerUserTypeEnum
+  partnerUserStatus: [partnerUserStatusEnum]
+}
+
+input SingleUserQueryDataType {
+  email: String
+  userId: String
+}
+
+input UserProfileUpdateSchema {
+  email: String
+  hometown: String
+  isTermsAccepted: Boolean
+  language: String
+  name: String
+  norwegianNationalIdentification: String
+  phoneNumber: String
+  pressEnterToSendMessage: Boolean
+}
+
+input UserProfileUpdateType {
+  _id: String
+  data: UserProfileUpdateSchema
+}
+
+input UserProfilePictureAndCoverImageUpdateType {
+  _id: String
+  avatarKey: String
+  images: String
+}
+
+input UserProfileInfoUpdateForLambda {
+  userId: String
+  email: String
+  name: String
+  avatarKey: String
+  picture: Object
+  birthday: Date
+  hometown: String
+  gender: UserGenderEnum
+}
+
+input UserStatusUpdateType {
+  _id: String!
+}
+
+input UserStatusType {
+  _id: String
+  accountStatus: Boolean
+}
+
+input UserRemoveType {
+  _id: String
+}
+
+input UserUpdatePasswordType {
+  _id: String!
+  password: String!
+}
+
+input agentQueryDataType {
+  partnerId: String!
+  type: String
+}
+
+input AgentDropdownQueryDataType {
+  accountId: String
+  branchId: String
+  searchString: String
+}
+input PublicAppProfileImageUpdateType {
+  avatarKey: String
+}
+
+input UsersDropDownQueryDataType {
+  searchString: String
+}
+
+input CheckUserNIDQueryDataType {
+  userNID: String
+}
+
+type UsersDropDownSchema {
+  _id: String
+  name: String
+  avatar: String
+}
+
+type QueryUsersDropDown {
+  data: [UsersDropDownSchema]
+  metaData: MetaDataQuerySchema
+}
+
+type queryPartnerAppUsersDropdown {
+  data: [UsersDropDownSchema]
+  metaData: MetaDataQuerySchema
+}
+
+input validateUserTokenDataType {
+  partnerId: String
+  token: String
+  userId: String
+}
+
+type validateUserTokenSchemaType {
+  isValidToken: Boolean
+}
+
+input VerifyUserInvitationInputType {
+  partnerId: String
+  token: String
+  userId: String
+}
+
+type UserInvitationVerifyData {
+  isActivate: Boolean
+  isInvalidToken: Boolean
+  isNewUser: Boolean
+}
+
+input cancelEmailChangingReqType {
+  email: String
+}
+
+extend type Query {
+  agents(
+    queryData: agentQueryDataType
+    optionData: OptionDataType
+  ): QueryAgentUser @auth(requires: ["no_role"])
+  users(queryData: UsersQueryDataType, optionData: OptionDataType): QueryUser
+    @auth(
+      requires: ["app_admin", "app_manager", "partner_admin", "lambda_manager"]
+    )
+  myProfile: QueryMyProfile @auth(requires: [])
+  getASingleUser(queryData: SingleUserQueryDataType): QuerySingleUser
+    @auth(
+      requires: [
+        "app_manager"
+        "lambda_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+  agentsDropdown(
+    queryData: AgentDropdownQueryDataType
+    optionData: OptionDataType
+  ): QueryAgentsDropdown
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  usersDropDown(
+    queryData: UsersDropDownQueryDataType
+    optionData: OptionDataType
+  ): QueryUsersDropDown
+    @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+  checkUserNID(queryData: CheckUserNIDQueryDataType): ReturnBoolean
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent", "user"])
+  usersDropdownForPartnerApp(
+    queryData: PartnerAppUsersDropdownDataType
+    optionData: OptionDataType
+  ): queryPartnerAppUsersDropdown
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  validateUserToken(
+    queryData: validateUserTokenDataType
+  ): validateUserTokenSchemaType @auth(requires: ["public"])
+}
+
+extend type Mutation {
+  # Also used from admin site
+  updateUserProfile(inputData: UserProfileUpdateType): User
+    @auth(requires: ["user"])
+  activateUserStatus(inputData: UserStatusUpdateType): User
+    @auth(requires: ["app_admin"])
+  deactivateUserStatus(inputData: UserStatusUpdateType): User
+    @auth(requires: ["app_admin"])
+  removeUser(inputData: UserRemoveType): User @auth(requires: ["app_admin"])
+  updateUserPassword(inputData: UserUpdatePasswordType): User
+    @auth(requires: ["app_admin"])
+  updateMyProfileGeneralInfo(
+    inputData: MyProfileGeneralInfoUpdateType
+  ): MyProfileGeneralInfo @auth(requires: [])
+  verifyUserInvitation(
+    inputData: VerifyUserInvitationInputType
+  ): UserInvitationVerifyData @auth(requires: ["public"])
+  #for lambda
+  updateProfilePictureOrCoverImageForLambda(
+    inputData: UserProfilePictureAndCoverImageUpdateType
+  ): ProfileUpdateForLambdaType @auth(requires: ["lambda_manager"])
+  updateUserInfoForLambda(
+    inputData: UserProfileInfoUpdateForLambda
+  ): ProfileUpdateForLambdaType @auth(requires: ["lambda_manager"])
+  updateProfileImageForPublicApp(
+    inputData: PublicAppProfileImageUpdateType
+  ): User @auth(requires: ["user"])
+  updateProfileForPublicApp(inputData: ProfileUpdatePublicSiteType): User
+    @auth(requires: ["user"])
+  manageUserStatusForPublicSite(inputData: UserStatusType): User
+    @auth(requires: ["user"])
+  userTermsAccepted: Boolean @auth(requires: ["user"])
+  cancelEmailChangingReq(inputData: cancelEmailChangingReqType): QueryMyProfile
+    @auth(requires: ["user"])
+  deleteMyAccount: ReturnBoolean @auth(requires: ["user"])
+}

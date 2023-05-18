@@ -1,0 +1,181 @@
+type Setting {
+  _id: String
+  appInfo: ObjectAppInfo
+  externalLinks: ObjectExternalLinks
+  listingTypes: [CommonSettingObjectTypes]
+  propertyTypes: [CommonSettingObjectTypes]
+  facilities: [CommonSettingObjectTypes]
+  includedInRent: [CommonSettingObjectTypes]
+  openExchangeInfo: ObjectOpenExchangeInfo
+  currencySettings: [ObjectCurrencySettings]
+  keepingSpace: [ObjectKeepingSpace]
+  partyHabits: [ObjectPartyHabits]
+  personalities: [CommonSettingObjectTypes]
+  interests: [CommonSettingObjectTypes]
+  version: String
+  cpiDataSet: Object
+  upgradeScripts: [String]
+  isCompleted: Boolean
+  productionDataUpdated: Boolean
+  isUpdatedAllListingAddresses: Boolean
+  isAllUpdatedAddress: Boolean
+  isUpdatedAllAddresses: Boolean
+  runningDBUpgrade: Boolean
+  bankAccountNumber: String
+}
+
+type SettingQuerySchema {
+  _id: String
+  appInfo: ObjectAppInfo
+  externalLinks: ObjectExternalLinks
+  listingTypes: [CommonSettingObjectTypes]
+  propertyTypes: [CommonSettingObjectTypes]
+  facilities: [CommonSettingObjectTypes]
+  includedInRent: [CommonSettingObjectTypes]
+  openExchangeInfo: ObjectOpenExchangeInfo
+  currencySettings: [ObjectCurrencySettings]
+  keepingSpace: [ObjectKeepingSpace]
+  partyHabits: [ObjectPartyHabits]
+  personalities: [CommonSettingObjectTypes]
+  interests: [CommonSettingObjectTypes]
+  version: String
+  cpiDataSet: Object
+  upgradeScripts: [String]
+  isCompleted: Boolean
+  productionDataUpdated: Boolean
+  isUpdatedAllListingAddresses: Boolean
+  isAllUpdatedAddress: Boolean
+  isUpdatedAllAddresses: Boolean
+  runningDBUpgrade: Boolean
+  bankAccountNumber: String
+}
+
+type SettingQuerySchemaForPublicApp {
+  _id: String
+  appInfo: ObjectAppInfo
+  externalLinks: ObjectExternalLinks
+  listingTypes: [CommonSettingObjectTypes]
+  propertyTypes: [CommonSettingObjectTypes]
+  facilities: [CommonSettingObjectTypes]
+  includedInRent: [CommonSettingObjectTypes]
+  openExchangeInfo: ObjectOpenExchangeInfo
+  currencySettings: [ObjectCurrencySettings]
+  keepingSpace: [ObjectKeepingSpace]
+  partyHabits: [ObjectPartyHabits]
+  personalities: [CommonSettingObjectTypes]
+  interests: [CommonSettingObjectTypes]
+  version: String
+  cpiDataSet: Object
+}
+
+type CommonSettingObjectTypes {
+  id: String
+  name: String
+}
+
+type ObjectAppInfo {
+  appName: String
+  appSlogan: String
+  companyName: String
+  organizationId: String
+  address: String
+  email: String
+  website: String
+  phoneNumber: String
+}
+
+type ObjectExternalLinks {
+  linkedIn: String
+  facebook: String
+  twitter: String
+  instagram: String
+  googlePlus: String
+}
+
+type ObjectOpenExchangeInfo {
+  base: String
+  rates: Object
+}
+
+type OpenExchangeResponse {
+  response: Boolean
+}
+
+type ObjectCurrencySettings {
+  currency: String
+  amountVariations: Number
+}
+
+type ObjectKeepingSpace {
+  id: String
+  name: String
+  isDefault: Boolean
+  rank: Number
+}
+
+type ObjectPartyHabits {
+  id: String
+  name: String
+  isDefault: Boolean
+  rank: Number
+}
+
+type QuerySetting {
+  data: [SettingQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input AppInfoSettingUpdateType {
+  data: CommonNameAndValueInputDataType
+}
+
+input ExternalLinksSettingUpdateType {
+  data: CommonNameAndValueInputDataType
+}
+
+input SettingsQueryDataType {
+  _id: String
+  version: String
+  isCompleted: Boolean
+  productionDataUpdated: Boolean
+  isUpdatedAllListingAddresses: Boolean
+  isAllUpdatedAddress: Boolean
+  isUpdatedAllAddresses: Boolean
+  runningDBUpgrade: Boolean
+}
+
+
+
+input OpenExchangeInput {
+  base: String
+  rates: Object
+}
+
+type SettingForLambdaType {
+  partyHabitId: String
+  keepSpaceHabitId: String
+}
+
+input SettingsDbUpgradeInput {
+  newVersion: String,
+  reset: Boolean,
+  methodName: String,
+  runningDBUpgrade: Boolean
+}
+
+extend type Query {
+  settings(
+    queryData: SettingsQueryDataType
+    optionData: OptionDataType
+  ): QuerySetting @auth(requires: ["app_admin", "lambda_manager", "public"])
+  # Setting for user lambda
+  getSettingForLambda: SettingForLambdaType @auth(requires: ["lambda_manager"])
+  getSettingForPublicApp: SettingQuerySchemaForPublicApp @auth(requires: ["public", "user"])
+}
+
+extend type Mutation {
+  updateAppInfoSetting(inputData: AppInfoSettingUpdateType): Setting @auth(requires: ["app_admin"])
+  updateExternalLinksSetting(inputData: ExternalLinksSettingUpdateType): Setting @auth(requires: ["app_admin"])
+  updateOpenExchangeInfoSettings(inputData: OpenExchangeInput): OpenExchangeResponse @auth(requires: [ "lambda_manager"])
+  updateSettingsForUpgradeScripts(inputData: SettingsDbUpgradeInput): MsgWithCode @auth(requires: [ "lambda_manager"])
+}

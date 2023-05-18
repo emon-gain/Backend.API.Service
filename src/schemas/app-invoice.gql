@@ -1,0 +1,77 @@
+type AppInvoiceDetailsType {
+    _id: String
+    dueDate: Date
+    invoiceAccountNumber: String
+    isDefaulted: Boolean
+    isPartiallyPaid: Boolean
+    serialId: Int
+    status: String
+    propertyInfo: AppInvoiceProprtyInfo
+    tenantInfo: AppInvoiceTenantInfo
+    createdAt: Date
+    invoiceStartOn: Date
+    invoiceEndOn: Date
+    kidNumber: String
+    referenceNo: String
+    invoiceContent: [InvoiceContent]
+    invoiceTotal: Number
+    totalPaid: Number
+    totalDue: Number
+    appInvoicePdfFileId: String
+    signedDocumentFileId: String
+    invoiceType: String
+    partner: Partner
+    partnerId: String
+}
+
+type AppInvoiceQuerySchema {
+    _id: String
+    invoiceMonth: Date
+    invoiceTotal: Number
+    serialId: Number
+    totalDue: Number
+}
+
+type AppInvoiceDropdownType {
+    data: [AppInvoiceQuerySchema]
+    metaData: MetaDataQuerySchema
+}
+
+type AppInvoiceTenantInfo {
+    _id: String
+    name: String
+    avatarKey: String
+    userInfo: User
+}
+
+type AppInvoiceProprtyInfo {
+    _id: String
+    apartmentId: String
+    location: ListingLocationObj
+}
+
+type InvoiceContent {
+    type: String
+    total: Number
+}
+
+input AppInvoiceDetailsInputType{
+    appInvoiceId: String
+}
+
+input AppInvoiceDropdownQueryDataType{
+    searchKeyword: String
+}
+
+extend type Query{
+    appInvoiceDetails(
+        queryData: AppInvoiceDetailsInputType
+    ): AppInvoiceDetailsType @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+    appInvoiceDropdown(
+        queryData: AppInvoiceDropdownQueryDataType
+        optionData: OptionDataType
+    ): AppInvoiceDropdownType @auth(requires: ["app_admin"])
+    appInvoiceForLambda(
+        queryData: AppInvoiceDetailsInputType
+    ): AppInvoiceDetailsType @auth(requires: ["lambda_manager"])
+}

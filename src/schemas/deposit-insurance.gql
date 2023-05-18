@@ -1,0 +1,281 @@
+type DepositInsurance {
+  _id: String
+  partnerId: String
+  contractId: String
+  accountId: String
+  agentId: String
+  propertyId: String
+  branchId: String
+  tenantId: String
+  bankNotificationId: Number
+  bankNotificationType: Number
+  bankAccountNumber: Number
+  totalPaymentAmount: Number
+  payments: [IncomingPaymentsSchema]
+  depositAmount: Number
+  depositInsuranceAmount: Number
+  kidNumber: String
+  status: String
+  isActive: Boolean
+  creationResult: CreationResult
+  createdAt: Date
+  createdBy: String
+}
+
+type IncomingPaymentsSchema {
+  id: String
+  paymentAmount: Number
+  paymentDate: Date
+}
+
+type CreationResult {
+  createdAt: Date
+  resultCode: String
+  reasons: [String]
+  amount: Number
+  entityId: String
+  insuranceNo: String
+  policyUrl: String
+}
+
+input DepositInsuranceCreationStatusUpdateType {
+  queueId: String
+  insuranceData: Object
+}
+
+input DepositInsuranceXmlGeneratingDataType {
+  queueId: String
+}
+
+type DIBrokerObjDataType {
+  organizationId: String
+  emailAddress: String
+  phoneNumber: String
+}
+
+type DIAccountObjDataType {
+  _id: String
+  type: String
+  organizationId: String
+  personId: String
+  name: String
+  address: String
+  partnerId: String
+  branchId: String
+  agentId: String
+  status: String
+  totalActiveProperties: Number
+  lastUpdate: Date
+  invoiceAccountNumber: String
+  serial: Number
+  bankAccountNumbers: Array
+  aboutText: String
+  norwegianNationalIdentification: String
+  city: String
+  country: String
+  zipCode: String
+  backupAddress: String
+  powerOffice: Object
+  createdAt: Date
+  createdBy: String
+  #  Extra fileds for xml creation
+  firstName: String
+  lastName: String
+  addressName: String
+  organizationName: String
+  emailAddress: String
+  phoneNumber: String
+}
+
+type DITenantObjDataType {
+  _id: String
+  name: String
+  type: String
+  userId: String
+  partnerId: String
+  properties: Array
+  serial: Number
+  billingAddress: String
+  lastUpdate: Date
+  aboutText: String
+  city: String
+  country: String
+  zipCode: String
+  backupAddress: String
+  powerOffice: Array
+  depositAccountMeta: Object
+  creditRatingInfo: Object
+  createdAt: Date
+  createdBy: String
+  #  Extra fileds for xml creation
+  firstName: String
+  lastName: String
+  addressName: String
+  emailAddress: String
+  phoneNumber: String
+}
+
+type DIPropertyObjDataType {
+  propertyAddress: String
+  propertyCity: String
+  propertyZipCode: String
+  propertySnr: String
+  propertyApartmentId: String
+}
+
+type DepositInsuranceXmlGeneratingData {
+  contractRefNumber: String
+  contractStartDate: String
+  contractEndDate: String
+  leaseSignedAt: String
+  depositAmount: Number
+  brokerObj: DIBrokerObjDataType
+  accountObj: DIAccountObjDataType
+  tenantObj: DITenantObjDataType
+  propertyObj: DIPropertyObjDataType
+}
+
+enum DepositInsuranceStatusEnum {
+  created
+  due
+  partially_paid
+  paid
+  overpaid
+  sent
+  registered
+  failed
+}
+
+input DepositInsuranceDataType {
+  accountId: String
+  agentId: String
+  bankAccountNumber: Number
+  branchId: String
+  contractId: String
+  createdAtDateRange: CommonStartDateAndEndDateInputDataType
+  depositInsuranceAmount: Number
+  invoiceKIDNumber: String
+  invoiceSerialId: Int
+  propertyId: String
+  requestFrom: RequestFromEnum
+  searchKeyword: String
+  status: [DepositInsuranceStatusEnum]
+  tenantId: String
+}
+
+type DepositInsuranceQueryDataType {
+  _id: String
+  accountInfo: DepositInsuranceAccountType
+  appInvoiceInfo: DepositInsuranceAppInvoiceInfo
+  bankAccountNumber: String
+  branchInfo: DepositInsuranceBranchType
+  createdAt: Date
+  depositInsuranceAmount: Number
+  errorReason: String
+  kidNumber: String
+  payments: [IncomingPaymentsSchema]
+  propertyInfo: DepositInsurancePropertyType
+  referenceNo: String
+  status: String
+  tenantInfo: DepositInsuranceTenantType
+  totalPaymentAmount: Number
+}
+
+type DepositInsuranceAppInvoiceInfo {
+  _id: String
+  serialId: Int
+}
+
+type DepositInsuranceAccountType {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type DepositInsuranceBranchType {
+  _id: String
+  name: String
+}
+
+type DepositInsuranceTenantType {
+  _id: String
+  name: String
+  phoneNumber: String
+  email: String
+  avatarKey: String
+  serial: Int
+  type: String
+}
+
+type DepositInsurancePropertyType {
+  _id: String
+  location: ListingLocationObj
+  apartmentId: String
+  propertyTypeId: String
+  listingTypeId: String
+  serial: Int
+  imageUrl: String
+}
+
+type DepositInsuranceQuerySchema {
+  data: [DepositInsuranceQueryDataType]
+  metaData: MetaDataQuerySchema
+}
+
+type StatusSummarySchema {
+  _id: String
+  insuranceAmount: Number
+}
+
+type DepositInsuranceSummarySchema {
+  totalDepositInsuranceAmount: Number
+  statusSummary: [StatusSummarySchema]
+}
+
+input DepositInsuranceAddType {
+  contractId: String
+  partnerId: String
+}
+
+extend type Query {
+  getDepositInsuranceXmlGeneratingData(
+    queryData: DepositInsuranceXmlGeneratingDataType
+  ): DepositInsuranceXmlGeneratingData @auth(requires: ["lambda_manager"])
+
+  depositInsurances(
+    queryData: DepositInsuranceDataType
+    optionData: OptionDataType
+  ): DepositInsuranceQuerySchema
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+
+  depositInsuranceSummary(
+    queryData: DepositInsuranceDataType
+  ): DepositInsuranceSummarySchema
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+}
+
+extend type Mutation {
+  updateDepositInsuranceCreationStatus(
+    inputData: DepositInsuranceCreationStatusUpdateType
+  ): DepositInsurance @auth(requires: ["lambda_manager"])
+  addDepositInsuranceDataForLambda(
+    inputData: DepositInsuranceAddType
+  ): DepositInsurance @auth(requires: ["lambda_manager"])
+  createQForSendingDepositInsurancePaymentReminder(
+    queryData: CommonInputDataType, optionData: OptionDataType # Expecting partnerId in query and limit in option
+  ): Int @auth(requires: ["lambda_manager"])
+}

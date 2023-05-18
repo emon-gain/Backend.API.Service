@@ -1,0 +1,768 @@
+type AvailableTotalListingsType {
+  data: [TotalListingForEachMonthType]
+}
+
+input AvailableTotalListingsQueryType {
+  partnerId: String
+}
+
+type Listing {
+  _id: String
+  ownerId: String
+  title: String
+  listingTypeId: String
+  propertyTypeId: String
+  location: ListingLocationObj
+  placeIds: [String]
+  availabilityStartDate: Date
+  availabilityEndDate: Date
+  minimumStay: Int
+  monthlyRentAmount: Number
+  depositAmount: Number
+  baseMonthlyRentAmount: Number
+  currency: String
+  listed: Boolean
+  liveThere: Boolean
+  description: String
+  images: [ListingImagesObj]
+  placeSize: Int
+  noOfBedrooms: Int
+  gender: String
+  noOfAvailableBedrooms: Int
+  availableBedrooms: [ListingBedroomsObj]
+  livingRoom: Boolean
+  noOfLivingRoom: Int
+  livingRoomFurnished: Boolean
+  kitchen: Boolean
+  noOfKitchen: Int
+  bathroom: Boolean
+  noOfBathroom: Int
+  facilities: [String]
+  includedInRent: [String]
+  favorite: [String]
+  tempUser: ListingTempUserObj
+  listedAt: Date
+  pageView: Int
+  disabledAt: Date
+  agentId: String
+  branchId: String
+  partnerId: String
+  accountId: String
+  propertyStatus: String
+  hasActiveLease: Boolean
+  hasUpcomingLease: Boolean
+  hasAssignment: Boolean
+  hasProspects: Boolean
+  leaseStartDate: Date
+  leaseEndDate: Date
+  floor: String
+  apartmentId: String
+  gnr: String
+  bnr: String
+  snr: String
+  addedInFinn: Boolean
+  deleted: Boolean
+  addons: [AddonsSchemas]
+  serial: Int
+  aboutText: String
+  finn: ListingFinnObj
+  furnished: String
+  hasInProgressLease: Boolean
+  backupLocation: ListingBackupLocationObj
+  isUpdatedAddress: Boolean
+  videoUrl: String
+  view360Url: String
+  groupId: String
+  createdAt: Date
+}
+
+type returnCode {
+  msg: String
+  code: String
+}
+
+input ListingLocationInput {
+  name: String
+  placeId: String
+  city: String
+  cityPlaceId: String
+  lat: Number
+  lng: Number
+  country: String
+  streetNumber: String
+  sublocality: String
+  countryShortName: String
+  postalCode: String
+}
+
+input ListingImagesInput {
+  imageName: String
+  title: String
+  rotate: Int
+}
+
+input ListingBedroomsInput {
+  id: Int
+  bedroomSize: Number
+  bedroomFurnished: Boolean
+}
+
+input ListingTempUserInput {
+  id: String
+  gender: String
+  birthday: Date
+  publish: Boolean
+}
+
+input ListingFinnMessageDocInput {
+  elementName: String
+  message: String
+}
+
+input ListingFinnMessageInput {
+  fatal: [ListingFinnMessageDocInput]
+  errorsMeta: [ListingFinnMessageDocInput]
+  warnings: [ListingFinnMessageDocInput]
+  info: [ListingFinnMessageDocInput]
+}
+
+input ListingFinnSerialHistoryInput {
+  orderSerial: String
+  createdAt: Date
+  statisticsURL: String
+}
+
+input ListingFinnInput {
+  adURL: String
+  statisticsURL: String
+  adSendTime: Date
+  adUpdateTimes: [Date]
+  isShareAtFinn: Boolean
+  disableFromFinn: Boolean
+  messages: ListingFinnMessageInput
+  finnShareAt: Date
+  finnArchivedAt: Date
+  finnErrorRequest: String
+  serial: Int
+  serialHistory: [ListingFinnSerialHistoryInput]
+  updateType: String
+}
+
+input ListingBackupLocationInput {
+  name: String
+  placeId: String
+  city: String
+  cityPlaceId: String
+  lat: Number
+  lng: Number
+  country: String
+  streetNumber: String
+  sublocality: String
+  countryShortName: String
+  postalCode: String
+}
+
+input ListingAddType {
+  title: String
+  description: String
+  listingTypeId: String
+  propertyTypeId: String
+  apartmentId: String
+  placeSize: Int
+  noOfBedrooms: Int
+  floor: String
+  location: ListingLocationInput
+  availabilityStartDate: Date
+  availabilityEndDate: Date
+  minimumStay: Int
+  monthlyRentAmount: Number
+  depositAmount: Number
+  facilities: [String]
+  furnished: String
+  includedInRent: [String]
+  noOfBathroom: Int
+  noOfKitchen: Int
+  noOfLivingRoom: Int
+  aboutText: String
+  images: [ListingImagesInput]
+  videoUrl: String
+  view360Url: String
+}
+
+input ListingInfoInput {
+  aboutText: String
+  availabilityStartDate: Date
+  availabilityEndDate: Date
+  depositAmount: Number
+  facilities: [String]
+  floor: String
+  furnished: String
+  images: [ListingImagesInput]
+  includedInRent: [String]
+  listingTypeId: String
+  location: ListingLocationInput
+  minimumStay: Int
+  monthlyRentAmount: Number
+  noOfBathroom: Int
+  noOfBedrooms: Int
+  noOfKitchen: Int
+  noOfLivingRoom: Int
+  placeSize: Int
+  propertyTypeId: String
+  title: String
+  description: String
+  videoUrl: String
+  view360Url: String
+  isUnsetPropertyType: Boolean
+}
+
+enum ListingUpdateTypeFields {
+  addAddon
+  deleteAddon
+  deleteListing
+  listingInfo
+  increasePageView
+  removeFromFinn
+  publish
+  removeImage
+  updateAvailableBedrooms
+  updateAvailableEndDate
+  updateFavorite
+  updatePropertyInfo
+  updatePropertyStatus
+  updatePropertyOwner
+  updatePropertyOwnerAndBranch
+}
+
+input FinnPublishType {
+  isShareAtFinn: Boolean
+  shareWithWarning: Boolean
+  finnUpdateType: ListingUpdateTypeFields
+}
+
+input ListingUpdateType {
+  _id: String
+  aboutText: String
+  finnUpdateType: String
+  agentId: String # agentId will be the new ownerId to update the ownerId
+  branchId: String
+  favorite: Boolean
+  imageName: String
+  liveThere: Boolean
+  partnerId: String
+  propertyStatus: String
+  updateType: ListingUpdateTypeFields
+
+  # For addon only
+  addonId: String
+  isRecurring: Boolean
+  price: Number
+  total: Number
+  type: String
+
+  # For available bedroom
+  bedroomId: Number
+  bedroomSize: Number
+  bedroomFurnished: Boolean
+
+  # For listing general information
+  listingInfo: ListingInfoInput
+
+  # For publishing or unpublishing a listing
+  listed: Boolean
+  #For publish in finn
+  finnPublishInfo: FinnPublishType
+}
+
+type ListingLocationObj {
+  name: String
+  placeId: String
+  city: String
+  cityPlaceId: String
+  lat: Number
+  lng: Number
+  country: String
+  streetNumber: String
+  sublocality: String
+  countryShortName: String
+  postalCode: String
+  apartmentId: String
+}
+
+type ListingDropdownLocationObj {
+  name: String
+  city: String
+  country: String
+  postalCode: String
+}
+
+type ListingImagesObj {
+  imageName: String
+  title: String
+  rotate: Int
+  url: String
+}
+
+type ListingBedroomsObj {
+  id: Int
+  bedroomSize: Number
+  bedroomFurnished: Boolean
+}
+
+type ListingTempUserObj {
+  id: String
+  gender: String
+  birthday: Date
+  publish: Boolean
+}
+
+type ListingFinnMessageDocObj {
+  elementName: String
+  message: String
+}
+
+type ListingFinnMessageObj {
+  fatal: [ListingFinnMessageDocObj]
+  errorsMeta: [ListingFinnMessageDocObj]
+  warnings: [ListingFinnMessageDocObj]
+  info: [ListingFinnMessageDocObj]
+}
+
+type ListingFinnSerialHistoryObj {
+  orderSerial: String
+  createdAt: Date
+  statisticsURL: String
+}
+
+type ListingFinnObj {
+  adURL: String
+  statisticsURL: String
+  adSendTime: Date
+  adUpdateTimes: [Date]
+  isShareAtFinn: Boolean
+  disableFromFinn: Boolean
+  messages: ListingFinnMessageObj
+  finnShareAt: Date
+  finnArchivedAt: Date
+  finnErrorRequest: String
+  serial: Int
+  serialHistory: [ListingFinnSerialHistoryObj]
+  updateType: String
+}
+
+type ListingBackupLocationObj {
+  name: String
+  placeId: String
+  city: String
+  cityPlaceId: String
+  lat: Number
+  lng: Number
+  country: String
+  streetNumber: String
+  sublocality: String
+  countryShortName: String
+  postalCode: String
+}
+
+type ListingQuerySchema {
+  _id: String
+  ownerId: String
+  owner: UserQuerySchema
+  agentId: String
+  agent: UserQuerySchema
+  branchId: String
+  branch: Branch
+  partnerId: String
+  partner: Partner
+  accountId: String
+  account: AccountQuerySchema
+  title: String
+  listingTypeId: String
+  propertyTypeId: String
+  location: ListingLocationObj
+  placeIds: [String]
+  availabilityStartDate: Date
+  availabilityEndDate: Date
+  minimumStay: Int
+  monthlyRentAmount: Number
+  depositAmount: Number
+  baseMonthlyRentAmount: Number
+  currency: String
+  listed: Boolean
+  liveThere: Boolean
+  description: String
+  images: [ListingImagesObj]
+  placeSize: Int
+  noOfBedrooms: Int
+  gender: String
+  noOfAvailableBedrooms: Int
+  availableBedrooms: [ListingBedroomsObj]
+  livingRoom: Boolean
+  noOfLivingRoom: Int
+  livingRoomFurnished: Boolean
+  kitchen: Boolean
+  noOfKitchen: Int
+  bathroom: Boolean
+  noOfBathroom: Int
+  facilities: [String]
+  includedInRent: [String]
+  favorite: [String]
+  tempUser: ListingTempUserObj
+  listedAt: Date
+  pageView: Int
+  disabledAt: Date
+  propertyStatus: String
+  hasActiveLease: Boolean
+  hasUpcomingLease: Boolean
+  hasAssignment: Boolean
+  hasProspects: Boolean
+  leaseStartDate: Date
+  leaseEndDate: Date
+  floor: String
+  apartmentId: String
+  gnr: String
+  bnr: String
+  snr: String
+  addedInFinn: Boolean
+  deleted: Boolean
+  addons: [AddonsSchemas]
+  serial: Int
+  aboutText: String
+  finn: ListingFinnObj
+  furnished: String
+  hasInProgressLease: Boolean
+  backupLocation: ListingBackupLocationObj
+  isUpdatedAddress: Boolean
+  videoUrl: String
+  view360Url: String
+  groupId: String
+  createdAt: Date
+  totalOverDue: Number
+  contract: Contract
+  noOfFavorite: Int
+}
+
+type QueryListing {
+  data: [ListingQuerySchema]
+  metaData: MetaDataQuerySchemaForListing
+}
+
+input MapPositionType {
+  latL: Number
+  latR: Number
+  lngL: Number
+  lngR: Number
+}
+
+enum AllowedStatus {
+  listed
+  unlisted
+}
+
+input ListingQueryDataType {
+  _id: String
+  agentId: String
+  branchId: String
+  partnerId: String
+  accountId: String
+  ownerId: String
+  # For Admin Listings Filters
+  listingTypeIds: [String]
+  propertyTypeIds: [String]
+  monthlyRent: CommonMinMaxInputDataType
+  baseMonthlyRent: CommonMinMaxInputDataType
+  space: CommonMinMaxInputDataType
+  bedroom: [Int]
+  bedroomRange: CommonMinMaxInputDataType
+  listedToFinn: Boolean
+  leaseAvailabilityDateRange: CommonStartDateAndEndDateInputDataType
+  city: String
+  createdDateRange: CommonStartDateAndEndDateInputDataType
+  address: String
+  furnished: [String]
+  includedInRentIds: [String]
+  facilityIds: [String]
+  minimumStay: CommonMinMaxInputDataType
+  hasVideoUrl: Boolean
+  has360Url: Boolean
+  mapPosition: MapPositionType
+  status: AllowedStatus
+  myFavourite: Boolean
+  deleted: Boolean
+  availableFrom: [CommonStartDateAndEndDateInputDataType]
+}
+
+input ListingsDropdownQueryDataTypeForAddTenant {
+  accountId: String
+  searchString: String
+  tenantId: String
+}
+
+enum ContractStatusEnum {
+  new
+  in_progress
+  upcoming
+  active
+  closed
+}
+
+input ListingsDropdownQueryDataType {
+  accountId: String
+  agentId: String
+  branchId: String
+  contractStatus: ContractStatusEnum
+  hasActiveLease: Boolean
+  hasUpcomingLease: Boolean
+  searchString: String
+  tenantId: String
+}
+
+type ListingDropdownQuerySchema {
+  _id: String
+  imageUrl: String
+  location: ListingDropdownLocationObj
+  apartmentId: String
+}
+
+type QueryListingDropdown {
+  data: [ListingDropdownQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+#for listings-bridge-finn
+input FinnDataQueryType {
+  queueId: ID
+}
+
+type OwnerInfo {
+  Name: String
+  Phone: String
+  Email: String
+}
+
+type ImageDetails {
+  originalUrl: String
+  name: String
+  _id: String
+  title: String
+  rotate: Int
+}
+
+type QueryFinnData {
+  ORDERNO: ID
+  USER_REFERENCE: String
+  FROMDATE: String
+  TODATE: String
+  STREETADDRESS: String
+  ZIPCODE: String
+  COUNTRYCODE: String
+  HEADING: String
+  ESTATE_PREFERENCE: [String]
+  PROPERTY_TYPE: String
+  NO_OF_BEDROOMS: String
+  PRIMARY_ROOM_AREA: String
+  PRIMARY_ROOM_DESCRIPTION: String
+  LIVING_AREA: String
+  GROSS_AREA: String
+  FLOOR_AREA: String
+  USEABLE_AREA: String
+  FLOOR: String
+  AREA: String
+  CONDITION: String
+  GROUND_TAX: String
+  GROUND_YEAR: String
+  PER_YEAR: String
+  PER_MONTH: Number
+  PER_WEEK: String
+  PER_DAY: String
+  DEPOSIT: Number
+  CURRENCY: String
+  INCLUDES: String
+  GENERAL_HEADING: String
+  GENERAL_TEXT: String
+  RENTFROM: String
+  RENTTO: String
+  listing_images: [ImageDetails]
+  keys: String
+  finnId: String
+  BrokerInfo: OwnerInfo
+  type: String
+  serial: String
+  propertyId: ID
+}
+
+type ListingQuerySchemaPublicSite {
+  _id: String
+  title: String
+  location: ListingLocationObj
+  noOfBedrooms: Int
+  monthlyRentAmount: Number
+  noOfFavorite: Int
+  pageView: Int
+  listedAt: Date
+  listed: Boolean
+  baseMonthlyRentAmount: Number
+  availabilityStartDate: Date
+  availabilityEndDate: Date
+  propertyStatus: String
+  propertyTypeId: String
+  listingTypeId: String
+  images: [ListingImagesObj]
+  currency: String
+  apartmentId: String
+  placeSize: Int
+  floor: String
+  finnInfo: ListingFinnObj
+}
+
+type QueryListingPublicSite {
+  data: [ListingQuerySchemaPublicSite]
+  metaData: MetaDataQuerySchema
+}
+
+input FinnDataUpdateType {
+  listingId: String
+  finnData: Object
+  zipFileResin: String
+  requestFinnAt: String
+  requestFinnSuccessAt: String
+}
+
+input ListingBasePriceInput {
+  listingId: String
+  # Or
+  onlyActiveListings: Boolean
+}
+
+input ListingPlaceIdsInput {
+  listingId: String
+  placeIdInfo: Object
+}
+
+input ListingPreviewInput {
+  _id: String
+  incrementPageView: Boolean
+}
+
+input ListingPublicQueryDataType {
+  isListed: Boolean
+  searchAddress: String
+}
+
+input ListingDetailsQueryDataType {
+  _id: String
+  incrementPageView: Boolean
+}
+
+input AddOrRemoveListingFromFavouriteInput {
+  listingId: String
+  favourite: Boolean
+}
+
+input ListingsFilterChartsDataType {
+  listed: Boolean
+  city: String
+  mapPosition: MapPositionType
+}
+
+type ChartListDataType {
+  _id: String
+  count: Number
+}
+
+type MinMaxDataSchema {
+  placeSizeFrom: Int
+  placeSizeTo: Int
+  sizeRangeList: [ChartListDataType]
+  minimumStayFrom: Int
+  minimumStayTo: Int
+  stayList: [ChartListDataType]
+  noOfBedroomsFrom: Int
+  noOfBedroomsTo: Int
+  baseMonthlyRentAmountFrom: Number
+  baseMonthlyRentAmountTo: Number
+  monthlyRentList: [ChartListDataType]
+}
+
+type ListingsFilterChartsType {
+  minMaxData: MinMaxDataSchema
+}
+
+type TotalListingForEachMonthType {
+  availabilityStartDate: String
+  totalListingsAvailable: Int
+}
+
+extend type Query {
+  availableTotalListingsForUpcommingMonth(
+    queryData: AvailableTotalListingsQueryType
+  ): AvailableTotalListingsType @auth(requires: ["public"])
+  listings(
+    queryData: ListingQueryDataType
+    optionData: OptionDataType
+  ): QueryListing
+  listingsForAppAdmin(
+    queryData: ListingQueryDataType
+    optionData: OptionDataType
+  ): QueryListing @auth(requires: ["app_admin", "lambda_manager"])
+  listingsUniqueCities: [String] @auth(requires: [])
+  listingPreview(queryData: ListingPreviewInput): ListingQuerySchema
+  listingDetails(queryData: ListingDetailsQueryDataType): ListingQuerySchema
+  #for lambda
+  finnData(queryData: FinnDataQueryType): QueryFinnData
+    @auth(requires: ["lambda_manager"])
+
+  getListingsForPublicSite(
+    queryData: ListingPublicQueryDataType
+    optionData: OptionDataType
+  ): QueryListingPublicSite @auth(requires: ["user", "partner_landlord"])
+
+  listingsDropdown(
+    queryData: ListingsDropdownQueryDataType
+    optionData: OptionDataType
+  ): QueryListingDropdown
+  listingsDropdownForAddTenant(
+    queryData: ListingsDropdownQueryDataTypeForAddTenant
+  ): QueryListingDropdown
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  listingsFilterCharts(
+    queryData: ListingsFilterChartsDataType
+  ): ListingsFilterChartsType @auth(requires: ["public"])
+}
+
+extend type Mutation {
+  addListing(inputData: ListingAddType): Listing
+    @auth(requires: ["user", "partner_landlord"])
+  updateListing(inputData: ListingUpdateType): Listing
+    @auth(
+      requires: [
+        "app_admin"
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "user"
+        "partner_landlord"
+      ]
+    )
+  # For lambda
+  updateFinnDataForListing(inputData: FinnDataUpdateType): Listing
+    @auth(requires: ["lambda_manager"])
+  updateListingBasePrice(inputData: ListingBasePriceInput): [Listing]
+    @auth(requires: ["lambda_manager"])
+  updateListingPlaceIds(inputData: ListingPlaceIdsInput): Listing
+    @auth(requires: ["lambda_manager"])
+  dailyAvailabilityListing: returnCode @auth(requires: ["lambda_manager"])
+  disableSingleListing(partnerId: ID): returnCode
+    @auth(requires: ["lambda_manager"])
+  addOrRemoveListingFromFavourite(
+    inputData: AddOrRemoveListingFromFavouriteInput
+  ): ReturnBoolean @auth(requires: ["user"])
+}

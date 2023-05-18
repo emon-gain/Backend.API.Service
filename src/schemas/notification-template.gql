@@ -1,0 +1,636 @@
+type NotificationTemplate {
+  _id: String
+  title: LanguageSubSchema
+  content: LanguageSubSchema
+  subject: LanguageSubSchema
+  type: String
+  templateType: String
+  category: String
+  partnerId: String
+  copiedBy: [String]
+  uniqueId: String
+  attachments: [String]
+  isCustom: Boolean
+  isInvoice: Boolean
+  isChatNotification: Boolean
+  isEmailFooter: Boolean
+  isPdfFooter: Boolean
+  isTerminatedToLandlord: Boolean
+  isTerminatedByLandlord: Boolean
+  isTerminatedToTenant: Boolean
+  isTerminatedByTenant: Boolean
+  isCreditNote: Boolean
+  isReminderInvoice: Boolean
+  isESigningReminderForLandlordAssignment: Boolean
+  isESigningReminderForLandlordLease: Boolean
+  isCollectionInvoice: Boolean
+  updatedAt: Date
+  isScheduleTerminatedByLandlord: Boolean
+  isScheduleTerminatedToLandlord: Boolean
+  isESigningReminderForTenantLease: Boolean
+  isESigningReminderForTenantMoveIn: Boolean
+  isESigningReminderForAgentMoveIn: Boolean
+  isESigningReminderForTenantMoveOut: Boolean
+  isESigningReminderForAgentMoveOut: Boolean
+  isScheduleTerminatedByTenant: Boolean
+  isScheduleTerminatedToTenant: Boolean
+  isDownloadTemplate: Boolean
+  isNaturalTerminationToLandlord: Boolean
+  isNaturalTerminationToTenant: Boolean
+  isSoonEndingToLandlord: Boolean
+  isSoonEndingToTenant: Boolean
+  isCpiSettlement: Boolean
+  isEvictionNotice: Boolean
+  isEvictionDueReminder: Boolean
+  isEviction: Boolean
+  isNextSchedulePayout: Boolean
+  isLeaseNotice: Boolean
+  isLeaseContractEsigning: Boolean
+  isAssignmentEsigningPdf: Boolean
+  isLeaseEsigningPdf: Boolean
+  isLandlordInvoice: Boolean
+  isLandlordCreditNote: Boolean
+  isLandlordInvoiceReminder: Boolean
+  isLandlordCollectionNotice: Boolean
+  isLandlordDueReminder: Boolean
+  isLandlordFirstReminder: Boolean
+  isLandlordSecondReminder: Boolean
+  isFinalSettlementInvoice: Boolean
+  isWelcomeLease: Boolean
+  isMovingInEsigningPdf: Boolean
+  isMovingOutEsigningPdf: Boolean
+  isAnnualStatement: Boolean
+  isESigningNoticeForTenantMovingOut: Boolean
+  isESigningNoticeForAgentMovingOut: Boolean
+  isESigningReminderToLandlordForMoveIn: Boolean
+  isESigningReminderToLandlordForMoveOut: Boolean
+  isInterestForm: Boolean
+  isDepositAccount: Boolean
+  isDepositIncomingPayment: Boolean
+  isTaskNotification: Boolean
+  isInterestFormInvitation: Boolean
+  isEvictionDocument: Boolean
+  isEvictionDueReminderWithoutEvictionFee: Boolean
+  isSendEsignForPayoutsApproval: Boolean
+  isPendingPaymentForApproval: Boolean
+  isSendEsignForPaymentsApproval: Boolean
+  isEsignPdfForPaymentsApproval: Boolean
+  isEsignPdfForPayoutsApproval: Boolean
+  isDepositInsuranceEsigning: Boolean
+  isDepositInsurancePaymentPending: Boolean
+  isDepositInsurancePdf: Boolean
+  isPartnerUserInvitation: Boolean
+  isResetPassword: Boolean
+  isVerifyEmail: Boolean
+  isChangeEmail: Boolean
+  isContactUs: Boolean
+  isAppInvoice: Boolean
+  isOtpEmail: Boolean
+  createdAt: Date
+  createdBy: String
+}
+
+type NotificationTemplateForLambda {
+  _id: String
+  title: LanguageSubSchema
+  content: LanguageSubSchema
+  subject: LanguageSubSchema
+  type: String
+  templateType: String
+  category: String
+  partnerId: String
+  copiedBy: [String]
+  uniqueId: String
+  attachments: [String]
+  isCustom: Boolean
+  isInvoice: Boolean
+  isChatNotification: Boolean
+  isEmailFooter: Boolean
+  isPdfFooter: Boolean
+  isTerminatedToLandlord: Boolean
+  isTerminatedByLandlord: Boolean
+  isTerminatedToTenant: Boolean
+  isTerminatedByTenant: Boolean
+  isCreditNote: Boolean
+  isReminderInvoice: Boolean
+  isESigningReminderForLandlordAssignment: Boolean
+  isESigningReminderForLandlordLease: Boolean
+  isCollectionInvoice: Boolean
+  updatedAt: Date
+  isScheduleTerminatedByLandlord: Boolean
+  isScheduleTerminatedToLandlord: Boolean
+  isESigningReminderForTenantLease: Boolean
+  isESigningReminderForTenantMoveIn: Boolean
+  isESigningReminderForAgentMoveIn: Boolean
+  isESigningReminderForTenantMoveOut: Boolean
+  isESigningReminderForAgentMoveOut: Boolean
+  isScheduleTerminatedByTenant: Boolean
+  isScheduleTerminatedToTenant: Boolean
+  isDownloadTemplate: Boolean
+  isNaturalTerminationToLandlord: Boolean
+  isNaturalTerminationToTenant: Boolean
+  isSoonEndingToLandlord: Boolean
+  isSoonEndingToTenant: Boolean
+  isCpiSettlement: Boolean
+  isEvictionNotice: Boolean
+  isEvictionDueReminder: Boolean
+  isEviction: Boolean
+  isNextSchedulePayout: Boolean
+  isLeaseNotice: Boolean
+  isLeaseContractEsigning: Boolean
+  isAssignmentEsigningPdf: Boolean
+  isLeaseEsigningPdf: Boolean
+  isLandlordInvoice: Boolean
+  isLandlordCreditNote: Boolean
+  isLandlordInvoiceReminder: Boolean
+  isLandlordCollectionNotice: Boolean
+  isLandlordDueReminder: Boolean
+  isLandlordFirstReminder: Boolean
+  isLandlordSecondReminder: Boolean
+  isFinalSettlementInvoice: Boolean
+  isWelcomeLease: Boolean
+  isMovingInEsigningPdf: Boolean
+  isMovingOutEsigningPdf: Boolean
+  isAnnualStatement: Boolean
+  isESigningNoticeForTenantMovingOut: Boolean
+  isESigningNoticeForAgentMovingOut: Boolean
+  isESigningReminderToLandlordForMoveIn: Boolean
+  isESigningReminderToLandlordForMoveOut: Boolean
+  isInterestForm: Boolean
+  isDepositAccount: Boolean
+  isDepositIncomingPayment: Boolean
+  isTaskNotification: Boolean
+  isInterestFormInvitation: Boolean
+  isEvictionDocument: Boolean
+  isEvictionDueReminderWithoutEvictionFee: Boolean
+  isSendEsignForPayoutsApproval: Boolean
+  isPendingPaymentForApproval: Boolean
+  isSendEsignForPaymentsApproval: Boolean
+  isEsignPdfForPaymentsApproval: Boolean
+  isEsignPdfForPayoutsApproval: Boolean
+  isDepositInsuranceEsigning: Boolean
+  isDepositInsurancePaymentPending: Boolean
+  isDepositInsurancePdf: Boolean
+  isPartnerUserInvitation: Boolean
+  isResetPassword: Boolean
+  isVerifyEmail: Boolean
+  isChangeEmail: Boolean
+  isContactUs: Boolean
+  isAppInvoice: Boolean
+  createdAt: Date
+  createdBy: String
+  event: String
+}
+
+type NotificationTemplateQuerySchema {
+  _id: String
+  title: LanguageSubSchema
+  content: LanguageSubSchema
+  subject: LanguageSubSchema
+  type: String # Also used in Lambda services
+  templateType: String # Also used in Lambda services
+  category: String
+  partnerId: String
+  copiedBy: [String]
+  uniqueId: String
+  attachments: [NotificationTemplate]
+  isAppInvoice: Boolean
+  isCustom: Boolean
+  isInvoice: Boolean
+  isChatNotification: Boolean
+  isEmailFooter: Boolean
+  isContactUs: Boolean
+  isPdfFooter: Boolean
+  isTerminatedToLandlord: Boolean
+  isTerminatedByLandlord: Boolean
+  isTerminatedToTenant: Boolean
+  isTerminatedByTenant: Boolean
+  isCreditNote: Boolean
+  isReminderInvoice: Boolean
+  isESigningReminderForLandlordAssignment: Boolean
+  isESigningReminderForLandlordLease: Boolean
+  isCollectionInvoice: Boolean
+  updatedAt: Date
+  isScheduleTerminatedByLandlord: Boolean
+  isScheduleTerminatedToLandlord: Boolean
+  isESigningReminderForTenantLease: Boolean
+  isESigningReminderForTenantMoveIn: Boolean
+  isESigningReminderForAgentMoveIn: Boolean
+  isESigningReminderForTenantMoveOut: Boolean
+  isESigningReminderForAgentMoveOut: Boolean
+  isScheduleTerminatedByTenant: Boolean
+  isScheduleTerminatedToTenant: Boolean
+  isDownloadTemplate: Boolean
+  isNaturalTerminationToLandlord: Boolean
+  isNaturalTerminationToTenant: Boolean
+  isSoonEndingToLandlord: Boolean
+  isSoonEndingToTenant: Boolean
+  isCpiSettlement: Boolean
+  isEvictionNotice: Boolean
+  isEvictionDueReminder: Boolean
+  isEviction: Boolean
+  isNextSchedulePayout: Boolean
+  isLeaseNotice: Boolean
+  isLeaseContractEsigning: Boolean
+  isAssignmentEsigningPdf: Boolean
+  isLeaseEsigningPdf: Boolean
+  isLandlordInvoice: Boolean
+  isLandlordCreditNote: Boolean
+  isLandlordInvoiceReminder: Boolean
+  isLandlordCollectionNotice: Boolean
+  isLandlordDueReminder: Boolean
+  isLandlordFirstReminder: Boolean
+  isLandlordSecondReminder: Boolean
+  isFinalSettlementInvoice: Boolean
+  isWelcomeLease: Boolean
+  isMovingInEsigningPdf: Boolean
+  isMovingOutEsigningPdf: Boolean
+  isAnnualStatement: Boolean
+  isESigningNoticeForTenantMovingOut: Boolean
+  isESigningNoticeForAgentMovingOut: Boolean
+  isESigningReminderToLandlordForMoveIn: Boolean
+  isESigningReminderToLandlordForMoveOut: Boolean
+  isInterestForm: Boolean
+  isDepositAccount: Boolean
+  isDepositIncomingPayment: Boolean
+  isTaskNotification: Boolean
+  isInterestFormInvitation: Boolean
+  isEvictionDocument: Boolean
+  isEvictionDueReminderWithoutEvictionFee: Boolean
+  isPartnerUserInvitation: Boolean
+  createdAt: Date
+  createdBy: String
+  partner: Partner
+  isDeletable: Boolean
+  isOtpEmail: Boolean # Also used in Lambda services
+  isTemplateDownload: Boolean # Also used in Lambda services
+  isChangeEmail: Boolean # Also used in Lambda services
+  # For Lambda services
+  notificationTemplates: [NotificationTemplateForLambda]
+  attachmentTemplates: [NotificationTemplateForLambda]
+  # For partner app
+  createdUser: NotificationTemplateCreatedUser
+  templateLabel: String
+}
+
+type NotificationTemplateCreatedUser {
+  name: String
+  avatarKey: String
+}
+
+type QueryNotificationTemplate {
+  data: [NotificationTemplateQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type LanguageSubSchema {
+  en: String
+  no: String
+}
+
+input LambdaTemplatesQueryOptionsDataType {
+  event: String
+  partnerId: String
+  uniqueIds: [String]
+}
+
+enum NotificationTemplateCategoryEnum {
+  account_wrong_ssn_notification
+  agent_assignment_esigning
+  agent_moving_in_esigning
+  agent_moving_out_esigning
+  app_health_status_to_app_admins
+  ask_for_credit_rating
+  assignment
+  chat_notification
+  collection_notice
+  contact_us
+  CPI_settlement
+  credit_note
+  deposit_account_created
+  deposit_incoming_payment
+  deposit_insurance_created
+  deposit_insurance_e_signing
+  deposit_insurance_payment_reminder
+  deposit_insurance_pdf
+  email_footer
+  eviction_document
+  eviction_due_reminder_notice
+  eviction_due_reminder_notice_without_eviction_fee
+  eviction_notice
+  export_to_email
+  final_settlement
+  interest_form
+  interest_form_invitation
+  invoice
+  invoice_reminder
+  landlord_annual_statement
+  landlord_assignment_esigning
+  landlord_collection_notice
+  landlord_credit_note
+  landlord_invoice
+  landlord_invoice_reminder
+  landlord_lease_esigning
+  landlord_moving_in_esigning
+  landlord_moving_out_esigning
+  lease
+  lease_contract
+  lease_soon_ending
+  lease_terminated_landlord
+  lease_terminated_tenant
+  lease_termination_scheduled_landlord
+  lease_termination_scheduled_tenant
+  moving_in_esigning
+  moving_out_esigning
+  natural_lease_termination_notice
+  next_schedule_payout
+  otp_email
+  partner_user_invitation
+  payout_confirmation
+  pdf_footer
+  pending_payments_approval_esigning
+  pending_payments_esign_pdf
+  pending_payouts_approval_esigning
+  pending_payouts_esign_pdf
+  send_pending_payment_for_approval
+  send_pending_payout_for_approval
+  send_wrong_ssn_notification
+  task_notification
+  tenant_lease_esigning
+  tenant_moving_in_esigning
+  tenant_moving_out_esigning
+  tenant_wrong_ssn_notification
+  user_change_email
+  user_email_verification
+  user_reset_password
+  welcome_lease_to
+}
+
+enum NotificationTemplateTypeEnum {
+  email
+  sms
+  attachment
+  assignment_contract
+  lease_contract
+  moving_in_esigning
+  moving_out_esigning
+  pdf
+}
+
+input NotificationTemplatesQueryDataType {
+  _id: String
+  isInvoice: Boolean
+  # For admin notification template filter
+  type: NotificationTemplateTypeEnum
+  templateType: String
+  title: String
+  subject: String
+  category: NotificationTemplateCategoryEnum
+  defaultSearch: String
+}
+
+input LanguageSubSchemaInput {
+  en: String
+  no: String
+}
+
+input NotificationTemplateAddType {
+  attachments: [String]
+  title: LanguageSubSchemaInput
+  content: LanguageSubSchemaInput
+  subject: LanguageSubSchemaInput
+  type: String
+  templateType: String
+  category: String
+  partnerId: String
+}
+
+input NotificationTemplateCloneType {
+  _id: String
+  partnerId: String
+}
+
+input NotificationTemplateUpdateDataType {
+  attachments: [String]
+  title: LanguageSubSchemaInput
+  content: LanguageSubSchemaInput
+  subject: LanguageSubSchemaInput
+}
+
+input NotificationTemplateUpdateType {
+  _id: String
+  partnerId: String
+  data: NotificationTemplateUpdateDataType
+}
+
+input NotificationTemplateRemoveType {
+  _id: String
+  partnerId: String
+}
+
+type NotificationTemplateRemovingResponse {
+  _id: String
+}
+
+input NotificationTemplatesForLambdaQueryDataType {
+  _id: String
+  partnerId: String
+  type: String
+  templateType: String
+  # For specific one
+  templateFor: String
+  # For Lambda Notifier services
+  options: LambdaTemplatesQueryOptionsDataType
+}
+
+type VariablesArray {
+  name: String
+  type: String
+  subItems: [String]
+  availability: [String]
+}
+
+type QueryNotificationTemplateVariables {
+  name: String
+  context: String
+  variables: [VariablesArray]
+}
+
+input ESigningTemplateContentQueryDataType {
+  accountId: String
+  context: String
+  partnerId: String
+}
+
+input LeaseTemplateDropdownQueryDataType {
+  category: String
+  isLeaseEsigningPdf: Boolean
+  searchPattern: String
+}
+
+type LeaseTemplateDataType {
+  _id: String
+  text: String
+}
+
+type QueryLeaseTemplateDropdown {
+  dropdownData: [LeaseTemplateDataType]
+}
+
+input AddonSchemaType {
+  _id: String
+  type: String
+}
+
+input TenantsSchemaType {
+  tenantId: String
+}
+
+input ListingInfoForEsigningTemplate {
+  monthlyRentAmount: Number
+  depositAmount: Number
+}
+
+input RentalMetaForEsigningTemplate {
+  assignmentSerial: Int
+  noticeInEffect: String
+  noticePeriod: Number
+  tenantId: String
+}
+
+input PartnerInfoForEsigningTemplate {
+  serial: Int
+}
+
+input PropertyInfoForEsigningTemplate {
+  serial: Int
+}
+
+enum commissionTypeEnum {
+  fixed
+  percent
+}
+
+input ESigningContractSchemaType {
+  accountId: String
+  addons: [AddonSchemaType] #
+  agentId: String
+  assignmentFrom: Date
+  assignmentTo: Date
+  assignmentSerial: Int
+  branchId: String
+  brokeringCommissionAmount: Number
+  brokeringCommissionType: commissionTypeEnum
+  depositAmount: Number
+  dueDate: Date
+  internalLeaseId: String
+  isVatEnable: Boolean
+  language: String
+  lastCpiDate: Date
+  leaseStartDate: Date
+  leaseEndDate: Date
+  listingInfo: ListingInfoForEsigningTemplate
+  minimumStay: Int
+  monthlyRentAmount: Number
+  nextCpiDate: Date
+  newTenantName: String
+  noticeInEffect: String
+  noticePeriod: Number
+  partner: PartnerInfoForEsigningTemplate
+  partnerId: String
+  payoutTo: String
+  property: PropertyInfoForEsigningTemplate
+  propertyId: String
+  rentalManagementCommissionAmount: Number
+  rentalManagementCommissionType: commissionTypeEnum
+  rentalMeta: RentalMetaForEsigningTemplate
+  representativeId: String
+  tenantId: String
+  tenantIds: [String]
+  tenants: [TenantsSchemaType]
+  enabledJointlyLiable: Boolean
+}
+
+enum ContractTypeEnumForEsigning {
+  assignment
+  eviction_document
+  lease
+}
+
+input ESigningTemplateForPartnerDataType {
+  contractData: ESigningContractSchemaType
+  contractId: String
+  contractType: ContractTypeEnumForEsigning
+  invoiceId: String
+  templateId: String
+}
+
+input PreviewMovingEsignPdfDataType {
+  accountId: String
+  movingId: String
+}
+
+type QueryPreviewMovingEsignPdf {
+  content: String
+  movingFileId: String
+}
+
+extend type Query {
+  notificationTemplates(
+    queryData: NotificationTemplatesQueryDataType
+    optionData: OptionDataType
+  ): QueryNotificationTemplate
+    @auth(
+      requires: ["app_admin", "app_manager", "partner_admin", "partner_agent"]
+    )
+  getNotificationTemplatesForLambda(
+    queryData: NotificationTemplatesForLambdaQueryDataType
+  ): QueryNotificationTemplate @auth(requires: ["lambda_manager"])
+  notificationTemplatesVariables: [QueryNotificationTemplateVariables]
+    @auth(
+      requires: ["app_admin", "app_manager", "partner_admin", "partner_agent"]
+    )
+  getESigningTemplateContent(
+    queryData: ESigningTemplateContentQueryDataType
+  ): String @auth(requires: ["lambda_manager"])
+  getLeaseTemplateDropdown(
+    queryData: LeaseTemplateDropdownQueryDataType
+    optionData: OptionDataType
+  ): QueryLeaseTemplateDropdown
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  getESigningTemplateForPartner(
+    queryData: ESigningTemplateForPartnerDataType
+  ): String
+    @auth(
+      requires: ["app_admin", "app_manager", "partner_admin", "partner_agent"]
+    )
+  previewMovingEsignPdf(
+    queryData: PreviewMovingEsignPdfDataType
+  ): QueryPreviewMovingEsignPdf
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+}
+
+extend type Mutation {
+  addNotificationTemplate(
+    inputData: NotificationTemplateAddType
+  ): [NotificationTemplateQuerySchema] @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+  cloneNotificationTemplate(
+    inputData: NotificationTemplateCloneType
+  ): [NotificationTemplate] @auth(requires: ["no_role"])
+  updateNotificationTemplate(
+    inputData: NotificationTemplateUpdateType
+  ): NotificationTemplate
+    @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+  removeNotificationTemplate(
+    inputData: NotificationTemplateRemoveType
+  ): NotificationTemplateRemovingResponse
+    @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+}

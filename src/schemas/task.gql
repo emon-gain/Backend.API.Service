@@ -1,0 +1,172 @@
+type Task {
+  _id: String
+  partnerId: String
+  createdAt: Date
+  createdBy: String
+  title: String
+  status: String
+  dueDate: Date
+  accountId: String
+  assignTo: Array
+  starredBy: Array
+  tenantId: String
+  propertyId: String
+  closedBy: String
+  closedOn: Date
+  landlordPartnerId: String
+  tenantPartnerId: String
+}
+
+type TaskQuerySchema {
+  _id: String
+  assignToInfo: [TaskAssignToInfoType]
+  createdAt: Date
+  closedByUserInfo: CommonNameAvatarKeyType
+  closedOn: Date
+  dueDate: Date
+  starredByMe: Boolean
+  status: String
+  title: String
+}
+
+type TaskAssignToInfoType {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+input TaskAddType {
+  accountId: String
+  propertyId: String
+  tenantId: String
+  title: String
+}
+
+enum TaskStatusEnum {
+  assignedToMe
+  assignedToOther
+  starred
+  done
+}
+
+enum TaskContextEnum {
+  janitorDashboard
+}
+
+enum TaskDueDateEnum {
+  expired
+  today
+  tomorrow
+  sevenDays
+}
+
+input TasksQueryDataType {
+  accountId: String
+  context: TaskContextEnum
+  propertyId: String
+  tenantId: String
+  taskStatus: TaskStatusEnum
+  taskDueDate: TaskDueDateEnum
+}
+
+type QueryTasks {
+  data: [TaskQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+enum TaskUpdateStatusEnum{
+  closed
+  open
+}
+
+input TaskUpdateType {
+  # Removing the tenantId, propertyId or accountId, add "remove" string as a value
+  accountId: String
+  assigneeId: String
+  dueDate: Date
+  propertyId: String
+  removeAssigneeId: String
+  starredByMe: Boolean
+  status: TaskUpdateStatusEnum
+  taskId: String
+  tenantId: String
+  title: String
+}
+
+input TasksDetailsDataType {
+  taskId: String
+}
+
+type TaskListingLocationObj {
+  name: String
+  city: String
+  country: String
+  postalCode: String
+}
+
+type ListingInfoType {
+  _id: String
+  apartmentId: String
+  imageUrl: String
+  listingTypeId: String
+  propertyTypeId: String
+  location: TaskListingLocationObj
+}
+
+type QueryTaskDetails {
+  _id: String
+  accountInfo: CommonNameAvatarKeyType
+  assigneesInfo: [CommonNameAvatarKeyType]
+  createdBy: String
+  createdAt: Date
+  dueDate: Date
+  landlordPartnerId: String
+  listingInfo: ListingInfoType
+  status: String
+  tenantInfo: CommonNameAvatarKeyType
+  tenantPartnerId: String
+  title: String
+  updatedAt: Date
+}
+type TaskUpdateQuerySchema {
+  _id: String
+  accountInfo: CommonNameAvatarKeyType
+  assigneesInfo: [CommonNameAvatarKeyType]
+  closedByUserInfo: CommonNameAvatarKeyType
+  closedOn: Date
+  createdAt: Date
+  createdBy: String
+  dueDate: Date
+  listingInfo: ListingInfoType
+  starredBy: Array
+  status: String
+  tenantInfo: CommonNameAvatarKeyType
+  title: String
+}
+
+extend type Query {
+  tasks(queryData: TasksQueryDataType, optionData: OptionDataType): QueryTasks
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  taskDetails(queryData: TasksDetailsDataType): QueryTaskDetails
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+}
+
+extend type Mutation {
+  addTask(inputData: TaskAddType): TaskQuerySchema @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent", "partner_janitor"])
+  updateTask(inputData: TaskUpdateType): TaskUpdateQuerySchema @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent", "partner_janitor"])
+}

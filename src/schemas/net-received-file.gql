@@ -1,0 +1,118 @@
+type NetReceivedFileQuerySchema {
+  _id: String
+  receivedFileName: String
+  receivedFileKey: String
+  status: NetReceivedFileStatusEnum
+  fileType: NetReceivedFileFileTypeEnum
+  isCreditTransaction: Boolean
+  isDebitTransaction: Boolean
+  payments: [PaymentsTransactionObject]
+  invalidFile: Boolean
+  moveFailed: Boolean
+  createdAt: Date
+  createdBy: String
+  S3SentFileUrl: String
+}
+
+enum NetReceivedFileFileTypeEnum {
+  CstmrPmtStsRpt
+  BkToCstmrDbtCdtNtfctn
+}
+
+enum NetReceivedFileStatusEnum {
+  created
+  processing
+  processed
+}
+
+type PaymentsTransactionObject {
+  transactionType: String
+  paymentId: String
+  partnerId: String
+  status: String
+  # For Admin incoming-payment Filters
+  partnerInfo: Partner
+  paymentInfo: InvoicePayment
+}
+
+type QueryNetReceivedFile {
+  data: [NetReceivedFileQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+enum netReceivedStatusEnum {
+  created
+  processing
+  processed
+}
+
+enum netReceivedPaymentStatusEnum {
+  new
+  registered
+  unspecified
+}
+
+input NetReceivedFileDataType {
+  _id: String
+  isCreditTransaction: Boolean
+  isDebitTransaction: Boolean
+  invalidFile: Boolean
+  moveFailed: Boolean
+  # For Admin incoming-payment Filters
+  statuses: [netReceivedStatusEnum]
+  partnerId: String
+  createdDateRange: CommonStartDateAndEndDateInputDataType
+  paymentStatuses: [netReceivedPaymentStatusEnum]
+  receivedFileName: String
+  #For lambda #10482
+  receivedFileNameLambda: String
+}
+
+input AddNetReceivedFilesDataType {
+  receivedFileName: String
+  receivedFileKey: String
+  status: NetReceivedFileStatusEnum
+}
+
+input NetsReceivedPaymentInputType {
+  partnerId: String
+  paymentId: String
+  status: String
+  transactionType: String
+}
+
+input UpdateNetReceivedFileDataType {
+  netReceivedFileId: String
+  fileType: NetReceivedFileFileTypeEnum
+  haveToUpdatePaymentStatus: Boolean
+  invalidFile: Boolean
+  isDebitTransaction: Boolean
+  isCreditTransaction: Boolean
+  moveFailed: Boolean
+  payments: [NetsReceivedPaymentInputType]
+  status: NetReceivedFileStatusEnum
+}
+
+input NetReceivedFileInputType {
+  netReceivedFileId: String
+}
+
+extend type Query {
+  netReceivedFiles(
+    queryData: NetReceivedFileDataType
+    optionData: OptionDataType
+  ): QueryNetReceivedFile @auth(requires: ["app_admin", "lambda_manager"])
+  getNetReceivedFile(
+    queryData: NetReceivedFileInputType
+  ): NetReceivedFileQuerySchema @auth(requires: ["lambda_manager"])
+}
+
+extend type Mutation {
+  #For payments lambda #10482
+  addNetReceivedFiles(
+    inputData: [AddNetReceivedFilesDataType]
+  ): [NetReceivedFileQuerySchema] @auth(requires: ["lambda_manager"])
+  updateNetReceivedFile(
+    inputData: UpdateNetReceivedFileDataType
+  ): NetReceivedFileQuerySchema @auth(requires: ["lambda_manager"])
+}

@@ -1,0 +1,182 @@
+type FinalSettlementQuerySchema {
+  _id: String
+  propertyInfo: FinalSettlementPropertyInfoSchema
+  finalSettlementStatus: String
+  invoiceTotalAmount: Number
+  invoiceTotalDue: Number
+  invoiceTotalLostAmount: Number
+  invoiceTotalPaidAmount: Number
+  isFinalSettlementDone: Boolean
+  totalPaymentPaid: Number
+  totalPayout: Number
+  totalPayoutDue: Number
+  landlordInvoiceTotalAmount: Number
+  landlordInvoiceTotalDue: Number
+  tenantInfo: FinalSettlementTenantInfoSchema
+  accountInfo: FinalSettlementAccountInfoSchema
+  branchInfo: FinalSettlementBranchInfoSchema
+  agentInfo: FinalSettlementAgentInfoSchema
+  contractStartDate: Date
+  contractEndDate: Date
+  leaseSerial: Number
+  createdAt: Date
+}
+
+type FinalSettlementPropertyInfoSchema {
+  _id: String
+  location: ListingLocationObj
+  listingTypeId: String
+  propertyTypeId: String
+  apartmentId: String
+  serial: Number
+  imageUrl: String
+}
+
+type FinalSettlementTenantInfoSchema {
+  _id: String
+  name: String
+  avatarKey: String
+  serial: Number
+}
+
+type FinalSettlementAccountInfoSchema {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type FinalSettlementAgentInfoSchema {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type FinalSettlementBranchInfoSchema {
+  _id: String
+  name: String
+}
+
+type RentData {
+  totalPaymentAmount: Int
+  invoiceTotalLostAmount: Int
+  totalDue: Int
+  invoiceTotal: Int
+}
+
+type LandLoardData {
+  landlordInvoiceTotalAmount: Int
+  totalDue: Int
+}
+
+type PayoutData {
+  payoutTotalAmount: Int
+  totalPayoutDue: Int
+}
+
+type MetaDataFinalSettlementQuerySchema {
+  filteredDocuments: Int
+  totalDocuments: Int
+}
+
+type QueryFinalSettlement {
+  data: [FinalSettlementQuerySchema]
+  metaData: MetaDataFinalSettlementQuerySchema
+}
+
+enum finalSettlementStatusEnum {
+  new
+  in_progress
+  completed
+}
+
+enum statusEnum {
+  new
+  in_progress
+  upcoming
+  active
+  closed
+}
+
+enum FinalSettlementContextEnum {
+  landlordDashboard
+}
+
+type QueryFinalSettlementSummary {
+  totalRentDue: Number
+  totalLandLordDue: Number
+  totalUnpaidPayout: Number
+}
+
+input FinalSettlementQueryDataType {
+  accountId: String
+  agentId: String
+  branchId: String
+  context: FinalSettlementContextEnum
+  contractId: String
+  createdDateRange: CommonStartDateAndEndDateInputDataType
+  finalSettlementStatus: [finalSettlementStatusEnum]
+  periodDateRange: CommonStartDateAndEndDateInputDataType
+  propertyId: String
+  requestFrom: RequestFromEnum
+  tenantId: String
+  userId: String
+}
+
+input GenerateFinalSettlementInput {
+  contractId: String
+  partnerId: String #Only for lambda
+  userId: String #Only for lambda
+}
+
+input CreateRentInvoiceForCorrectionsInput {
+  contractId: String
+  userId: String
+}
+
+input AdjustLandlordPayoutInput {
+  contractId: String
+  partnerId: String
+  propertyId: String
+  userId: String
+}
+
+input GenerateRefundPaymentForFinalSettlementInput {
+  contractId: String
+  userId: String
+}
+
+input ForwardOverPaidInvoiceAmountInput {
+  contractId: String
+  partnerId: String
+}
+
+extend type Query {
+  finalSettlements(
+    queryData: FinalSettlementQueryDataType
+    optionData: OptionDataType
+  ): QueryFinalSettlement
+    @auth(
+      requires: ["app_manager", "partner_accounting", "partner_admin", "partner_janitor"]
+    )
+  finalSettlementSummary(
+    queryData: FinalSettlementQueryDataType
+  ): QueryFinalSettlementSummary
+    @auth(
+      requires: ["app_manager", "partner_accounting", "partner_admin", "partner_janitor"]
+    )
+  checkIfFinalSettlementNeededForContract(contractId: ID): Boolean @auth(requires: ["lambda_manager"])
+}
+
+extend type Mutation {
+  generateFinalSettlement(inputData: GenerateFinalSettlementInput): MsgWithCode
+    @auth(requires: ["app_manager", "partner_accounting", "partner_admin", "partner_agent", "lambda_manager"])
+  createRentInvoiceForCorrections(inputData: CreateRentInvoiceForCorrectionsInput): MsgWithCode @auth(requires: ["lambda_manager"])
+  initializeFinalSettlementProcess(contractId: ID, partnerId: ID): MsgWithCode @auth(requires: ["lambda_manager"])
+  adjustLandlordPayoutOrSendLandlordInvoiceForFinalSettlement(inputData: AdjustLandlordPayoutInput): MsgWithCode
+    @auth(requires: ["lambda_manager"])
+  generateRefundPaymentToTenantOnLeaseTerminationForFinalSettlement(inputData: GenerateRefundPaymentForFinalSettlementInput): MsgWithCode @auth(requires: ["lambda_manager"])
+  findUnbalancedLandlordInvoicesAndMakePayableForFinalSettlement(contractId: ID, partnerId: ID): MsgWithCode @auth(requires: ["lambda_manager"])
+  overPaidInvoicesAmountForwardedToNonePaidInvoices(inputData: ForwardOverPaidInvoiceAmountInput): MsgWithCode @auth(requires: ["lambda_manager"])
+  cancelFinalSettlement(contractId: ID, partnerId: ID): MsgWithCode @auth(requires: ["app_manager","partner_admin","partner_agent", "lambda_manager"])
+  checkDailyFinalSettlement(contractId: ID): MsgWithCode @auth(requires: ["lambda_manager"])
+}

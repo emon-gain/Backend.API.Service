@@ -1,0 +1,189 @@
+type PropertyForXmlCreator {
+  _id: String
+  accountId: String
+  partnerId: String
+  apartmentId: String
+  location: ListingLocationObj
+  contracts: [Contract]
+}
+
+type AnnualStatementForXmlCreator {
+  account: AccountQuerySchema
+  annualStatements: [AnnualStatementQuerySchema]
+  properties: [PropertyForXmlCreator]
+  sumOfRentTotalExclTax: Number
+  sumOfLandlordTotalExclTax: Number
+}
+
+type AnnualStatementQuerySchema {
+  _id: String
+  agentId: String
+  accountId: String
+  tenantId: String
+  propertyId: String
+  partnerId: String
+  contractId: String
+  branchId: String
+  statementYear: Int
+  rentTotalExclTax: Number
+  rentTotalTax: Number
+  rentTotal: Number
+  createdAt: Date
+  createdBy: String
+  landlordTotalExclTax: Number
+  landlordTotalTax: Number
+  landlordTotal: Number
+  totalPayouts: Number
+  status: String
+  fileId: String
+  property: Listing
+  contract: Contract
+  account: Account
+  tenant: TenantQuerySchema
+  agent: User
+  file: File
+}
+
+input AnnualStatementXmlQueryType {
+  partnerId: String
+  statementYear: Int
+}
+
+type AnnualStatementPropertyType {
+  _id: String
+  imageUrl: String
+  location: ListingLocationObj
+  listingTypeId: String
+  propertyTypeId: String
+  apartmentId: String
+  serial: Int
+}
+
+type AnnualStatementContractType {
+  _id: String
+  leaseSerial: Int
+}
+
+type AnnualStatementFileType {
+  _id: String
+  name: String
+  title: String
+}
+
+type AnnualStatementSchema {
+  _id: String
+  account: CommonNameAvatarKeyType
+  tenant: CommonNameAvatarKeyType
+  agent: CommonNameAvatarKeyType
+  property: AnnualStatementPropertyType
+  statementYear: Int
+  contract: AnnualStatementContractType
+  file: AnnualStatementFileType
+  rentTotalExclTax: Number
+  rentTotal: Number
+  landlordTotalExclTax: Number
+  landlordTotal: Number
+  createdAt: Date
+
+}
+
+type AnnualStatementQueryType {
+  data: [AnnualStatementSchema]
+  metaData: MetaDataQuerySchema
+}
+
+input AnnualStatementQueryDataType {
+  createdAtDateRange: CommonStartDateAndEndDateInputDataType
+  statementYear: [Int]
+  branchId: String
+  accountId: String
+  contractId: String
+  propertyId: String
+  requestFrom: RequestFromEnum
+}
+
+input PartnerAndUserInfoInput {
+  partnerId: String
+  userId: String
+}
+
+type PartnerAndUserForXmlCreator {
+  partner: Partner
+  partnerSetting: PartnerSetting
+  user: User
+}
+
+input DownloadAnnualStatementInputType {
+  statementYear: Int
+}
+
+type DownloadAnnualStatementType {
+  status: Int
+  message: String
+}
+
+type AnnualStatementYearType {
+  statementYear: [Int]
+}
+
+type AnnualStatementData {
+  _id: ID
+  partnerId: String
+  contractId: String
+  tenantId: String
+  agentId: String
+  branchId: String
+  accountId: String
+  accountUserInfo: [User],
+  tenantUserInfo: [User],
+  propertyId: String
+  rentTotalExclTax: Float
+  rentTotalTax: Float
+  rentTotal: Float
+  landlordTotal: Float
+  statementYear: Int
+  fileId: String
+  status: String
+  landlordTotalTax: Float
+  totalPayouts: Float
+  landlordTotalExclTax: Float
+}
+
+input AnnualStatementInput {
+  contractId: ID,
+  statementYear: String
+}
+
+input AnnualStatementUpdateInput {
+  annualStatementId: ID,
+  fileId: ID
+}
+
+extend type Query {
+  annualStatements(
+    queryData: AnnualStatementQueryDataType
+    optionData: OptionDataType
+  ): AnnualStatementQueryType @auth(requires: ["app_manager", "partner_admin", "partner_agent", "partner_accounting"])
+  # For lambda xml creator
+  annualStatementInfoForXmlCreator(
+    queryData: AnnualStatementXmlQueryType
+    optionData: OptionDataType
+  ): [AnnualStatementForXmlCreator] @auth(requires: ["lambda_manager"])
+  # For lambda xml creator
+  partnerAndUserInfo(
+    queryData: PartnerAndUserInfoInput
+  ): PartnerAndUserForXmlCreator @auth(requires: ["lambda_manager"])
+  getAnnualStatementYear: AnnualStatementYearType
+    @auth(requires: ["app_manager", "partner_admin" "partner_agent" "partner_accounting"])
+  getDataForAnnualStatement (contractId: ID, statementYear: String): AnnualStatementData @auth(requires: ["lambda_manager"])
+  getContractIdsForAnnualStatement (statementYear: String, dataToSkip: Int): [String] @auth(requires: ["lambda_manager"])
+}
+
+extend type Mutation {
+  downloadAnnualStatement(
+    inputData: DownloadAnnualStatementInputType
+  ): DownloadAnnualStatementType
+    @auth(requires: ["partner_admin", "app_manager", "partner_accounting"])
+  createAnnualStatements(inputData: AnnualStatementInput): AnnualStatementData @auth(requires: ["lambda_manager"])
+  updateAnnualStatementFromLambda(inputData: AnnualStatementUpdateInput): AnnualStatementData @auth(requires: ["lambda_manager"])
+}

@@ -1,0 +1,671 @@
+type Account {
+  _id: String
+  type: AccountTypeEnum
+  organizationId: String
+  personId: String
+  person: UserQuerySchema
+  name: String
+  address: String
+  partnerId: String
+  branchId: String
+  agentId: String
+  organization: Organization
+  status: String
+  totalActiveProperties: Number
+  lastUpdate: Date
+  invoiceAccountNumber: String
+  serial: Number
+  user: User
+  bankAccountNumbers: Array
+  aboutText: String
+  norwegianNationalIdentification: String
+  city: String
+  country: String
+  zipCode: String
+  backupAddress: String
+  powerOffice: Object
+  createdAt: Date
+  createdBy: String
+}
+
+type AccountPowerOfficeObj {
+  id: String
+  code: String
+  hasError: Boolean
+  syncedAt: Date
+}
+
+input AccountPowerOfficeObjInput {
+  id: String
+  code: String
+  hasError: Boolean
+  syncedAt: Date
+}
+
+type AccountDetailsUserInfo {
+  _id: String
+  avatarKey: String
+  city: String
+  country: String
+  email: String
+  hometown: String
+  name: String
+  norwegianNationalIdentification: String
+  phoneNumber: String
+  status: partnerUserStatusEnum
+  zipCode: String
+}
+
+type AccountUserInfo {
+  name: String
+  email: String
+  phoneNumber: String
+  address: String
+  zipCode: String
+  city: String
+  country: String
+}
+
+type AccountQuerySchema {
+  _id: String
+  type: AccountTypeEnum
+  organizationId: String
+  organization: Organization # Used in xml creator lambda
+  personId: String
+  person: UserQuerySchema # Used in xml creator lambda
+  name: String
+  address: String
+  partnerId: String
+  partner: Partner
+  branchId: String
+  branch: Branch
+  agentId: String
+  agent: UserQuerySchema
+  status: String
+  totalActiveProperties: Number
+  lastUpdate: Date
+  invoiceAccountNumber: String
+  serial: Number
+  totalProperties: Number
+  totalOverDue: Number
+  dueTask: Number
+  rentCoveragePercentage: Number
+  invoicedInMonth: Number
+  bankAccountNumbers: Array
+  aboutText: String
+  norwegianNationalIdentification: String
+  city: String
+  country: String
+  zipCode: String
+  backupAddress: String
+  powerOffice: AccountPowerOfficeObj
+  createdAt: Date
+  createdBy: String
+  # For lambda accounting bridge pogo #10175
+  id: Number
+  userInfo: AccountUserInfo
+}
+
+type AccountDropdownQuerySchema {
+  _id: String
+  avatarKey: String
+  name: String
+}
+
+type AccountBranchInfo {
+  _id: String
+  name: String
+}
+
+type AccountDetailsAgentSchema {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+input AccountsQueryDataType {
+  _id: String
+  type: String
+  organizationId: String
+  personId: String
+  name: String
+  address: String
+  partnerId: String
+  branchId: String
+  agentId: String
+  status: [String]
+  invoiceAccountNumber: String
+  serial: Number
+  #For lambda accountingBridgePogo dataType #10175
+  dataType: String
+  eSignStatus: String
+  createdAt: CommonStartDateAndEndDateInputDataType
+}
+
+input AccountsDropdownQueryDataType {
+  agentId: String
+  branchId: String
+  searchString: String
+}
+
+type QueryAccountDropdown {
+  data: [AccountDropdownQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type QueryEmptyPhoneNumbers {
+  idsWithPhoneNumbers: [String]
+  accountNamesWithoutPhoneNumbers: [String]
+  accountNamesWithPhoneNumbers: [String]
+  tenantNamesWithoutPhoneNumbers: [String]
+  tenantNamesWithPhoneNumbers: [String]
+}
+
+enum AccountStatusEnum {
+  active
+  in_progress
+  archived
+}
+
+enum AccountTypeEnum {
+  person
+  organization
+}
+
+input AccountsForPartnerAppQueryDataType {
+  address: String
+  agentId: String
+  branchId: String
+  createdAt: CommonStartDateAndEndDateInputDataType
+  """
+  eSignStatus should be sentToAccount
+  """
+  eSignStatus: String
+  invoiceAccountNumber: String
+  name: String
+  email: String
+  phoneNumber: String
+  ssn: String
+  organizationId: String
+  personId: String
+  searchKeyword: String
+  serial: Number
+  """
+  Use sort to download account
+  Sort will be using fields ['name', 'totalActiveProperties']
+  """
+  sort: Object
+  status: [AccountStatusEnum]
+  type: AccountTypeEnum
+  context: String
+}
+
+input AccountAddType {
+  type: AccountTypeEnum
+  name: String
+  email: String # For person type
+  phoneNumber: String
+  address: String
+  branchId: String
+  agentId: String
+  personId: String
+  contactPersonEmail: String # For organization type
+  contactPersonPhoneNumber: String
+  contactPersonAddress: String
+  contactPersonName: String
+  norwegianNationalIdentification: String
+  zipCode: String
+  city: String
+  country: String
+  orgId: String
+  invoiceAccountNumber: String
+  vatRegistered: Boolean
+  invoiceStartNumber: Int
+}
+
+input AccountAboutUpdateType {
+  accountId: String
+  aboutText: String
+}
+
+input AccountLogoUpdateType {
+  accountId: String
+  logo: String
+}
+
+enum AccountChangeStatusEnum {
+  archived
+  in_progress
+}
+
+input AccountStatusUpdateType {
+  accountId: String
+  changeStatus: AccountChangeStatusEnum
+}
+
+input AccountBranchInfoUpdateType {
+  accountId: String
+  branchId: String
+  agentId: String
+}
+
+input BankAccountAddDataType {
+  accountId: String
+  bankAccountNumber: String
+}
+
+input BankAccountRemoveDataType {
+  accountId: String
+  bankAccountNumber: String
+}
+
+input BankAccountUpdateDataType {
+  accountId: String
+  oldValue: String
+  newValue: String
+}
+
+input ContactPersonChangeDataType {
+  accountId: String
+  address: String
+  email: String
+  name: String
+  personId: String
+  phoneNumber: String
+}
+
+input AccountUpdateDataType {
+  accountId: String
+  address: String
+  city: String
+  contactPersonAddress: String
+  country: String
+  email: String
+  invoiceAccountNumber: String
+  invoiceStartNumber: Int
+  name: String
+  norwegianNationalIdentification: String
+  orgId: String
+  personId: String
+  phone: String
+  serial: Int
+  vatRegistered: Boolean
+  zipCode: String
+}
+
+input AccountsExcelCreatorQueryDataType {
+  queueId: String
+}
+
+input AccountsXmlQueryDataType {
+  accountId: String
+}
+
+input AccountUpdateForPogoDataType {
+  _id: String
+  partnerId: String
+  powerOffice: AccountPowerOfficeObjInput
+}
+
+input AccountsTotalPropertiesInput {
+  accountId: String
+  partnerId: String
+}
+
+type QueryAccount {
+  data: [AccountQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+type AccountExcelCreatorQuery {
+  name: String
+  id: Int
+  organizationId: String
+  contactPerson: String
+  accountType: String
+  address: String
+  status: String
+  email: String
+  phone: String
+  branch: String
+  agent: String
+  overdue: Number
+  properties: String
+}
+
+type QueryAccountExcelCreator {
+  data: [AccountExcelCreatorQuery]
+  total: Number
+}
+
+type QueryAccountDetails {
+  _id: String
+  aboutText: String
+  accountNumber: String
+  address: String
+  agentInfo: AccountDetailsAgentSchema
+  avatarKey: String
+  bankAccountNumbers: [String]
+  branchInfo: AccountBranchInfo
+  city: String
+  country: String
+  dueTask: Int
+  invoiceThisMonth: Number
+  name: String
+  orgId: String
+  serial: Number
+  status: String
+  totalActiveProperties: Int
+  totalOverDue: Number
+  totalProperties: Int
+  totalRentCoveragePercentage: Int
+  type: String
+  userInfo: AccountDetailsUserInfo
+  vatRegistered: Boolean
+  zipCode: String
+}
+
+input AccountDetailsQueryDataType {
+  accountId: String
+}
+
+type AccountAgentSchema {
+  _id: String
+  name: String
+  avatarKey: String
+}
+
+type AccountBranchSchema {
+  _id: String
+  name: String
+}
+
+type AccountPersonSchema {
+  _id: String
+  name: String
+  avatarKey: String
+  email: String
+  phoneNumber: String
+}
+
+type AccountOrganizationSchema {
+  _id: String
+  name: String
+  imageUrl: String
+}
+
+type AccountForPartnerAppSchema {
+  _id: String
+  address: String
+  agent: AccountAgentSchema
+  agentId: String
+  bankAccountNumbers: [String]
+  branch: AccountBranchSchema
+  city: String
+  createdAt: Date
+  country: String
+  invoiceAccountNumber: String
+  name: String
+  organization: AccountOrganizationSchema
+  organizationId: String
+  partnerId: String
+  person: AccountPersonSchema
+  personId: String
+  serial: Int
+  status: String
+  totalActiveProperties: Int
+  totalOverDue: Number
+  totalProperties: Int
+  type: String
+  zipCode: String
+}
+
+type QueryAccountForPartnerApp {
+  data: [AccountForPartnerAppSchema]
+  metaData: MetaDataQuerySchema
+}
+
+type UpdateAccountBranchInfoType {
+  _id: String
+  agentInfo: CommonNameAvatarKeyType
+  branchInfo: CommonNameType
+}
+
+type UpdateAccountStatusType {
+  _id: String
+  status: String
+}
+
+type AddBankAccountForAccountType {
+  _id: String
+  bankAccountNumbers: [String]
+}
+
+type UpdateAccountAboutType {
+  _id: String
+  aboutText: String
+}
+
+type ChangeContactPersonForAccountType {
+  _id: String
+  userInfo: AccountDetailsUserInfo
+}
+
+enum xledgerAccountDataTypeEnum {
+  get_update_account
+}
+
+input AccountForXledgerQueryInputType {
+  dataType: xledgerAccountDataTypeEnum
+  partnerId: String
+}
+
+type AccountForXledgerReturnType {
+  _id: String
+  code: Number
+  country: String
+  dbId: String
+  description: String
+  email: String
+  phone: String
+  place: String
+  streetAddress: String
+  zipCode: String
+}
+
+type UpdateAccountType {
+  _id: String
+  accountNumber: String
+  address: String
+  bankAccountNumbers: [String]
+  city: String
+  country: String
+  name: String
+  orgId: String
+  serial: Int
+  userInfo: AccountDetailsUserInfo
+  zipCode: String
+}
+
+type UpdateAccountLogoType {
+  _id: String
+  avatarKey: String
+}
+
+input AccountNumberQueryDataType {
+  accountId: String
+}
+
+enum AccountIdsRequestForEnum {
+  xledger
+  others
+}
+
+input AccountIdsQueryDataType {
+  partnerId: String
+  requestFor: AccountIdsRequestForEnum
+}
+
+extend type Query {
+  accounts(
+    queryData: AccountsQueryDataType
+    optionData: OptionDataType
+  ): QueryAccount @auth(requires: ["lambda_manager"])
+
+  getAccountsForPartnerApp(
+    queryData: AccountsForPartnerAppQueryDataType
+    optionData: OptionDataType
+  ): QueryAccountForPartnerApp
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  getAccountInfoForExcelCreator(
+    queryData: AccountsExcelCreatorQueryDataType
+    optionData: OptionDataType
+  ): QueryAccountExcelCreator @auth(requires: ["lambda_manager"])
+
+  getAccountIdsForLambda(queryData: AccountIdsQueryDataType): [String]
+    @auth(requires: ["lambda_manager"])
+  accountForPaymentXml(queryData: AccountsXmlQueryDataType): Account
+    @auth(requires: ["lambda_manager"])
+
+  accountDetails(queryData: AccountDetailsQueryDataType): QueryAccountDetails
+    @auth(
+      requires: [
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  accountsDropdown(
+    queryData: AccountsDropdownQueryDataType
+    optionData: OptionDataType
+  ): QueryAccountDropdown
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  getInvoiceAccountNumbers(queryData: AccountNumberQueryDataType): [String]
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  getAccountForXledger(
+    queryData: AccountForXledgerQueryInputType
+  ): AccountForXledgerReturnType @auth(requires: ["lambda_manager"])
+}
+extend type Mutation {
+  addAccount(inputData: AccountAddType): AccountForPartnerAppSchema
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+  updateAccountAbout(inputData: AccountAboutUpdateType): UpdateAccountAboutType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+  updateAccountLogo(inputData: AccountLogoUpdateType): UpdateAccountLogoType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+  updateAccountStatus(
+    inputData: AccountStatusUpdateType
+  ): UpdateAccountStatusType @auth(requires: ["app_manager", "partner_admin"])
+  updateAccountBranchInfo(
+    inputData: AccountBranchInfoUpdateType
+  ): UpdateAccountBranchInfoType
+    @auth(requires: ["app_manager", "partner_admin"])
+  addBankAccountForAccount(
+    inputData: BankAccountAddDataType
+  ): AddBankAccountForAccountType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+  updateBankAccountForAccount(
+    inputData: BankAccountUpdateDataType
+  ): AddBankAccountForAccountType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+  removeBankAccountForAccount(
+    inputData: BankAccountRemoveDataType
+  ): AddBankAccountForAccountType
+    @auth(requires: ["app_manager", "partner_admin"])
+  changeContactPersonForAccount(
+    inputData: ContactPersonChangeDataType
+  ): ChangeContactPersonForAccountType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+
+  updateAccount(inputData: AccountUpdateDataType): UpdateAccountType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+
+  # For lambda accounting bridge pogo #10175
+  updateAccountForPogo(
+    inputData: AccountUpdateForPogoDataType
+  ): AccountQuerySchema @auth(requires: ["lambda_manager"])
+
+  # For lambda
+  updateAccountsTotalActiveProperties(
+    inputData: AccountsTotalPropertiesInput
+  ): Account @auth(requires: ["lambda_manager"])
+
+  downloadAccounts(
+    inputData: AccountsForPartnerAppQueryDataType
+  ): CommonDownloadReturnType
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+      ]
+    )
+}

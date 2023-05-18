@@ -1,0 +1,200 @@
+input PowerOfficeLogRemoveDataType {
+  partnerId: String
+  status: String
+  type: String
+  accountId: String
+  powerOfficeLogIds: [String]
+}
+
+enum ResetPowerOfficeActionEnum {
+  start_account_integration
+  start_tenant_integration
+}
+
+enum ResetPowerOfficeTypeEnum {
+  one_after_error
+}
+
+input PowerOfficeLogResetDataType {
+  partnerId: String
+  directPartnerAccountId: String
+  type: ResetPowerOfficeTypeEnum
+  action: ResetPowerOfficeActionEnum
+}
+
+type ResetPowerOfficeSuccessSchema {
+  success: Boolean
+}
+
+type ResetPowerOfficeLogSchema {
+  data: ResetPowerOfficeSuccessSchema
+}
+
+input PowerOfficeLogCreateData {
+  tenantId: String
+  accountId: String
+  transactionIds: [String]
+  type: String
+  status: String
+  transactionDate: Date
+}
+
+input PowerOfficeLogCreateDataType {
+  partnerId: String
+  data: PowerOfficeLogCreateData
+}
+
+type PowerOfficeErrorSchema {
+  errorText: String
+  reason: String
+  transactionIds: [String]
+  type: String
+}
+
+input PowerOfficeErrorDataType {
+  type: String
+  errorText: String
+  reason: String
+  transactionIds: [String]
+}
+
+type PowerOfficeEventSchema {
+  createdAt: Date
+  status: String
+  note: String
+}
+
+input PowerOfficeEventDataType {
+  createdAt: Date
+  status: String
+  note: String
+}
+
+type PowerOfficeLogApiSchema {
+  _id: String
+  status: String
+  type: String
+  errorType: String
+  tenantId: String
+  accountId: String
+  transactionIds: [String]
+  powerOfficeId: String
+  hasError: Boolean
+  errors: [PowerOfficeErrorSchema]
+  retries: Number
+  powerOfficeEvents: [PowerOfficeEventSchema]
+  powerOfficeVoucherId: String
+  processingAt: Date
+}
+
+type PogoLogsForPartnerAppSchema {
+  accountsAdded: Int
+  accountsError: Int
+  accountsModified: Int
+  keyIntegrationView: Boolean
+  tenantsAdded: Int
+  tenantsError: Int
+  tenantsModified: Int
+  totalAccounts: Int
+  totalTenants: Int
+  totalTransactions: Int
+  transactionsAdded: Int
+  transactionError: Int
+}
+
+input PowerOfficeLogUpdateData {
+  hasError: Boolean
+  errors: [PowerOfficeErrorDataType]
+  status: String
+  lastUpdatedAt: Date
+  powerOfficeEvents: [PowerOfficeEventDataType]
+  type: String
+  transactionIds: [String]
+  accountId: String
+  powerOfficeId: String
+  powerOfficeVoucherId: String
+}
+
+input PowerOfficeLogUpdateDataType {
+  _id: String
+  partnerId: String
+  data: PowerOfficeLogUpdateData
+}
+
+input PowerOfficeLogQueryType {
+  partnerId: String
+  status: String
+  type: String
+  accountId: String
+}
+
+input PogoLogsForPartnerAppQueryType {
+  accountId: String
+}
+
+type PowerOfficeLogQuerySchema {
+  data: [PowerOfficeLogApiSchema]
+  metaData: MetaDataQuerySchema
+}
+
+enum PogoLogDetailsTypeEnum {
+  account
+  tenant
+  transaction
+}
+
+enum PogoStatusTypeEnum {
+  error
+  success
+}
+
+type PogoLogDetailsData {
+  _id: String
+  createdAt: Date
+  errorsMeta: [PowerOfficeErrorSchema]
+  errorType: String
+  serial: [Number]
+  status: String
+  type: String
+}
+
+type PogoLogDetailsSchema {
+  data: [PogoLogDetailsData]
+  metaData: MetaDataQuerySchema
+}
+
+input PogoLogDetailsQueryType {
+  status: PogoStatusTypeEnum
+  type: PogoLogDetailsTypeEnum
+}
+
+extend type Query {
+  # For lambda accounting bridge pogo #10175
+  powerOfficeLogs(
+    queryData: PowerOfficeLogQueryType
+  ): PowerOfficeLogQuerySchema @auth(requires: ["lambda_manager"])
+  pogoIntegrationLogsForPartnerApp(
+    queryData: PogoLogsForPartnerAppQueryType
+  ): PogoLogsForPartnerAppSchema
+    @auth(requires: ["app_manager", "partner_admin"])
+  pogoLogDetailsForPartnerApp(
+    queryData: PogoLogDetailsQueryType
+    optionData: OptionDataType
+  ): PogoLogDetailsSchema
+    @auth(requires: ["app_manager", "partner_admin"])
+}
+
+extend type Mutation {
+  # For lambda accounting bridge pogo #10175
+  removePowerOfficeLog(inputData: PowerOfficeLogRemoveDataType): Object
+    @auth(requires: ["lambda_manager"])
+  resetPowerOfficeLog(
+    inputData: PowerOfficeLogResetDataType
+  ): ResetPowerOfficeLogSchema @auth(requires: ["lambda_manager"])
+  createPowerOfficeLog(
+    inputData: PowerOfficeLogCreateDataType
+  ): PowerOfficeLogApiSchema @auth(requires: ["lambda_manager"])
+  updatePowerOfficeLog(
+    inputData: PowerOfficeLogUpdateDataType
+  ): PowerOfficeLogApiSchema @auth(requires: ["lambda_manager"])
+}

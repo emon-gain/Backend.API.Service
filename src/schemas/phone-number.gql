@@ -1,0 +1,98 @@
+type PhoneNumber {
+  _id: String
+  phoneNumber: String
+  remainingBalance: Number
+  partnerId: String
+  createdBy: String
+  createdAt: Date
+}
+
+type PhoneNumberQuerySchema {
+  _id: String
+  partnerId: String
+  partner: Partner
+  phoneNumber: String
+  remainingBalance: Number
+  createdBy: String
+  createdAt: Date
+  user: UserQuerySchema
+  isDeletable: Boolean
+}
+
+type QueryPhoneNumber {
+  data: [PhoneNumberQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input PhoneNumberAddType {
+  phoneNumber: String
+}
+
+input PhoneNumberUpdateDataType {
+  phoneNumber: String
+}
+
+input PhoneNumberUpdateType {
+  _id: String
+  data: PhoneNumberUpdateDataType
+}
+
+input PhoneNumberRemoveType {
+  _id: String
+}
+
+input RemainingBalanceUpdateOptions {
+  partnerId: String
+  fromPhoneNumber: String
+  remainingBalance: Number
+}
+
+input RemainingBalanceUpdateType {
+  options: [RemainingBalanceUpdateOptions]
+}
+
+input PhoneNumberQueryDataType {
+  _id: String
+  phoneNumber: String
+  # For Admin phone-number Filters
+  partnerId: String
+  createdBy: String
+  createdDateRange: CommonStartDateAndEndDateInputDataType
+}
+
+type PhoneNumbersForDropdown {
+  phoneNumber: String
+  partnerId: String
+}
+
+type PhoneNumberDropdownQuerySchema {
+  data: [PhoneNumbersForDropdown]
+  metaData: MetaDataQuerySchema
+}
+
+input PhoneNumbersDropdownQueryDataType {
+  keyword: String
+}
+
+extend type Query {
+  phoneNumbers(
+    queryData: PhoneNumberQueryDataType
+    optionData: OptionDataType
+  ): QueryPhoneNumber @auth(requires: ["app_admin"])
+
+  phoneNumbersForDropdown(
+    queryData: PhoneNumbersDropdownQueryDataType
+    optionData: OptionDataType
+  ): PhoneNumberDropdownQuerySchema @auth(requires: ["app_admin"])
+}
+
+extend type Mutation {
+  addPhoneNumber(inputData: PhoneNumberAddType): [PhoneNumber]
+    @auth(requires: ["app_admin"])
+  updatePhoneNumber(inputData: PhoneNumberUpdateType): PhoneNumber
+    @auth(requires: ["app_admin"])
+  removePhoneNumber(inputData: PhoneNumberRemoveType): PhoneNumber
+    @auth(requires: ["app_admin"])
+  updateRemainingBalance(inputData: RemainingBalanceUpdateType): PhoneNumber
+    @auth(requires: [ "lambda_manager"])
+}

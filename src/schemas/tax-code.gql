@@ -1,0 +1,84 @@
+type TaxCode {
+  _id: String
+  name: String
+  taxCode: Number
+  taxPercentage: Number
+  enable: Boolean
+  partnerId: String
+  createdAt: Date
+  createdBy: String
+}
+
+type TaxCodeQuerySchema {
+  _id: String
+  name: String
+  taxCode: Number
+  taxPercentage: Number
+  enable: Boolean
+  partnerId: String
+  partner: Partner
+  createdAt: Date
+  createdBy: String
+  isDeletable: Boolean
+}
+
+type QueryTaxCode {
+  data: [TaxCodeQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input TaxCodeAddType {
+  name: String
+  taxCode: Number
+  taxPercentage: Number
+  enable: Boolean
+}
+
+input TaxCodeInputData {
+  name: String
+  valueString: String
+  valueBoolean: Boolean
+  valueInt: Number
+}
+
+input TaxCodeUpdateType {
+  _id: String
+  data: TaxCodeInputData
+}
+
+input TaxCodeRemoveType {
+  _id: String
+}
+
+input TaxCodesQueryDataType {
+  _id: String
+  name: String
+  taxCode: Number
+  taxPercentage: Number
+  enable: Boolean
+  createdAt: Date
+  createdBy: String
+  # For app admin filters only
+  appAdmin: Boolean
+}
+
+extend type Query {
+  taxCodes(
+    queryData: TaxCodesQueryDataType
+    optionData: OptionDataType
+  ): QueryTaxCode @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+}
+
+extend type Mutation {
+  addTaxCode(
+    inputData: TaxCodeAddType
+  ): [TaxCode] @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+
+  updateTaxCode(
+    inputData: TaxCodeUpdateType
+  ): TaxCode @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+
+  removeTaxCode(
+    inputData: TaxCodeRemoveType
+  ): TaxCode @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+}

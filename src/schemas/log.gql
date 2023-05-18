@@ -1,0 +1,556 @@
+enum allowedContext {
+  property
+  account
+  tenant
+  comment
+  conversation
+  organization
+  task
+  invoice
+  payment
+  payout
+  correction
+  commission
+  contract
+  landlordDashboard
+  tenantDashboard
+  creditRating
+}
+
+enum allowedActions {
+  added_new_property
+  updated_property
+  updated_account
+  updated_organization
+  updated_contact_person
+  added_new_comment
+  new_message
+  added_new_invoice
+  sent_due_reminder_email
+  sent_due_reminder_sms
+  sent_first_reminder_email
+  sent_first_reminder_sms
+  sent_second_reminder_email
+  sent_second_reminder_sms
+  sent_collection_notice_email
+  sent_collection_notice_sms
+  lost_invoice
+  created_new_assignment
+  terminate_assignment
+  added_lease
+  terminate_lease
+  cancelled_lease
+  updated_lease
+  added_new_payment
+  updated_payment
+  updated_refunded_payment
+  removed_payment
+  canceled_refund_payment
+  added_new_correction
+  added_new_commission
+  added_new_payout
+  added_new_payout_correction
+  added_new_payout_commission
+  updated_payout
+  updated_payout_info
+  uploaded_file
+  removed_file
+  added_lease_addon
+  removed_lease_addon
+  added_assignment_addon
+  removed_assignment_addon
+  updated_lease_addon
+  updated_assignment_addon
+  created_task
+  updated_task
+  updated_contract
+  updated_tenant
+  updated_due_delay
+  sent_assignment_email
+  sent_termination_email
+  sent_assignment_sms
+  sent_invoice_email
+  sent_invoice_sms
+  sent_credit_note_sms
+  sent_termination_sms
+  sent_schedule_termination_email
+  sent_schedule_termination_sms
+  sent_natural_termination_email
+  sent_natural_termination_sms
+  sent_soon_ending_email
+  sent_soon_ending_sms
+  removed_lost_invoice
+  removed_reminder_fee
+  sent_CPI_settlement_notice_email
+  sent_CPI_settlement_notice_sms
+  sent_next_schedule_payout_email
+  sent_next_schedule_payout_sms
+  sent_eviction_notice_email
+  sent_eviction_notice_sms
+  sent_eviction_due_reminder_notice_email
+  sent_eviction_due_reminder_notice_sms
+  sent_payout_email
+  sent_payout_sms
+  invoice_sent_to_vipps
+  invoice_sent_to_vipps_error
+  sent_assignment_esigning_email
+  sent_assignment_esigning_sms
+  sent_tenant_lease_esigning_email
+  sent_tenant_lease_esigning_sms
+  sent_landlord_lease_esigning_email
+  sent_landlord_lease_esigning_sms
+  landlord_signed_assignment_contract
+  agent_signed_assignment_contract
+  landlord_signed_lease_contract
+  tenant_signed_lease_contract
+  added_lease_tenant
+  removed_lease_tenant
+  updated_main_tenant
+  removed_eviction_notice_fee
+  removed_administration_eviction_notice
+  removed_collection_notice
+  cancelled_a_correction
+  sent_landlord_invoice_email
+  publish_to_finn
+  failed_to_finn
+  send_welcome_lease_email
+  send_welcome_lease_sms
+  updated_jointly_liable
+  sent_final_settlement_email
+  sent_final_settlement_sms
+  tenant_signed_moving_in
+  landlord_signed_moving_in
+  agent_signed_moving_in
+  added_moving_out
+  regenerate_assignment_signing
+  regenerate_lease_signing
+  sent_tenant_moving_in_esigning_email
+  sent_tenant_moving_in_esigning_sms
+  sent_tenant_moving_out_esigning_email
+  sent_tenant_moving_out_esigning_sms
+  sent_agent_moving_in_esigning_email
+  sent_agent_moving_in_esigning_sms
+  sent_agent_moving_out_esigning_email
+  sent_agent_moving_out_esigning_sms
+  sent_landlord_moving_in_esigning_email
+  sent_landlord_moving_in_esigning_sms
+  sent_landlord_moving_out_esigning_email
+  sent_landlord_moving_out_esigning_sms
+  tenant_signed_moving_out
+  landlord_signed_moving_out
+  agent_signed_moving_out
+  sent_custom_notification_email
+  sent_custom_notification_sms
+  sent_assignment_esigning_reminder_notice_email
+  sent_assignment_esigning_reminder_notice_sms
+  sent_tenant_lease_esigning_reminder_notice_email
+  sent_tenant_lease_esigning_reminder_notice_sms
+  sent_landlord_lease_esigning_reminder_notice_email
+  sent_landlord_lease_esigning_reminder_notice_sms
+  sent_tenant_moving_in_esigning_reminder_notice_email
+  sent_tenant_moving_in_esigning_reminder_notice_sms
+  sent_agent_moving_in_esigning_reminder_notice_email
+  sent_agent_moving_in_esigning_reminder_notice_sms
+  sent_landlord_moving_in_esigning_reminder_notice_email
+  sent_landlord_moving_in_esigning_reminder_notice_sms
+  sent_tenant_moving_out_esigning_reminder_notice_email
+  sent_tenant_moving_out_esigning_reminder_notice_sms
+  sent_agent_moving_out_esigning_reminder_notice_email
+  sent_agent_moving_out_esigning_reminder_notice_sms
+  sent_landlord_moving_out_esigning_reminder_notice_email
+  sent_landlord_moving_out_esigning_reminder_notice_sms
+  assignee_added
+  assignee_removed
+  sent_task_notification_email
+  sent_task_notification_sms
+  send_landlord_annual_statement_email
+  send_landlord_annual_statement_sms
+  added_new_annual_statement
+  sent_interest_form_email
+  sent_interest_form_sms
+  sent_deposit_account_created_email
+  sent_deposit_account_created_sms
+  sent_deposit_incoming_payment_email
+  sent_deposit_incoming_payment_sms
+  cancel_move_in
+  cancel_move_out
+  sent_request_for_deposit_account_creation
+  deposit_account_created
+  add_credit_rating
+  update_credit_ratin
+}
+
+enum botEnum {
+  banking_bot
+  sms_bot
+}
+
+type Log {
+  _id: String
+  createdAt: Date
+  createdBy: String
+  partnerId: String
+  propertyId: String
+  propertyIds: [String]
+  accountId: String
+  agentId: String
+  tenantId: String
+  branchId: String
+  taskId: String
+  paymentId: String
+  fileId: String
+  commentId: String
+  invoiceId: String
+  contractId: String
+  payoutId: String
+  correctionId: String
+  expenseId: String
+  context: allowedContext
+  action: allowedActions
+  isChangeLog: Boolean
+  botType: botEnum
+  visibility: [allowedContext]
+  changes: [LogChangesSchemas]
+  conversationId: String
+  messageId: String
+  meta: [LogMetaSchemas]
+  landlordPartnerId: String
+  notificationLogId: String
+  tenantPartnerId: String
+  errorText: String
+  movingId: String
+  isResend: Boolean
+  annualStatementId: String
+}
+
+type LogChangesSchemas {
+  field: String
+  type: String
+  oldId: String
+  newId: String
+  oldText: String
+  newText: String
+  oldNumber: String
+  newNumber: String
+  newDate: Date
+  oldDate: Date
+}
+
+type LogMetaSchemas {
+  field: String
+  value: String
+  contractId: String
+  propertyId: String
+  toEmail: String
+}
+
+type LogQuerySchema {
+  _id: String
+  createdAt: Date
+  createdBy: String
+  partner: Partner
+  partnerId: String
+  propertyId: String
+  property: Listing
+  propertyIds: [String]
+  accountId: String
+  account: Account
+  agentId: String
+  agent: UserQuerySchema
+  tenantId: String
+  tenant: Tenant
+  branchId: String
+  branch: Branch
+  taskId: String
+  task: Task
+  paymentId: String
+  fileId: String
+  file: File
+  payout: Payout
+  commentId: String
+  comment: Comment
+  invoiceId: String
+  invoice: Invoice
+  contractId: String
+  contract: Contract
+  payoutId: String
+  correctionId: String
+  correction: Correction
+  expenseId: String
+  context: allowedContext
+  action: allowedActions
+  isChangeLog: Boolean
+  botType: botEnum
+  visibility: [allowedContext]
+  changes: [LogChangesSchemas]
+  conversationId: String
+  messageId: String
+  meta: [LogMetaSchemas]
+  landlordPartnerId: String
+  notificationLogId: String
+  tenantPartnerId: String
+  errorText: String
+  movingId: String
+  isResend: Boolean
+  annualStatementId: String
+}
+
+type QueryLogs {
+  data: [LogQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input LogsQueryDataType {
+  _id: String
+}
+
+enum ActivityLogContextEnum {
+  account
+  app_invoice
+  assignment
+  comment
+  commission
+  contract
+  conversation
+  correction
+  creditRating
+  invoice
+  landlordDashboard
+  lease
+  moving_in
+  moving_out
+  organization
+  payout
+  payment
+  property
+  task
+  tenant
+  tenantDashboard
+}
+
+input ActivityLogsQueryDataType {
+  accountId: String
+  appInvoiceId: String
+  commissionId: String
+  context: ActivityLogContextEnum
+  contractId: String
+  correctionId: String
+  depositInsuranceId: String
+  invoiceId: String
+  isChangeLog: Boolean
+  leaseSerial: Int
+  paymentId: String
+  payoutId: String
+  propertyId: String
+  showMyActivities: Boolean
+  taskId: String
+  tenantId: String
+}
+
+type ActivityLogChangesSchema {
+  field: String
+  newAssigneeName: String
+  newDate: Date
+  newId: String
+  newNumber: String
+  newText: String
+  newValue: String
+  oldAssigneeName: String
+  oldDate: Date
+  oldId: String
+  oldNumber: String
+  oldText: String
+  oldValue: String
+  type: String
+}
+
+type ActivityLogCommentSchema {
+  _id: String
+  content: String
+}
+
+type ActivityLogPropertySchema {
+  _id: String
+  locationName: String
+  title: String
+}
+
+type ActivityLogPayoutSchema {
+  _id: String
+  serialId: Int
+}
+
+type ActivityLogTaskSchema {
+  _id: String
+  title: String
+}
+
+type ActivityLogInvoiceSchema {
+  _id: String
+  creditReason: String
+  dueDate: Date
+  invoiceSerialId: Int
+  invoiceTotal: Number
+  invoiceType: String
+  isFinalSettlement: Boolean
+  isPayable: Boolean
+}
+
+type ActivityLogAppInvoiceSchema {
+  _id: String
+  invoiceSerialId: Int
+  invoiceType: String
+}
+
+type ActivityLogConversationMessageSchema {
+  _id: String
+  content: String
+}
+
+type ActivityLogFileSchema {
+  _id: String
+  fileSrc: String
+  name: String
+  title: String
+  type: String
+}
+
+type ActivityLogMetaInfoSchema {
+  accountInfo: CommonNameType
+  addonInfo: CommonNameType
+  assignmentSerial: Int
+  bankAccountNumber: String
+  errorTextKey: String
+  leaseSerial: Int
+  sendTo: String
+  tenantInfo: CommonNameType
+  toEmail: String
+}
+
+type ActivityLogPaymentInvoiceInfo {
+  _id: String
+  invoiceSerialId: Int
+}
+
+type ActivityLogPaymentAppInvoiceInfo {
+  _id: String
+  serialId: Int
+}
+
+type ActivityLogPaymentInfoSchema {
+  _id: String
+  amount: Number
+  accountInfo: CommonNameType
+  appInvoiceInfo: ActivityLogPaymentAppInvoiceInfo
+  invoiceInfo: ActivityLogPaymentInvoiceInfo
+  isDepositInsurancePayment: Boolean
+  paymentType: String
+  type: String
+}
+
+type ActivityLogContractInfoSchema {
+  _id: String
+  assignmentSerial: Int
+  assignmentSigningMeta: ObjectLeaseSigningMeta
+  leaseSerial: Int
+  leaseSigningMeta: ObjectLeaseSigningMeta
+}
+
+type ActivityLogCorrectionInfoSchema {
+  _id: String
+  correctionSerialId: Int
+}
+
+type ActivityLogMovingInfoSchema {
+  _id: String
+  movingSigningMeta: SigningMetaObject
+}
+
+type ActivityLogAnnualStatementInfoSchema {
+  _id: String
+  createdAt: Date
+  statementYear: Int
+  status: String
+}
+
+type ActivityLogDepositAccountInfoSchema {
+  _id: String
+  bankAccountNumber: Number
+}
+
+type ActivityLogNotificationLogInfoSchema {
+  _id: String
+  msgClickCount: Int
+  msgOpenCount: Int
+  status: String
+  toUserId: String
+  type: String
+}
+
+type AccountForActivityLogType {
+  _id: String
+  name: String
+  serial: Int
+}
+
+type ActivityLogSchema {
+  _id: String
+  accountInfo: AccountForActivityLogType
+  action: String
+  agentInfo: CommonNameType
+  annualStatementInfo: ActivityLogAnnualStatementInfoSchema
+  appInvoiceInfo: ActivityLogAppInvoiceSchema
+  changes: [ActivityLogChangesSchema]
+  commentInfo: ActivityLogCommentSchema
+  context: String
+  contractInfo: ActivityLogContractInfoSchema
+  conversationMessageInfo: ActivityLogConversationMessageSchema
+  correctionInfo: ActivityLogCorrectionInfoSchema
+  createdAt: Date
+  createdBy: String
+  createdByInfo: CommonNameAvatarKeyType
+  depositAccountInfo: ActivityLogDepositAccountInfoSchema
+  errorText: String
+  fileInfo: ActivityLogFileSchema
+  invoiceInfo: ActivityLogInvoiceSchema
+  isChangeLog: Boolean
+  isResend: Boolean
+  meta: [LogMetaSchemas]
+  metaInfo: ActivityLogMetaInfoSchema
+  movingInfo: ActivityLogMovingInfoSchema
+  notificationLogAgentInfo: CommonNameType
+  notificationLogId: String
+  notificationLogInfo: ActivityLogNotificationLogInfoSchema
+  paymentInfo: ActivityLogPaymentInfoSchema
+  payoutInfo: ActivityLogPayoutSchema
+  pdfFilesInfo: [ActivityLogFileSchema]
+  propertyInfo: ActivityLogPropertySchema
+  reason: String
+  taskInfo: ActivityLogTaskSchema
+  tenantId: String
+  tenantInfo: CommonNameType
+}
+
+type QueryActivityLogs {
+  data: [ActivityLogSchema]
+  metaData: MetaDataQuerySchema
+}
+
+extend type Query {
+  logs(queryData: LogsQueryDataType, optionData: OptionDataType): QueryLogs
+    @auth(requires: ["no_role"])
+  activityLogs(
+    queryData: ActivityLogsQueryDataType
+    optionData: OptionDataType
+  ): QueryActivityLogs
+    @auth(
+      requires: [
+        "app_admin",
+        "app_manager",
+        "partner_accounting",
+        "partner_admin",
+        "partner_agent",
+        "partner_janitor"
+      ]
+    )
+}

@@ -1,0 +1,84 @@
+type LambdaSqs {
+  _id: String
+  status: String
+  partnerId: String
+  params: Object
+  actionType: String
+  processStartedAt: Date
+  retryCount: Number
+  createdAt: Date
+  createdBy: String
+}
+
+input LambdaSqsAddType {
+  status: String
+  partnerId: String
+  params: Object
+  actionType: String
+  processStartedAt: Date
+  retryCount: Number
+}
+
+input LambdaSqsUpdateType {
+  _id: String
+  data: Object
+  updateType: String
+}
+
+input LambdaSqsRemoveType {
+  _id: String
+  data: Object
+  removeType: String
+}
+
+input LambdaSqsByIdRemoveType {
+  _id: String
+}
+
+input LambdaSqsStatusUpdateType {
+  _id: String
+  status: String
+}
+input LambdaSqsQueryDataType {
+  _id: String
+  status: String
+  partnerId: String
+  actionType: String
+}
+
+type LambdaSqsQuerySchema {
+  _id: String
+  status: String
+  partnerId: String
+  partner: Partner
+  params: Object
+  actionType: String
+  processStartedAt: Date
+  retryCount: Number
+  createdAt: Date
+  createdBy: String
+}
+
+type QueryLambdaSqs {
+  data: [LambdaSqsQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+extend type Query {
+  lambdaSqs(
+    queryData: LambdaSqsQueryDataType
+    optionData: OptionDataType
+  ): QueryLambdaSqs @auth(requires: ["no_role"])
+}
+
+extend type Mutation {
+  addLambdaSqs(inputData: LambdaSqsAddType): [LambdaSqs]
+    @auth(requires: ["no_role"])
+  removeLambdaSqs(inputData: LambdaSqsRemoveType): NumberOfRemove
+    @auth(requires: ["no_role"])
+#  For lambda function
+  removeLambdaSqsById(inputData: LambdaSqsByIdRemoveType): LambdaSqs
+    @auth(requires: ["no_role"])
+  updateLambdaSqsStatus(inputData: LambdaSqsStatusUpdateType): LambdaSqs
+    @auth(requires: ["no_role"])
+}

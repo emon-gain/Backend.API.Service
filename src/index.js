@@ -13,8 +13,10 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import { json } from 'body-parser';
-import { authDirective, getUser } from './utils/directives';
+import {authDirective, getUser, getUserFromJWT} from './utils/directives';
 import {addMocksToSchema} from "@graphql-tools/mock";
+import fs from "fs";
+import {cloneDeep} from "lodash";
 const { authDirectiveTransformer } = authDirective('auth', getUser);
 
 dotenv.config();
@@ -29,25 +31,41 @@ const server = new ApolloServer({
   schema,
   plugins: [
     {
-      requestDidStart: ({ contextValue }) => ({
-        didEncounterErrors: async ({ errors, request }) => {
-          // Rollback transaction on errors
-          if (errors) {
-            console.log('Error');
-            await contextValue.session.abortTransaction();
-            await contextValue.session.endSession();
+      requestDidStart: async ({ contextValue }) => {
+          const session = await mongoose.startSession()
+          return {
+              async willSendResponse({ context }) {
+                  console.log(session.transaction.isActive)
+                  if (session.transaction.isActive) {
+                      try {
+                          await session.commitTransaction();
+                          console.log(session.transaction.state)
+                      } catch (error) {
+                          console.log(error)
+                          await session.abortTransaction();
+                          throw error;
+                      } finally {
+                          await session.endSession();
+                      }
+                      console.log(session.transaction.state)
+                  }
+              },
+              async didEncounterErrors({ context, errors }) {
+                  if (errors) {
+                      await session.abortTransaction();
+                      await session.endSession();
+                  }
+                  console.log(session.transaction.state)
+
+              },
+              async executionDidStart(requestContext) {
+                  await session.startTransaction()
+                  console.log(await session.id)
+                  cloneDeep(requestContext.contextValue.req.session)
+                  requestContext.contextValue.req.session = session
+              },
           }
-        },
-        willSendResponse: async ({ response, request }) => {
-          // Commit transaction on successful response
-          // console.log();
-          if (!response.body.singleResult.errors) {
-            await contextValue.session.commitTransaction();
-            // console.log(contextValue.session.transaction.state);
-            await contextValue.session.endSession();
-          }
-        },
-      }),
+      },
     },
     ApolloServerPluginDrainHttpServer({ httpServer }),
       ApolloServerPluginInlineTrace()
@@ -64,10 +82,12 @@ connectDB()
       json(),
       expressMiddleware(server, {
         context: async ({ req }) => {
-          const session = await mongoose.startSession();
-          // console.log(session.transaction.state);
-          session.startTransaction();
-          return { authToken: req.headers.authtoken, session };
+
+          const user = getUserFromJWT(req.headers.authorization)
+
+            req.user = user
+            // console.log(req.headers.authorization)
+          return { authToken: req.headers.authorization, req };
         },
       })
     );

@@ -1,0 +1,617 @@
+type NotificationLog {
+  _id: String
+  event: String
+  type: String
+  status: String
+  subject: String
+  fromName: String
+  fromPhoneNumber: String
+  toUserId: String
+  toEmail: String
+  toPhoneNumber: String
+  content: String
+  totalAttachment: Number
+  attachments: [NotificationLogAttachmentsObj]
+  attachmentsMeta: [NotificationLogAttachmentMetaObj]
+  partnerId: String
+  invoiceId: String
+  accountId: String
+  tenantId: String
+  propertyId: String
+  payoutId: String
+  paymentId: String
+  agentId: String
+  branchId: String
+  sentAt: Date
+  emailHeaders: Object
+  repairing: Boolean
+  contractId: String
+  sendTo: String
+  msgOpenCount: Number
+  msgClickCount: Number
+  messageCost: Number
+  totalMessages: Number
+  errorReason: String
+  rejectReason: String
+  history: [NotificationLogHistoryObj]
+  isResend: Boolean
+  movingId: String
+  annualStatementId: String
+  statementId: String
+  taskId: String
+  commentId: String
+  notificationLogId: String
+  depositPaymentId: String
+  isCorrectionInvoice: Boolean
+  SESMsgId: String
+  complaint: Boolean
+  doNotSend: Boolean
+  processStartedAt: Date
+  events: [eventsSchema]
+  retryCount: Number
+  createdAt: Date
+  createdBy: String
+}
+
+type NotificationLogAttachmentsObj {
+  originalName: String
+  s3FileName: String
+  content: String
+  isInvoice: Boolean
+}
+
+type NotificationLogAttachmentMetaObj {
+  name: String
+  content: String
+  isInvoice: Boolean
+  lang: String
+  type: String
+  fileId: String
+  status: String
+  id: String
+  notificationLogId: String
+  attachmentMetaId: String
+  fileKey: String
+}
+
+type NotificationLogHistoryObj {
+  oldToEmail: String
+  toEmail: String
+  changedAt: Date
+  oldToPhoneNumber: String
+  toPhoneNumber: String
+}
+
+type eventsSchema {
+  createdAt: Date
+  status: String
+  note: String
+}
+
+type NotificationLogQuerySchema {
+  _id: String
+  event: String
+  type: NotificationLogTypeEnum
+  status: String
+  subject: String
+  fromName: String
+  fromPhoneNumber: String
+  toUserId: String
+  user: UserQuerySchema
+  toEmail: String
+  toPhoneNumber: String
+  content: String
+  totalAttachment: Number
+  attachments: [NotificationLogAttachmentsObj]
+  attachmentsMeta: [NotificationLogAttachmentMetaObj]
+  partnerId: String
+  partner: Partner
+  invoiceId: String
+  accountId: String
+  tenantId: String
+  propertyId: String
+  payoutId: String
+  paymentId: String
+  agentId: String
+  branchId: String
+  sentAt: Date
+  emailHeaders: Object
+  repairing: Boolean
+  contractId: String
+  sendTo: String
+  msgOpenCount: Number
+  msgClickCount: Number
+  messageCost: Number
+  totalMessages: Number
+  errorReason: String
+  rejectReason: String
+  history: [NotificationLogHistoryObj]
+  isResend: Boolean
+  movingId: String
+  annualStatementId: String
+  statementId: String
+  taskId: String
+  commentId: String
+  notificationLogId: String
+  depositPaymentId: String
+  isCorrectionInvoice: Boolean
+  SESMsgId: String
+  complaint: Boolean
+  doNotSend: Boolean
+  processStartedAt: Date
+  events: [eventsSchema]
+  retryCount: Number
+  createdAt: Date
+  createdBy: String
+}
+
+type QueryNotificationLog {
+  data: [NotificationLogQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input NotificationSendToInfoQueryDataType {
+  collectionId: String
+  collectionNameStr: String
+  event: String
+  notifyToData: Array
+  options: Object
+  partnerId: String
+}
+
+input VariablesDataQueryDataType {
+  event: String
+  options: Object
+}
+
+input NotificationLogsQueryDataType {
+  _id: String
+  status: [String]
+  invoiceId: String
+  accountId: String
+  tenantId: String
+  propertyId: String
+  payoutId: String
+  agentId: String
+  branchId: String
+  # For Admin Email & Sms Filters
+  sendDateRange: CommonStartDateAndEndDateInputDataType
+  type: NotificationLogTypeEnum
+  partnerId: String
+  toUser: String
+  templateType: String
+  subject: String
+  toEmail: String
+  toPhoneNumber: String
+  #  For lambda services
+  attachmentFileIds: [String]
+}
+
+input NotificationLogsQueryDataTypeForLambda {
+  notificationLogIds: [String]
+  status: String
+  type: NotificationLogTypeEnum
+}
+
+input NotificationLogsForAdminQueryDataType {
+  sendDateRange: CommonStartDateAndEndDateInputDataType
+  type: NotificationLogTypeEnum
+  status: [String]
+  toUser: String
+  partnerIds: Array
+  templateType: String
+  subject: String
+  email: String
+  phoneNumber: String
+  defaultSearchText: String
+}
+
+input NotificationLogOptionsArrayInputData {
+  status: String
+  totalMessages: Int
+  messageCost: Number
+  errorReason: String
+  isResend: Boolean
+  SESMsgId: String
+}
+
+input NotificationLogOptionsArrayInput {
+  notificationLogId: String
+  updateData: NotificationLogOptionsArrayInputData
+}
+
+input NotificationLogOptionsObjectInput {
+  limit: Int
+  type: NotificationLogTypeEnum
+  status: String
+}
+
+input NotificationLogsUpdateType {
+  updateType: String
+  optionsArray: [NotificationLogOptionsArrayInput]
+  optionsObject: NotificationLogOptionsObjectInput
+}
+
+input NotificationLogsCreateTypeForLambda {
+  #  For lambda services
+  collectionId: String
+  collectionNameStr: String
+  event: String
+  notificationLogsData: Array
+  partnerId: String
+  queueId: String
+  totalNotificationLogs: Int
+  fromName: String
+}
+
+input NotificationLogCreateTypeForLambda {
+  #  For lambda services
+  event: String
+  type: NotificationLogTypeEnum
+  status: String
+  fromName: String
+  toEmail: String
+  subject: String
+  content: String
+  toUserId: String
+  sendTo: String
+}
+
+input EventsSchema {
+  createdAt: Date
+  status: String
+  note: String
+}
+
+input NotificationLogCreateAndQueueUpdateType {
+  #  For lambda services
+  event: String
+  events: [EventsSchema]
+  type: NotificationLogTypeEnum
+  status: String
+  fromName: String
+  toEmail: String
+  sendTo: String
+  toUserId: String
+  subject: String
+  content: String
+  queueId: String
+  emailHeaders: Object
+}
+
+input RetryNotificationLogUpdateType {
+  time: Number # Should send the number of minutes, before the processing has started
+}
+
+enum NotificationLogTypeEnum {
+  email
+  sms
+}
+
+enum UpdateSNSResponseTypeEnum {
+  sentStatus
+  bounceStatus
+  rejectStatus
+  openEvent
+  clickEvent
+  complainEvent
+}
+
+enum UpdateSNSResponseEventsStatusEnum {
+  sent
+  bounced
+  rejected
+}
+
+input UpdateSNSResponseEventsInput {
+  status: UpdateSNSResponseEventsStatusEnum
+  SESMsgIds: [String]
+  openCount: Int
+  clickCount: Int
+  complaint: Boolean
+}
+
+input UpdateSNSResponseType {
+  type: UpdateSNSResponseTypeEnum
+  events: UpdateSNSResponseEventsInput
+}
+
+input NotificationLogAttachmentsParamsType {
+  attachmentFileId: String
+  notificationLogId: String
+  fileId: String
+  status: String
+}
+
+input UpdateNotificationLogAttachmentsType {
+  params: [NotificationLogAttachmentsParamsType]
+}
+
+type NotificationSendToInfo {
+  data: Array
+}
+
+type VariablesDataObj {
+  variablesData: Object
+}
+
+type NotificationLogCount {
+  notifierSmsCount: Int
+  notifierEmailCount: Int
+}
+
+input NotificationLogDetailsDataType {
+  _id: String
+  invoiceId: String
+}
+
+enum SendEmailContextEnum {
+  tenant
+  account
+  property
+}
+enum EmailSendToEnum {
+  tenants
+  accounts
+  all
+}
+
+enum TenantStatusEnum {
+  active
+  upcoming
+  closed
+}
+
+enum ProspectStatusEnum {
+  invited
+  interested
+  rejected
+  not_interested
+}
+
+enum paymentStatusEnum {
+  unpaid
+  partially_paid
+  overpaid
+  overdue
+  defaulted
+}
+
+input sendMailToAllInputType {
+  accountId: String
+  agentId: String
+  assignmentESignStatus: [AssignmentESignStatusEnum]
+  availabilityDateRange: CommonStartDateAndEndDateInputDataType
+  noOfBedrooms: [Int]
+  branchId: String
+  apartmentId: String
+  content: String
+  context: SendEmailContextEnum
+  createdAtDateRange: CommonStartDateAndEndDateInputDataType
+
+  depositAmount: CommonMinMaxInputDataType
+  #deposit status
+  depositAccountStatus: [DepositAccountStatusEnum]
+  hasInProgressLease: Boolean
+  """
+  if occupied set hasActiveLease true or false
+  """
+  hasActiveLease: Boolean
+  hasUpcomingLease: Boolean
+  #More
+  hasAssignment: YesNoAllEnum
+  hasActiveInProgressLease: YesNoAllEnum
+  hasActiveUpcomingLease: YesNoAllEnum
+  hasCpiEnabled: YesNoAllEnum
+  #  hasIssues: YesNoAllEnum
+  hasListed: YesNoAllEnum
+  hasProspects: YesNoAllEnum
+  hasTerminatedContract: YesNoAllEnum
+  # Has protocol yes or no
+  #hasProtocol: [yesNoData] # re-check here
+  #type
+  listingTypeIds: [String]
+  #e-sign status
+  leaseESignStatus: [LeaseESignStatusEnum]
+  leaseStartDateRange: CommonStartDateAndEndDateInputDataType
+  leaseEndDateRange: CommonStartDateAndEndDateInputDataType
+  #protocolType: [String]
+  placeSize: CommonMinMaxInputDataType
+  """
+  if vacant set propertyStatus `active`
+  """
+  propertyStatus: [PropertyStatusEnum]
+  rentAmount: CommonMinMaxInputDataType
+  sendTo: EmailSendToEnum
+  subject: String
+  tenantId: String
+
+  # Tenant
+  isArchived: Boolean
+  isProspect: Boolean
+  paymentStatus: [paymentStatusEnum]
+  prospectStatus: [ProspectStatusEnum]
+  propertyId: String
+  tenantStatus: [TenantStatusEnum]
+
+  # Account
+  accountStatus: [AccountStatusEnum]
+  accountType: AccountTypeEnum
+  searchKeyword: String
+  accountIds: [String]
+  notificationType: NotificationLogTypeEnum
+}
+
+type sendEmail {
+  message: String
+  status: Int
+}
+
+input ESigningVariablesDataQueryDataType {
+  context: String
+  contractId: String
+}
+
+input SendToInfoForAccountsOrTenantsQueryDataType {
+  collectionNameStr: String
+  collectionIds: [String]
+  partnerId: String
+  type: NotificationLogTypeEnum
+}
+
+type SendToInfoForAccountsOrTenants {
+  accountId: String
+  branchId: String
+  fromPhoneNumber: String
+  sendTo: String
+  tenantId: String
+  toEmail: String
+  toPhoneNumber: String
+  toUserId: String
+}
+
+input NotificationLogsCreateAndAppQueueUpdateInputType {
+  notificationLogsData: Array
+  queueId: String
+}
+
+input ResendEmailOrSmsInputType {
+  invoiceId: String
+  notificationLogId: String
+  partnerId: String
+  toEmail: String
+  toPhoneNumber: String
+  userId: String
+}
+
+input EmptyPhoneNumbersQueryDataType {
+  accountsQuery: AccountsForPartnerAppQueryDataType
+  tenantsQuery: TenantsQueryDataTypeForPartnerApp
+  propertiesQuery: PropertyQueryInput
+  context: String
+}
+
+type NotificationLogDetailsSchemaType {
+  _id: String
+  attachmentsMeta: [NotificationLogAttachmentMetaObj]
+  content: String
+  email: String
+  phoneNumber: String
+  type: String
+  toEmail: String
+  toPhoneNumber: String
+  toUserId: String
+  errorReason: String
+  status: String
+  createdAt: Date
+}
+
+type QuerySentToEmailAllInfo {
+  accountNames: [String]
+  tenantNames: [String]
+  tenantNamesWithClosedLease: [String]
+}
+
+extend type Query {
+  notificationLogs(
+    queryData: NotificationLogsQueryDataType
+    optionData: OptionDataType
+  ): QueryNotificationLog @auth(requires: ["lambda_manager"])
+  notificationLogDetails(
+    queryData: NotificationLogDetailsDataType
+  ): NotificationLogDetailsSchemaType
+    @auth(
+      requires: [
+        "app_admin"
+        "app_manager"
+        "partner_agent"
+        "partner_admin"
+        "partner_accounting"
+      ]
+    )
+  #  For lambda services (Notifier) Start
+  getNotificationSendToInfo(
+    queryData: NotificationSendToInfoQueryDataType
+  ): NotificationSendToInfo @auth(requires: ["lambda_manager"])
+  getVariablesDataByEvent(
+    queryData: VariablesDataQueryDataType
+  ): VariablesDataObj @auth(requires: ["lambda_manager"])
+  #  For lambda services (Notifier) End
+
+  notificationLogsForAdminApp(
+    queryData: NotificationLogsForAdminQueryDataType
+    optionData: OptionDataType
+  ): QueryNotificationLog
+    @auth(requires: ["app_admin", "app_manager", "partner_admin"])
+
+  notificationLogsForLambda(
+    queryData: NotificationLogsQueryDataTypeForLambda
+    optionData: OptionDataType
+  ): [NotificationLogQuerySchema] @auth(requires: ["lambda_manager"])
+  notificationLogCount: NotificationLogCount @auth(requires: ["lambda_manager"])
+  getESigningVariablesData(
+    queryData: ESigningVariablesDataQueryDataType
+  ): VariablesDataObj @auth(requires: ["lambda_manager"])
+  getSendToInfoForAccountsOrTenants(
+    queryData: SendToInfoForAccountsOrTenantsQueryDataType
+  ): [SendToInfoForAccountsOrTenants] @auth(requires: ["lambda_manager"])
+
+  getEmptyPhoneNumbersInfo(
+    queryData: EmptyPhoneNumbersQueryDataType
+    optionData: OptionDataType
+  ): QueryEmptyPhoneNumbers
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+
+  getSendMailToAllInfo(
+    queryData: sendMailToAllInputType
+  ): QuerySentToEmailAllInfo
+    @auth(requires: ["app_manager", "partner_admin", "partner_agent"])
+}
+
+extend type Mutation {
+  #  For lambda services
+  updateNotificationLogs(
+    inputData: NotificationLogsUpdateType
+  ): [NotificationLogQuerySchema] @auth(requires: ["lambda_manager"])
+  addNotificationLogsForLambda(
+    inputData: NotificationLogsCreateTypeForLambda
+  ): ReturnIds @auth(requires: ["lambda_manager"])
+  addNotificationLogForLambda(
+    inputData: NotificationLogCreateTypeForLambda
+  ): [NotificationLog] @auth(requires: ["lambda_manager"])
+  addNotificationLogAndUpdateQueueForLambda(
+    inputData: NotificationLogCreateAndQueueUpdateType
+  ): ReturnBoolean @auth(requires: ["lambda_manager"])
+  retryFailedNotificationLogs(
+    inputData: RetryNotificationLogUpdateType
+  ): [NotificationLogQuerySchema] @auth(requires: ["lambda_manager"])
+  updateNotificationLogWithSNSResponse(
+    inputData: UpdateSNSResponseType
+  ): [NotificationLogQuerySchema] @auth(requires: ["lambda_manager"])
+  updateNotificationLogAttachments(
+    inputData: UpdateNotificationLogAttachmentsType
+  ): NumberOfUpdate @auth(requires: ["lambda_manager"])
+  sendMailToAll(inputData: sendMailToAllInputType): sendEmail
+    @auth(
+      requires: [
+        "app_manager"
+        "partner_accounting"
+        "partner_admin"
+        "partner_agent"
+        "partner_janitor"
+      ]
+    )
+  resendEmailOrSms(inputData: ResendEmailOrSmsInputType): ReturnBoolean
+    @auth(
+      requires: [
+        "app_admin"
+        "app_manager"
+        "partner_admin"
+        "partner_accounting"
+        "lambda_manager"
+      ]
+    )
+  createNotificationLogsAndUpdateAppQueue(
+    inputData: NotificationLogsCreateAndAppQueueUpdateInputType
+  ): [NotificationLogQuerySchema] @auth(requires: ["lambda_manager"])
+}

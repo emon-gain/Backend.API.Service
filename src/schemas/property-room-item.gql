@@ -1,0 +1,162 @@
+type PropertyRoomItem {
+  _id: String
+  name: String
+  partnerId: String
+  roomTypes: Array
+  createdAt: Date
+  createdBy: String
+  propertyId: String
+  movingId: String
+  isEnable: Boolean
+  isCustomRoomItem: Boolean
+}
+
+type PropertyRoomItemQuerySchema {
+  _id: String
+  name: String
+  partnerId: String
+  partner: Partner
+  roomTypes: [String]
+  propertyId: String
+  property: Listing
+  movingId: String
+  isEnable: Boolean
+  isCustomRoomItem: Boolean
+  createdAt: Date
+  createdBy: String
+  isDeletable: Boolean
+}
+
+type QueryPropertyRoomItem {
+  data: [PropertyRoomItemQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+enum RoomTypesEnum {
+  living_room
+  bedroom
+  kitchen
+  bath_toilet
+  balcony_outdoor_area
+  facade
+  other
+  laundry_room
+  entrance_hallway
+  storage_unit
+  garage
+}
+
+input PropertyRoomItemAddType {
+  """
+  ******* Room types can contain only this array of elements *******
+  [
+  "living_room",
+  "bedroom",
+  "kitchen",
+  "bath_toilet",
+  "balcony_outdoor_area",
+  "facade",
+  "other",
+  "laundry_room",
+  "entrance_hallway",
+  "storage_unit",
+  "garage"
+  ]
+  """
+  name: String
+  roomTypes: [RoomTypesEnum]
+  movingId: String
+  propertyId: String
+  isEnable: Boolean
+
+  #  For moving in/out protocol
+  roomId: String
+}
+
+input PropertyRoomItemUpdateDataType {
+  name: String
+  valueString: String
+  valueArray: [String]
+  valueBoolean: Boolean
+}
+
+input PropertyRoomItemUpdateType {
+  _id: String
+  data: PropertyRoomItemUpdateDataType
+}
+
+input PropertyRoomItemRemoveType {
+  _id: String
+}
+
+input propertyRoomItemsDataType {
+  _id: String
+  name: String
+  propertyId: String
+  movingId: String
+  isEnable: Boolean
+  isCustomRoomItem: Boolean
+  # For app admin filters only
+  appAdmin: Boolean
+}
+
+extend type Query {
+  propertyRoomItems(
+    queryData: propertyRoomItemsDataType
+    optionData: OptionDataType
+  ): QueryPropertyRoomItem
+    @auth(
+      requires: [
+        "app_admin"
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+        "partner_janitor"
+      ]
+    )
+}
+
+extend type Mutation {
+  addPropertyRoomItem(inputData: PropertyRoomItemAddType): [PropertyRoomItem]
+    @auth(
+      requires: [
+        "app_admin"
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+        "partner_janitor"
+        "partner_landlord"
+        "partner_tenant"
+      ]
+    )
+
+  updatePropertyRoomItem(
+    inputData: PropertyRoomItemUpdateType
+  ): PropertyRoomItem
+    @auth(
+      requires: [
+        "app_admin"
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+        "partner_janitor"
+      ]
+    )
+
+  removePropertyRoomItem(
+    inputData: PropertyRoomItemRemoveType
+  ): PropertyRoomItem
+    @auth(
+      requires: [
+        "app_admin"
+        "app_manager"
+        "partner_admin"
+        "partner_agent"
+        "partner_accounting"
+        "partner_janitor"
+      ]
+    )
+}

@@ -1,0 +1,147 @@
+type AppHealth {
+  _id: String
+  partnerId: String
+  type: String
+  context: String
+  transactionTotal: Number
+  collectionTotal: Number
+  missingAmount: Number
+  status: String
+  errorDetails: [Object]
+  sqsMessageType: [String]
+  sqsMessageCount: Number
+  hasSqsError: Boolean
+  hasPdfError: Boolean
+  filesCount: Number
+  contractId: String
+  propertyId: String
+  invoiceId: String,
+  msg: String
+}
+
+type AppHealthQuerySchema {
+  _id: String
+  context: String
+  createdAt: Date
+  hasPdfError: Boolean
+  hasSqsError: Boolean
+  missingAmount: Number
+  missingInvoiceContractCount: Int
+  notSentInvoiceContractCount: Int
+  partner: Partner
+  partnerId: String
+  queueErrorCount: Int
+  sqsMessageCount: Int
+  sqsMessageType: [String]
+  status: String
+  totalErrorCount: Int
+  type: String
+  updatedAt: Date
+}
+
+type QueryAppHealth {
+  data: [AppHealthQuerySchema]
+  metaData: MetaDataQuerySchema
+}
+
+input AppHealthAddType {
+  partnerId: String
+  type: String
+  context: String,
+  errorDetails: [Object],
+  transactionTotal: Number
+  collectionTotal: Number
+  missingAmount: Number
+  hasSqsError: Boolean,
+  status: String
+}
+
+input AppHealthUpdateType {
+  _id: String
+  data: Object
+  updateType: String
+}
+
+input AppHealthRemoveType {
+  removeType: String
+}
+
+enum AppHealthTypeEnum {
+  transaction
+  sqs
+  accuracy
+  notifications
+}
+
+input AppHealthQueryDataType {
+  _id: String
+  invoiceId: String
+  contractId: String
+  propertyId: String
+  hasSqsError: Boolean
+  hasPdfError: Boolean
+  #Filter query data
+  status: String
+  partnerId: String
+  updatedDateRange: CommonStartDateAndEndDateInputDataType
+  context: [String]
+  type: [AppHealthTypeEnum]
+}
+
+input AppHealthQueryType {
+  appHealthId: String
+}
+
+type ErrorIssues {
+  errors_type: String
+  errors_value: Int
+}
+
+type NewErrorIssues {
+  new_issue_type: String
+  new_issue_value: Float
+
+}
+
+type AppHealthError {
+  total_issues_before_today: Int
+  total_issues: Int
+  error_issues: [ErrorIssues]
+  new_issues: [NewErrorIssues]
+  all_issues_are_same: Boolean
+  all_issues_are_new: Boolean
+  partnerId: String,
+  appHealthErrorId: String
+}
+
+type appHealthError{
+  type: String
+  partnerId: String
+  errorDetails: [Object]
+}
+
+extend type Query {
+  appHealths(
+    queryData: AppHealthQueryDataType
+    optionData: OptionDataType
+  ): QueryAppHealth @auth(requires: ["app_admin"])
+  getDataForAppHealthNotification: [AppHealthQuerySchema] @auth(requires: ["lambda_manager"])
+  singleAppHealthError(queryData: AppHealthQueryType): appHealthError
+    @auth(requires: ["app_admin"])
+  getAppHealthErrors: [AppHealthError] @auth(requires: ["lambda_manager"])
+}
+
+extend type Mutation {
+  checkDailyInvoiceTransactions(partnerId: ID, skip: Int, appHealthId: ID, appQueueId: ID): [AppHealth] @auth(requires: ["lambda_manager"])
+  checkDailyPaymentTransactions(partnerId: ID): [AppHealth] @auth(requires: ["lambda_manager"])
+  checkDailyCorrectionTransactions(partnerId: ID): [AppHealth] @auth(requires: ["lambda_manager"])
+  checkDailyCommissionTransactions(partnerId: ID): [AppHealth] @auth(requires: ["lambda_manager"])
+  checkDailyPayoutTransactions(partnerId: ID): [AppHealth] @auth(requires: ["lambda_manager"])
+  addAppHealths(inputData: [AppHealthAddType]): [AppHealth]
+    @auth(requires: ["lambda_manager"])
+  updateAppHealth(inputData: AppHealthUpdateType): AppHealth
+    @auth(requires: ["no_role"])
+  removeAppHealth(inputData: AppHealthRemoveType): NumberOfDelete
+    @auth(requires: ["lambda_manager"])
+  reRunAppHealth: MsgWithCode @auth(requires: ["app_admin", "app_manager"])
+}

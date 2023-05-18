@@ -1,0 +1,19 @@
+type ApiKey {
+  partnerId: String
+  apiKey: String
+  createdBy: String
+}
+
+input ApiKeyAddType {
+  partnerId: String
+  apiKey: String
+}
+
+extend type Mutation {
+  addApiKeys(inputData: ApiKeyAddType): [ApiKey] @auth(requires: ["no_role"])
+  resetApiKey: ApiKey @auth(requires: ["app_manager", "partner_admin"])
+}
+
+extend type Query {
+  getApiKey: String @auth(requires: ["app_manager", "partner_admin"])
+}
