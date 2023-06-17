@@ -21,7 +21,7 @@ jobs:
           
       - name: Check SonarQube Quality Gate
         run: |
-          curl -s -u ${{ secrets.SONARQUBE_TOKEN }}: "https://sonarqube.example.com/api/qualitygates/project_status?projectKey=<your-project-key>" \
+          curl -s -u ${{ secrets.SONARQUBE_TOKEN }}: "http://103.187.95.71:9000/api/qualitygates/project_status?projectKey=node-boilerplate" \
             | jq -r '.projectStatus.status' \
             | grep -q "ERROR"
       # If you wish to fail your job when the Quality Gate is red, uncomment the
