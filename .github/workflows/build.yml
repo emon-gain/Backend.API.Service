@@ -18,6 +18,12 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          
+      - name: Check SonarQube Quality Gate
+        run: |
+          curl -s -u ${{ secrets.SONARQUBE_TOKEN }}: "https://sonarqube.example.com/api/qualitygates/project_status?projectKey=<your-project-key>" \
+            | jq -r '.projectStatus.status' \
+            | grep -q "ERROR"
       # If you wish to fail your job when the Quality Gate is red, uncomment the
       # following lines. This would typically be used to fail a deployment.
       # - uses: sonarsource/sonarqube-quality-gate-action@master
