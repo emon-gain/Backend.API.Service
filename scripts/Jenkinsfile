@@ -11,9 +11,10 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                // Install Node.js and npm
-                tool 'Node.js'
-                sh 'npm install'
+                // Use withEnv to set the PATH variable
+                withEnv(["PATH+NODEJS=${tool 'Node.js'}/bin:$PATH"]) {
+                    sh 'npm install'
+                }
             }
         }
 
