@@ -26,6 +26,18 @@ pipeline {
                 }
             }
         }
+
+        stage('Upload Artifacts to S3') {
+            steps {
+                script {
+                    def awsS3Bucket = 'myartifacts-jenkins-emon'
+                    def buildFolder = 'dist'
+                    
+                    // Use the AWS CLI to upload artifacts
+                    sh "aws s3 sync $buildFolder s3://$awsS3Bucket/"
+                }
+            }
+        }
     }
     post {
         success {
