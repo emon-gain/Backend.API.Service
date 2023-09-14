@@ -24,14 +24,4 @@ pipeline {
             }
         }
     }
-
-    post {
-        success {
-            // Add post-build steps here, like deploying your application
-        }
-
-        failure {
-            // Add steps to handle build failures
-        }
-    }
 }
