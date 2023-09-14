@@ -20,8 +20,10 @@ pipeline {
 
         stage('Build') {
             steps {
-                // Run the npm build script
-                sh 'npm run build'
+                // Use withEnv to set the PATH variable
+                withEnv(["PATH+NODEJS=${tool 'Node.js'}/bin:$PATH"]) {
+                    sh 'npm run build'
+                }
             }
         }
     }
