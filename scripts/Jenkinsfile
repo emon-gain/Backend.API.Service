@@ -1,21 +1,37 @@
 pipeline {
-  agent any
-    
-  tools {nodejs "node"}
-    
-  stages {
-        
-    stage('Git') {
-      steps {
-        git 'https://github.com/****/****'
-      }
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout your source code from Git
+                checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                // Install Node.js and npm
+                tool 'Node.js'
+                sh 'npm install'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Run the npm build script
+                sh 'npm run build'
+            }
+        }
     }
-     
-    stage('Build') {
-      steps {
-        sh 'npm install'
-         sh 'npm run build'
-      }
-    }  
-  }
+
+    post {
+        success {
+            // Add post-build steps here, like deploying your application
+        }
+
+        failure {
+            // Add steps to handle build failures
+        }
+    }
 }
