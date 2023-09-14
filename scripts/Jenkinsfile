@@ -27,4 +27,9 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+            archiveArtifacts 'dist/**'
+        }
+    }
 }
